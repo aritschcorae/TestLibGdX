@@ -9,6 +9,7 @@ import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 
 abstract public class PostThrower extends AbstractEnemy
 {
@@ -30,9 +31,9 @@ abstract public class PostThrower extends AbstractEnemy
 
     public PostThrower(float x, float y,
             int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight,
-            float zoom)
+            float zoom, Texture texture)
     {
-		super(x, y, Sizes.THROWER_WIDTH, Sizes.THROWER_HEIGHT, powerUps);
+		super(x, y, Sizes.THROWER_WIDTH, Sizes.THROWER_HEIGHT, powerUps, texture);
         this.shootFrequency = shotFrequency;
         this.fieldHeight = fieldHeight;
 

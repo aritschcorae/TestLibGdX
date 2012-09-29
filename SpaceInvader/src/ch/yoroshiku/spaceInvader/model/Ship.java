@@ -6,6 +6,7 @@ import java.util.List;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -37,10 +38,12 @@ public abstract class Ship extends Rectangle
     protected int currentShot = 0;
     private boolean slowedDown = false, defensless = false, bombless = false, illness = false, position = true;
     private boolean powerupDamage = false, powerupSpeed = false;
+	protected Texture shipTexture;
     
-    public Ship(float x, float y)
+    public Ship(float x, float y, Texture texture)
     {
 		super(x, y, Sizes.SHIP_WIDTH, Sizes.SHIP_HEIGHT);
+		shipTexture = texture;
         currentShot = 0;
     }
     
@@ -411,4 +414,8 @@ public abstract class Ship extends Rectangle
     public void moveRight(){
     	x += speed;
     }
+
+	public Texture getShipTexture() {
+		return shipTexture;
+	}
 }

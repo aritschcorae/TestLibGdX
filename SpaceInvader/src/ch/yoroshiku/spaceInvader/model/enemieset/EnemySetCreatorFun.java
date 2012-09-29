@@ -1,3 +1,4 @@
+package ch.yoroshiku.spaceInvader.model.enemieset;
 //package ch.yoroshiku.spaceInvader.model.enemieset;
 //
 //import java.util.HashMap;

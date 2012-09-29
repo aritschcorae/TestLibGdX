@@ -1,9 +1,14 @@
 package ch.yoroshiku.spaceInvader.screen;
 
+import java.io.IOException;
+
 import ch.yoroshiku.spaceInvader.SpaceInvader;
 import ch.yoroshiku.spaceInvader.controller.InGameController;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.ShipStraight;
+import ch.yoroshiku.spaceInvader.model.enemies.AbstractEnemy;
+import ch.yoroshiku.spaceInvader.model.enemieset.EnemySet;
+import ch.yoroshiku.spaceInvader.model.enemieset.EnemySetCreator;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.Gdx;
@@ -12,40 +17,53 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class GameScreen extends AbstractScreen {
 
-	private static final float DEFAULT_WORLD_WIDTH = 240;
-	private static final float DEFAULT_WORLD_HEIGHT = 210;
+	private static final float DEFAULT_WORLD_WIDTH = 96;
+	private static final float DEFAULT_WORLD_HEIGHT = 84;
 	private float ppuX; // pixels per unit on the X axis
 	private float ppuY; // pixels per unit on the Y axis
 
 	private InGameController controller;
 	private Ship ship;
-	Texture shipTexture;
+	private EnemySet enemy = new EnemySet();
+	private EnemySetCreator creator;
 	
 	public GameScreen(SpaceInvader game) {
 		super(game);
+		try {
+			creator = new EnemySetCreator(ship, enemy);
+			creator.loadEnemiesOfNextLvl();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
 	@Override
 	public void show() {
-		ship = new ShipStraight(0,0);
+		ship = new ShipStraight(0, 0, new Texture(Gdx.files.internal("images/ship_straight.gif")));
 		controller = new InGameController(ship);
 		loadTextures();
 		Gdx.input.setInputProcessor(controller);
 	}
 
 	private void loadTextures() {
-		shipTexture = new Texture(Gdx.files.internal("images/ship_straight.gif"));
 	}
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		controller.update(delta);
 		batch.begin();
-		batch.draw(shipTexture, ship.x, ship.y, ppuX * ship.width, ppuY * ship.height);
+		for(Integer e : enemy.getEnemies().keySet())
+		{
+			for(AbstractEnemy eemy : enemy.getEnemies().get(e))
+			{
+				batch.draw(eemy.getTexture(), eemy.x, eemy.y, ppuX * eemy.width, ppuY * eemy.height);
+			}
+		}
+		batch.draw(ship.getShipTexture(), ship.x, ship.y, ppuX * ship.width, ppuY * ship.height);
 		batch.end();
 	}
 	

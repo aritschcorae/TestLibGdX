@@ -7,6 +7,7 @@ import java.util.Random;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.ShotFactory;
+import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 public class Peon extends AbstractEnemy
 {
@@ -17,7 +18,8 @@ public class Peon extends AbstractEnemy
 
     public Peon(float x, float y, boolean powerUps)
     {
-        super(x, y, Sizes.PEON_WIDTH, Sizes.PEON_HEIGHT, powerUps);
+    	//TODO
+        super(x, y, Sizes.PEON_WIDTH, Sizes.PEON_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.PEON_EASY_ID));
     }
     
     @Override

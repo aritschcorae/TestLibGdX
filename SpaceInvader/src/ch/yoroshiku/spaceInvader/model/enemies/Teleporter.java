@@ -8,6 +8,7 @@ import java.util.Random;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.enemieset.EnemyGroup;
+import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class Teleporter extends AbstractEnemy
@@ -26,7 +27,7 @@ public class Teleporter extends AbstractEnemy
     public Teleporter(float x, float y, float fieldHeight, float fieldWidth, int shotFrequency
             , boolean powerUps, List<Map<Integer, EnemyGroup>> emergency, float zoom)
     {
-		super(x, y, Sizes.TELEPORTER_WIDTH, Sizes.TELEPORTER_HEIGHT, powerUps);
+		super(x, y, Sizes.TELEPORTER_WIDTH, Sizes.TELEPORTER_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.TELEPORTER_ID));
         leftShotX = 9 * zoom;
         rightShotX = 20 * zoom;
         shotY = 13 * zoom;

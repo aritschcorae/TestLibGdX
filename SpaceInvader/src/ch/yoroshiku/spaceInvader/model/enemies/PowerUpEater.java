@@ -5,6 +5,7 @@ import java.util.List;
 import ch.yoroshiku.spaceInvader.model.PowerUp;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
+import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class PowerUpEater extends AbstractEnemy
@@ -18,7 +19,7 @@ public class PowerUpEater extends AbstractEnemy
     
     public PowerUpEater(float x, float y, boolean powerUps, float zoom)
     {
-		super(x, y, Sizes.POWER_UP_EATER_WIDTH, Sizes.POWER_UP_EATER_HEIGHT, powerUps);
+		super(x, y, Sizes.POWER_UP_EATER_WIDTH, Sizes.POWER_UP_EATER_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.POWER_UP_EATER_ID));
         visible = false;
         invincible = true;
         width /= 2;

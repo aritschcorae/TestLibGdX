@@ -7,6 +7,7 @@ import java.util.Random;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.ShotFactory;
+import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class MidbossSplash extends AbstractEnemy
@@ -20,7 +21,7 @@ public class MidbossSplash extends AbstractEnemy
             , int shotFrequency, boolean powerUps)
     {
 		super(x, y, Sizes.MIDSBOSS_SPLASS_WIDTH, Sizes.MIDSBOSS_SPLASS_HEIGHT,
-				powerUps);
+				powerUps, Enemies.allTextures.get(Enemies.SPLASHER_ID));
         this.fieldHeight = fieldHeight;
         this.fieldWidth = fieldWidth;
         this.shootFrequency = shotFrequency;

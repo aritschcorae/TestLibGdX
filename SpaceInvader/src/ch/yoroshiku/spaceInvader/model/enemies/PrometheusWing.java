@@ -6,6 +6,7 @@ import java.util.Random;
 
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
+import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class PrometheusWing extends AbstractEnemy
@@ -22,7 +23,8 @@ public class PrometheusWing extends AbstractEnemy
     
     public PrometheusWing(float x, float y, boolean powerUps, boolean leftWing, float zoom)
     {
-        super(x,y,Sizes.WING_WIDTH, Sizes.WING_HEIGHT, powerUps);
+    	//TODO right id
+        super(x,y,Sizes.WING_WIDTH, Sizes.WING_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.PROMETHEUS_ID));
         height /= 2;
         height --;
         barHeight = 13;

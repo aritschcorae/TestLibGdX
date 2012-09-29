@@ -7,6 +7,7 @@ import java.util.Random;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.ShotFactory;
+import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class Prometheus extends AbstractEnemy
@@ -25,7 +26,7 @@ public class Prometheus extends AbstractEnemy
     public Prometheus(float x, float y, boolean powerUps, PrometheusWing leftWing,
             PrometheusWing rightWing, int health, int points, float zoom)
     {
-		super(x, y, Sizes.PROMETHEUS_WIDTH, Sizes.PROMETHEUS_HEIGHT, powerUps);
+		super(x, y, Sizes.PROMETHEUS_WIDTH, Sizes.PROMETHEUS_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.PROMETHEUS_ID));
         this.leftWing = leftWing;
         this.rightWing = rightWing;
         this.leftWing.setDaddy(this);

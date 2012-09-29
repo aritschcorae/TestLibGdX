@@ -7,6 +7,7 @@ import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.ShotFactory;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class AbstractEnemy extends Rectangle
@@ -21,10 +22,12 @@ public abstract class AbstractEnemy extends Rectangle
     private double points = 1;
     private boolean powerUps = false;
     protected List<Shot> emptyShotList = new ArrayList<Shot>();
+    protected Texture texture;
     
-    public AbstractEnemy(float x, float y, float width, float height, boolean powerUps)
+    public AbstractEnemy(float x, float y, float width, float height, boolean powerUps, Texture texture)
     {
 		super(x, y, width, height);
+		this.texture = texture;
         this.powerUps = powerUps;
     }
     
@@ -144,4 +147,8 @@ public abstract class AbstractEnemy extends Rectangle
     {
         return createShot(x, y, createDirection(x, y, ship.x, ship.y));
     }
+
+	public Texture getTexture() {
+		return texture;
+	}
 }

@@ -2,6 +2,8 @@ package ch.yoroshiku.spaceInvader.model;
 
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Texture;
+
 
 public class ShipStraight extends Ship
 {
@@ -9,9 +11,9 @@ public class ShipStraight extends Ship
 	private int shotDistance = 12;
     private float shotNormalVelocity, shotSlowerVelocity, shotDriftVelocity;
     
-    public ShipStraight(float x, float y)
+    public ShipStraight(float x, float y, Texture texture)
     {
-        super(x,y);
+        super(x,y, texture);
         shotLeft = (width * 0.4f) - 2;
         shotMiddle = (width * 0.6f) - 2;
         shotRight = (width * 0.8f) - 2;

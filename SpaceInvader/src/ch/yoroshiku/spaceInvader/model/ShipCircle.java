@@ -2,6 +2,8 @@ package ch.yoroshiku.spaceInvader.model;
 
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Texture;
+
 
 public class ShipCircle extends Ship
 {
@@ -10,9 +12,9 @@ public class ShipCircle extends Ship
     private int shotMiddleVelocity = -11, shotWingVelocity = -9;
     private boolean widerShot = false;
     
-    public ShipCircle(float x, float y)
+    public ShipCircle(float x, float y, Texture texture)
     {
-        super(x,y);
+    	super(x,y, texture);
         shotLeft = (width / 9 * 2) - shotWidthWing / 2;
         shotMiddle = (width / 2 ) - shotWidthMiddle / 2;
         shotRight = (width / 9 * 8) - shotWidthWing / 2;

@@ -7,6 +7,7 @@ import java.util.Random;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.ShotFactory;
+import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class Midboss extends AbstractEnemy
@@ -18,7 +19,8 @@ public class Midboss extends AbstractEnemy
     
     public Midboss(float x, float y, float fieldHeight, float fieldWidth, int shotFrequency, boolean powerUps)
     {
-		super(x, y, Sizes.MIDBOSS_WIDTH, Sizes.MIDBOSS_HEIGHT, powerUps);
+    	//TODO
+		super(x, y, Sizes.MIDBOSS_WIDTH, Sizes.MIDBOSS_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.MIDBOSS_EASY_ID));
         this.fieldHeight = fieldHeight;
         this.fieldWidth = fieldWidth;
         this.shootFrequency = shotFrequency;
