@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">Space Invader</string>
+    <string name="music_service">Music Service</string>
+    <!-- menu titles -->
+    <string name="menu_title_main_menu">Space Invader</string>
+    <string name="menu_title_highscore">Highscore</string>
+    <string name="menu_title_fun_games">Fun Games</string>
+    <string name="menu_title_preferences">Settings</string>
+    <string name="menu_title_help">Help</string>
+    <string name="menu_title_ship_election">Ship Selection</string>
+    
+    <!-- Main menu -->
+    <string name="startButton">Start Game</string>
+    <string name="funGamesButton">Fun Games</string>
+    <string name="highScoreButton">Highscore</string>
+    <string name="preferencesButton">Preferences</string>
+    <string name="helpButton">Help</string>
+    <string name="exitButton">Exit</string>
+    
+    <!-- Menu -->
+    <string name="new_game">Restart</string>
+    <string name="back_main_menu">Back to Main Menu</string>
+    <string name="resume_menu">Resume</string>
+    
+    <string name="name">Name: </string>
+    
+    <!-- Highscore enter -->
+    <string name="highscoreEnterEnter">Enter</string>
+    <string name="highscoreEnterCancel">Cancel</string>
+    <string name="highscoreEnterReset">Reset</string>
+    
+    <!-- Preferences -->
+    <string	name="difficulty">Difficulty:</string>
+    <string	name="control">Control:</string>
+    <string	name="music">Music:</string>
+    <string	name="music_on">On</string>
+    <string	name="music_off">Off</string>
+    <string name="saveButton">Save</string>
+    <string name="cancelButton">Cancel</string>
+    <string name="sensorControl">G-Sensor</string>
+    <string name="touchControl">Touch</string>
+    <string-array name="difficulties">
+        <item>Very Easy</item>
+        <item>Easy</item>
+        <item>Normal</item>
+        <item>Hard</item>
+        <item>Very Hard</item>
+        <item>Impossible</item>
+    </string-array>
+    
+    <!-- Help -->
+    <string name="helpPowerUpDamageImg">PowerUp Damage</string>
+    <string name="helpPowerUpShieldImg">PowerUp Shield</string>
+    <string name="helpPowerUpShotImg">PowerUp Shot</string>
+    <string name="helpPowerUpSpeedImg">PowerUp Speed</string>
+    <string name="helpPowerUpHealImg">PowerUp Heal</string>
+    
+    <string name="helpPowerUpDamage">This power-up gives your shots more power</string>
+    <string name="helpPowerUpShield">This power-up gives more strength to your shields</string>
+    <string name="helpPowerUpShot">This power-up gives you an additional shot</string>
+    <string name="helpPowerUpSpeed">This power-up increase your velocity</string>
+    <string name="helpPowerUpHeal">This power-up repairs your ship.</string>
+    <string name="helpSpray">While the spray mode is activated, your shots are redirected to other directions.</string>
+    
+    <string name="gameName">Normal</string>
+    <!-- Fun games -->
+    <string name="funGameInvisible">Invisible</string>
+    <string name="funGameBomb">BOMBS</string>
+    <string name="funGameFast">Fast</string>
+    <string name="funGameNoPowerUp">No Power</string>
+    <string name="funGameEndless">Endless</string>
+    <string name="funGameBack">Back</string>
+    
+    
+    <!-- Textbox Text -->
+    <string-array name="textboxText">
+	    <item>1;Level: ;22</item>
+	    <item>2;Time needed: ;22</item>
+	    <item>3;Level Bonus: ;22</item>
+	    <item>4;Tap for the next Level;16</item>
+	    
+	    <item>5;Game Over;28</item>
+	    <item>6;Points: ;28</item>
+	    
+	    <item>7;New Highscore!;28</item>
+	    
+	    <item>8;Continue?;24</item>
+	    <item>9;YES   |    NO;24</item>
+	    <item>10;Continues left: ;20</item>
+	    
+	    <item>11;Pause;24</item>
+	    
+	    <item>12;Gratz;40</item>
+    </string-array>
+</resources>

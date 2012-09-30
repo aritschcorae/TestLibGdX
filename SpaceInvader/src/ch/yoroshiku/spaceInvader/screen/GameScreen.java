@@ -33,7 +33,7 @@ public class GameScreen extends AbstractScreen {
 			creator = new EnemySetCreator(ship, enemy);
 			creator.loadEnemiesOfNextLvl();
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
