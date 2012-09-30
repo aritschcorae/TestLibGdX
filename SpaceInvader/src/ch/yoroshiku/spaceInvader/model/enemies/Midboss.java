@@ -13,16 +13,12 @@ import ch.yoroshiku.spaceInvader.util.Sizes;
 public class Midboss extends AbstractEnemy
 {
 	private static final long serialVersionUID = 1L;
-	private float fieldWidth;
-    private float fieldHeight; 
     private Random random = new Random();
     
     public Midboss(float x, float y, float fieldHeight, float fieldWidth, int shotFrequency, boolean powerUps)
     {
     	//TODO
 		super(x, y, Sizes.MIDBOSS_WIDTH, Sizes.MIDBOSS_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.MIDBOSS_EASY_ID));
-        this.fieldHeight = fieldHeight;
-        this.fieldWidth = fieldWidth;
         this.shootFrequency = shotFrequency;
     }
     
@@ -33,15 +29,15 @@ public class Midboss extends AbstractEnemy
         float xposition;
         do
         {
-            yposition = y + random.nextInt(20) - 10;
+            yposition = y + random.nextFloat() - 0.5f;
         }
-        while(yposition + height >= fieldHeight - 75 || yposition < 1);
+        while(yposition >= 84 || yposition < 30);
         y = yposition;
         do
         {
-            xposition = x + random.nextInt(11) - 5;
+            xposition = x + random.nextFloat() - 0.5f;
         }
-        while(xposition + width > fieldWidth || xposition < 1);
+        while(xposition + width > 96 || xposition < 1);
         x = xposition;
     }
     

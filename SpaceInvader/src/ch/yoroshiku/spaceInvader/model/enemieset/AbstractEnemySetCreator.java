@@ -9,7 +9,7 @@ public abstract class AbstractEnemySetCreator
 {
 
     protected Ship ship;
-    protected int lvl = 0;
+    protected int lvl = 1;
     protected int displayLvl = 1;
     protected int amountOfMinPowerUps = 1;
     protected int enemyKind = 0;

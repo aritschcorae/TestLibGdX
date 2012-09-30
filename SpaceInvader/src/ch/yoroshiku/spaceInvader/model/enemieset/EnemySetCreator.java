@@ -1,8 +1,5 @@
 package ch.yoroshiku.spaceInvader.model.enemieset;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,26 +31,23 @@ public class EnemySetCreator extends AbstractEnemySetCreator
     public EnemySetCreator(Ship ship, EnemySet enemySet) throws IOException
     {
         super(ship, enemySet);
-        readLevelInformation(Gdx.files.internal("level/levels.txt").file());
+        readLevelInformation(Gdx.files.internal("level/levels.txt").readString());
     }
     
-    private void readLevelInformation(File readData) throws IOException
+    private void readLevelInformation(String readData) throws IOException
     {
         levelStructure = new HashMap<Integer, String[]>();
         int i = 0;
-        readData.setReadable(true);
-//        if(readData.canRead())
-//        {
-        	System.out.println(2);
-			BufferedReader br = new BufferedReader(new FileReader(readData));
-			while (br.ready()) 
-			{
-				String levelInformation = br.readLine();
-				System.out.println(levelInformation);
-				levelStructure.put(i, levelInformation.split(":"));
-				i++;
-			}
-//		}
+        
+        for(String line : readData.split("--"))
+        {
+        	if(!line.startsWith("<"))
+        	{
+        		String[] lvl = line.split("#");
+        		i = new Integer(lvl[0].trim());
+        		levelStructure.put(i, lvl[1].split(":"));
+        	}
+        }
 	}
     
     private Integer[] convertStringToInteger(String[] toConvertArray)
@@ -62,7 +56,6 @@ public class EnemySetCreator extends AbstractEnemySetCreator
         for(int i = 0; i < toConvertArray.length; i++)
         {
             resultArray[i] = new Integer(toConvertArray[i].replaceAll("\t", "").trim());
-            System.out.println(i + " - " + resultArray[i]);
         }
         return resultArray;
     }

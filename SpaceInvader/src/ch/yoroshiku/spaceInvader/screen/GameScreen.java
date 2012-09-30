@@ -7,6 +7,7 @@ import ch.yoroshiku.spaceInvader.controller.InGameController;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.ShipStraight;
 import ch.yoroshiku.spaceInvader.model.enemies.AbstractEnemy;
+import ch.yoroshiku.spaceInvader.model.enemieset.EnemyGroup;
 import ch.yoroshiku.spaceInvader.model.enemieset.EnemySet;
 import ch.yoroshiku.spaceInvader.model.enemieset.EnemySetCreator;
 import ch.yoroshiku.spaceInvader.util.Sizes;
@@ -24,13 +25,13 @@ public class GameScreen extends AbstractScreen {
 
 	private InGameController controller;
 	private Ship ship;
-	private EnemySet enemy = new EnemySet();
+	private EnemySet enemySet = new EnemySet();
 	private EnemySetCreator creator;
 	
 	public GameScreen(SpaceInvader game) {
 		super(game);
 		try {
-			creator = new EnemySetCreator(ship, enemy);
+			creator = new EnemySetCreator(ship, enemySet);
 			creator.loadEnemiesOfNextLvl();
 		} catch (IOException e) {
 //			e.printStackTrace();
@@ -56,11 +57,13 @@ public class GameScreen extends AbstractScreen {
 
 		controller.update(delta);
 		batch.begin();
-		for(Integer e : enemy.getEnemies().keySet())
+		for(EnemyGroup e : enemySet.getEnemies().values())
 		{
-			for(AbstractEnemy eemy : enemy.getEnemies().get(e))
+			e.move();
+			for(AbstractEnemy enemy : e)
 			{
-				batch.draw(eemy.getTexture(), eemy.x, eemy.y, ppuX * eemy.width, ppuY * eemy.height);
+				if(enemy.isVisible())
+					batch.draw(enemy.getTexture(), enemy.x, enemy.y, ppuX * enemy.width, ppuY * enemy.height);
 			}
 		}
 		batch.draw(ship.getShipTexture(), ship.x, ship.y, ppuX * ship.width, ppuY * ship.height);
