@@ -139,7 +139,6 @@ public abstract class AbstractEnemy extends Rectangle
     
     protected Shot createShot(float xCoord, float yCoord, float movX)
     {
-        //TODO
         return ShotFactory.createShotLaser(xCoord, yCoord, 1, movX, shotVelocity);
     }
     

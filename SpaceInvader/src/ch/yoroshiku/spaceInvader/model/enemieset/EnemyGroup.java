@@ -6,6 +6,8 @@ import java.util.Random;
 
 import ch.yoroshiku.spaceInvader.model.enemies.AbstractEnemy;
 
+import com.badlogic.gdx.graphics.Color;
+
 public class EnemyGroup extends HashSet<AbstractEnemy>
 {
     private AbstractEnemy farLeft, farRight, bottom, top;
@@ -13,10 +15,10 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
     private boolean needForLevel = true;
     private Random random = new Random();
     private int id;
-    private int groupAlpha = 0;
     private int timeAppear, kindAppear;
     private float endPositionY, endPositionX, movementX, movementY;
     private int slowDown;
+    private Color color = new Color(1, 1, 1, 0);
     
     private static final long serialVersionUID = 1L;
 
@@ -178,16 +180,16 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
         {
             if(kindAppear == 0)
             {
-                groupAlpha += 25;
-                if(groupAlpha >= 220)
+                color.a += 0.1f;
+                if(color.a >= 0.8)
                 {
-                    groupAlpha = 255;
+                	color.a = 1;
                     appeared = true;
                 }
             }
             else if(kindAppear == 1)
             {
-                groupAlpha += 40;
+            	color.a += 0.2f;
                 for(AbstractEnemy enemy : this)
                 {
                 	enemy.x += movementX;
@@ -197,7 +199,7 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
                  && farLeft.x == endPositionX)
                 {
                     appeared = true;
-                    groupAlpha = 255;
+                    color.a = 1;
                 }
             }
         }
@@ -291,5 +293,9 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
     {
         return slowDown;
     }
+
+	public Color getColor() {
+		return color;
+	}
 
 }

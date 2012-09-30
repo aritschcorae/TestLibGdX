@@ -13,8 +13,10 @@ import ch.yoroshiku.spaceInvader.model.enemieset.EnemySetCreator;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class GameScreen extends AbstractScreen {
 
@@ -38,6 +40,7 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 
+	private Color c;
 
 	@Override
 	public void show() {
@@ -45,6 +48,7 @@ public class GameScreen extends AbstractScreen {
 		controller = new InGameController(ship);
 		loadTextures();
 		Gdx.input.setInputProcessor(controller);
+		c = batch.getColor();
 	}
 
 	private void loadTextures() {
@@ -57,30 +61,34 @@ public class GameScreen extends AbstractScreen {
 
 		controller.update(delta);
 		batch.begin();
+//		batch.disableBlending();
+		Sprite b = new Sprite(ship.getShipTexture());
 		for(EnemyGroup e : enemySet.getEnemies().values())
 		{
 			e.move();
+			batch.setColor(e.getColor());
 			for(AbstractEnemy enemy : e)
 			{
 				if(enemy.isVisible())
-					batch.draw(enemy.getTexture(), enemy.x, enemy.y, ppuX * enemy.width, ppuY * enemy.height);
+				{
+					//TODO timer
+					batch.draw(enemy.getTexture(), enemy.x * ppuX, enemy.y * ppuY, ppuX * enemy.width, ppuY * enemy.height);
+				}
 			}
+			batch.setColor(c);
 		}
 		batch.draw(ship.getShipTexture(), ship.x, ship.y, ppuX * ship.width, ppuY * ship.height);
+
+	    batch.setColor(c);
 		batch.end();
 	}
 	
-	private boolean f = true;
-
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		if(f)
-		{
-			ship.x = width / 2;
-			ship.y = Sizes.SHIP_HEIGHT;
-			controller.resize(width, height);
-		}
+		ship.x = width / 2;
+		ship.y = Sizes.SHIP_HEIGHT;
+		controller.resize(width, height);
 		ppuX = (float) width / DEFAULT_WORLD_WIDTH;
 		ppuY = (float) height / DEFAULT_WORLD_HEIGHT;
 	}

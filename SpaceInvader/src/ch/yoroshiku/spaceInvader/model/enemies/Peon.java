@@ -13,9 +13,10 @@ public class Peon extends AbstractEnemy
 {
 	private static final long serialVersionUID = 1L;
 	private int position = -2;
-    private int enemyDirection = 1;
+    private boolean enemyDirection = false;
     private Random random = new Random();
-
+    private final float move = (float) 0.2;
+    
     public Peon(float x, float y, boolean powerUps)
     {
     	//TODO
@@ -25,28 +26,27 @@ public class Peon extends AbstractEnemy
     @Override
     public void move()
     {
-        int move = 0;
-        if(enemyDirection == 1)
+        
+        if(enemyDirection)
         {
-            move = 1;
-            position += move;
+            position += 1;
+            x += move;
         }
-        else if(enemyDirection == 0)
+        else
         {
-            move = -1;
-            position += move;
+            position -= 1;
+            x -= move;
         }
         if(position == -3)
         {
-            enemyDirection = 1;
-            y += 6;
+            enemyDirection = true;
+            y -= 1.2;
         }
         else if (position == 3)
         {
-            enemyDirection = 0;
-            y += 6;
+            enemyDirection = false;
+            y -= 1.2;
         }
-        x += move;
     }
     
     @Override
