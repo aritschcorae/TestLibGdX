@@ -11,8 +11,9 @@ import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class PrometheusWing extends AbstractEnemy
 {
-    private float[] yCoordinates = new float[3], xCoordinates = new float[3];
-    private int[] yExplosionCoordinates, xExplosionCoordinates;
+	private static final long serialVersionUID = 1L;
+	private float[] yCoordinates = new float[3], xCoordinates = new float[3];
+    private float[] yExplosionCoordinates, xExplosionCoordinates;
     private boolean leftWing = false, halfHealth = false, destoryed = false;
     private double startHealth;
     private Random random = new Random();
@@ -21,33 +22,31 @@ public class PrometheusWing extends AbstractEnemy
     private boolean exploded = false;
     private int explosionHeight;
     
-    public PrometheusWing(float x, float y, boolean powerUps, boolean leftWing, float zoom)
+    public PrometheusWing(float x, float y, boolean powerUps, int leftWing)// 1 left, 2 right
     {
-    	//TODO right id
-        super(x,y,Sizes.WING_WIDTH, Sizes.WING_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.PROMETHEUS_ID));
-        height /= 2;
-        height --;
-        barHeight = 13;
-        this.leftWing = leftWing;
-        if(leftWing)
-        {
-            yCoordinates = new float[] { 17 * zoom, 23 * zoom, 28 * zoom };
-            xCoordinates = new float[] { 14 * zoom, 25 * zoom, 36 * zoom };
-            yExplosionCoordinates = new int[] { (int) (20 * zoom), (int) (2 * zoom), (int) (5 * zoom) };
-            xExplosionCoordinates = new int[] { (int) (26 * zoom), (int) (3 * zoom), (int) (22 * zoom) };
+		super(x, y, Sizes.WING_WIDTH, Sizes.WING_HEIGHT, powerUps, 
+				Enemies.ALL_TEXTURES.get(Enemies.PROMETHEUS_ID + leftWing));
+        //barHeight = 13;
+        this.leftWing = leftWing == 1;
+        if(this.leftWing)
+		{
+			yCoordinates = new float[] { 3.4f, 4.6f, 5.6f };
+			xCoordinates = new float[] { 2.8f, 5, 7.2f };
+			yExplosionCoordinates = new float[] { 4, 0.4f, 1 };
+			xExplosionCoordinates = new float[] { 5.2f, 0.6f, 4.4f };
         }
         else
         {
-            yCoordinates = new float[] { 28 * zoom, 23 * zoom, 17 * zoom };
-            xCoordinates = new float[] { 13 * zoom, 24 * zoom, 35 * zoom };
-            yExplosionCoordinates = new int[] { (int) (20 * zoom), (int) (2 * zoom), (int) (5 * zoom) };
-            xExplosionCoordinates = new int[] { (int) (4 * zoom), (int) (27 * zoom), (int) (8 * zoom) };
+            yCoordinates = new float[] { 5.6f, 4.6f, 3.4f};
+            xCoordinates = new float[] { 2.6f, 4.8f, 7};
+            yExplosionCoordinates = new float[] { 5, 0.4f, 1};
+            xExplosionCoordinates = new float[] { 0.8f, 5.4f, 1.6f};
         }
         shootFrequency = 3;
     }
     
     @Override
-    public void move()
+    public void move(float delta)
     {
         //got from center part (daddy)
     }
@@ -56,8 +55,8 @@ public class PrometheusWing extends AbstractEnemy
     public List<Shot> shoot(Ship ship)
     {
         if(!exploded
-            && ((!leftWing && x - getWidth() <= ship.x)
-            || (leftWing && x + (2*getWidth()) > ship.x)))
+            && ((!leftWing && x - width <= ship.x)
+            || (leftWing && x + (2*width) > ship.x)))
         {
             if (random.nextInt(20 / shootFrequency) == 4)
             {

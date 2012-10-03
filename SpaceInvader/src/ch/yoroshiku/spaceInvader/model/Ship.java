@@ -3,10 +3,12 @@ package ch.yoroshiku.spaceInvader.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.yoroshiku.spaceInvader.screen.GameScreen;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -24,27 +26,32 @@ public abstract class Ship extends Rectangle
     protected List<Shot> leftShots = new ArrayList<Shot>();
     protected List<Shot> middleShots = new ArrayList<Shot>();
     protected List<Shot> rightShots = new ArrayList<Shot>();
-    protected float speed = 3, centerX, centerY;
+    protected float speed, centerX, centerY;
     private int shield = 1, health = 3;
-    protected int  maxHealth = 2;
-    protected int damage = 1, shots = 1, bombs = 2;
+    protected int  maxHealth = 3;
+    protected int damage = 1, shots = 3, bombs = 2;
     protected int maxShots;
-    private float noPowerUpX;
-    private boolean moving = false;
-    private int moveCounter = 9;
+    private int direction = 0;
     private boolean invincible = false;
     protected float shotLeft, shotMiddle, shotRight;
     protected boolean spray = false;
     protected int currentShot = 0;
     private boolean slowedDown = false, defensless = false, bombless = false, illness = false, position = true;
     private boolean powerupDamage = false, powerupSpeed = false;
-	protected Texture shipTexture;
+	protected TextureRegion shipTexture;
+	private Rectangle shipHitSpace, shipPowerUpReach;
     
     public Ship(float x, float y, Texture texture)
     {
 		super(x, y, Sizes.SHIP_WIDTH, Sizes.SHIP_HEIGHT);
-		shipTexture = texture;
+		shipTexture = new TextureRegion(texture, texture.getHeight() / 3, texture.getWidth() / 3);
         currentShot = 0;
+        shipHitSpace = new Rectangle();
+		shipHitSpace.width = Sizes.SHIP_HIT_EVADE_WIDTH;
+		shipHitSpace.height = Sizes.SHIP_HIT_EVADE_WIDTH;
+        shipPowerUpReach = new Rectangle();
+        shipPowerUpReach.width = Sizes.SHIP_POWERUP_REACH_BOOST_WIDTH;
+        shipPowerUpReach.height = Sizes.SHIP_POWERUP_REACH_BOOST_WIDTH;
     }
     
     public void resetShip(Vector2 coord, float zoom)
@@ -64,27 +71,27 @@ public abstract class Ship extends Rectangle
 
     public void addPowerUp(final PowerUp powerUp)
     {
-        if (powerUp.getType().equals(PowerUpFactory.POWER_UP_DAMAGE)
-                || powerUp.getType().equals(PowerUpFactory.POWER_UP_SPEED))
+        if (powerUp.getType().equals(PowerUp.POWER_UP_DAMAGE)
+                || powerUp.getType().equals(PowerUp.POWER_UP_SPEED))
         {
             handleSinglePowerUp(powerUp);
         }
-        else if (powerUp.getType().equals(PowerUpFactory.POWER_UP_SHIELD))
+        else if (powerUp.getType().equals(PowerUp.POWER_UP_SHIELD))
         {
             if (defensless)
                 tempShield ++;
             else
                 shield++;
         }
-        else if (powerUp.getType().equals(PowerUpFactory.POWER_UP_SHOTS))
+        else if (powerUp.getType().equals(PowerUp.POWER_UP_SHOTS))
         {
             handleShotPowerup();
         }
-        else if (powerUp.getType().equals(PowerUpFactory.POWER_UP_HEAL))
+        else if (powerUp.getType().equals(PowerUp.POWER_UP_HEAL))
         {
             health = maxHealth;
         }
-        else if (powerUp.getType().equals(PowerUpFactory.POWER_UP_BOMB))
+        else if (powerUp.getType().equals(PowerUp.POWER_UP_BOMB))
         {
             if(bombless)
                 tempBombs ++;
@@ -101,9 +108,9 @@ public abstract class Ship extends Rectangle
         {
             removePowerUpInUse();
         }
-        if(powerUp.getType() == PowerUpFactory.POWER_UP_DAMAGE)
+        if(powerUp.getType() == PowerUp.POWER_UP_DAMAGE)
             powerupDamage = true;
-        if(powerUp.getType() == PowerUpFactory.POWER_UP_SPEED)
+        if(powerUp.getType() == PowerUp.POWER_UP_SPEED)
             powerupSpeed = true;
         
         powerUpTypeInUse = powerUp.getType();
@@ -112,11 +119,11 @@ public abstract class Ship extends Rectangle
     
     private void addPowerUpPower()
     {
-        if(powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_DAMAGE))
+        if(powerUpTypeInUse.equals(PowerUp.POWER_UP_DAMAGE))
         {
             damage *= 2;
         }
-        else if (powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_SPEED))
+        else if (powerUpTypeInUse.equals(PowerUp.POWER_UP_SPEED))
         {
             speed += PowerUp.SPEED_POWER_UP_VALUE;
         }
@@ -125,11 +132,11 @@ public abstract class Ship extends Rectangle
     
     private void setPowerUpColor()
     {
-        if(powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_DAMAGE))
+        if(powerUpTypeInUse.equals(PowerUp.POWER_UP_DAMAGE))
         {
             powerUpColor = Color.GREEN;
         }
-        else if (powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_SPEED))
+        else if (powerUpTypeInUse.equals(PowerUp.POWER_UP_SPEED))
         {
             powerUpColor = Color.YELLOW;
         }
@@ -137,12 +144,12 @@ public abstract class Ship extends Rectangle
     
     private void removePowerUpInUse()
     {
-        if(powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_DAMAGE))
+        if(powerUpTypeInUse.equals(PowerUp.POWER_UP_DAMAGE))
         {
             deactivateDamagePowerUp();
             powerupDamage = false;
         }
-        else if (powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_SPEED))
+        else if (powerUpTypeInUse.equals(PowerUp.POWER_UP_SPEED))
         {
             deactivateSpeedPowerUp();
             powerupSpeed = false;
@@ -318,7 +325,7 @@ public abstract class Ship extends Rectangle
     {
         if (slowDown && !slowedDown)
         {
-            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_SPEED))
+            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUp.POWER_UP_SPEED))
                 tempSpeed = speed - PowerUp.SPEED_POWER_UP_VALUE;
             else
                 tempSpeed = speed;
@@ -327,7 +334,7 @@ public abstract class Ship extends Rectangle
         }
         else
         {
-            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_SPEED))
+            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUp.POWER_UP_SPEED))
                 speed = tempSpeed + PowerUp.SPEED_POWER_UP_VALUE;
             else
                 speed = tempSpeed;
@@ -377,14 +384,14 @@ public abstract class Ship extends Rectangle
     {
         if(powerupSpeed)
         {
-            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_SPEED))
+            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUp.POWER_UP_SPEED))
             {
                 deactivateSpeedPowerUp();
             }
             else
             {
                 deactivateDamagePowerUp();
-                powerUpTypeInUse = PowerUpFactory.POWER_UP_SPEED;
+                powerUpTypeInUse = PowerUp.POWER_UP_SPEED;
                 addPowerUpPower();
             }
         }
@@ -394,28 +401,61 @@ public abstract class Ship extends Rectangle
     {
         if(powerupDamage)
         {
-            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUpFactory.POWER_UP_DAMAGE))
+            if(powerUpTypeInUse != null && powerUpTypeInUse.equals(PowerUp.POWER_UP_DAMAGE))
             {
                 deactivateDamagePowerUp();
             }
             else
             {
                 deactivateSpeedPowerUp();
-                powerUpTypeInUse = PowerUpFactory.POWER_UP_DAMAGE;
+                powerUpTypeInUse = PowerUp.POWER_UP_DAMAGE;
                 addPowerUpPower();
             }
         }
     }
     
-    public void moveLeft(){
-    	x -= speed;
+    public void setMovingLeft()
+    {
+    	shipTexture.setRegion((maxHealth - health) * 28, 0, 28, 28);
     }
     
-    public void moveRight(){
-    	x += speed;
+    public void setMovingRight()
+    {
+    	shipTexture.setRegion((maxHealth - health) * 28, 56, 28, 28);
+    }
+    
+    public void setMovingStop()
+    {
+    	shipTexture.setRegion((maxHealth - health) * 28, 28, 28, 28);
+    }
+    
+    public void moveLeft(float delta){
+    	x -= speed * delta;
+    	if(x < 0)
+    		x = 0;
+    }
+    
+    public void moveRight(float delta){
+    	x += speed * delta;
+    	if(x > GameScreen.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH)
+    		x = GameScreen.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH;
     }
 
-	public Texture getShipTexture() {
+	public TextureRegion getShipTexture() {
 		return shipTexture;
+	}
+
+	public Rectangle getShipHitSpace()
+	{
+		shipHitSpace.x = x + Sizes.SHIP_HIT_EVADE;
+		shipHitSpace.y = y + Sizes.SHIP_HIT_EVADE;
+		return shipHitSpace;
+	}
+
+	public Rectangle getShipPowerUpReach()
+	{
+		shipPowerUpReach.x = x + Sizes.SHIP_POWERUP_REACH_BOOST;
+		shipPowerUpReach.y = y + Sizes.SHIP_POWERUP_REACH_BOOST;
+		return shipPowerUpReach;
 	}
 }

@@ -8,10 +8,9 @@ public class BombDefuser extends PostThrower
 {
 	private static final long serialVersionUID = 1L;
     public BombDefuser(float x,float y,
-            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight,
-            float zoom)
+            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight)
     {
-		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, zoom, Enemies.allTextures.get(Enemies.BOMB_DEFUSER_ID));
+		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.BOMB_DEFUSER_ID));
     }
 
     @Override

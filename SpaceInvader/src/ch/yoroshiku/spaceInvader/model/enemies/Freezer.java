@@ -10,10 +10,9 @@ public class Freezer extends PostThrower
 	private static final long serialVersionUID = 1L;
 
 	public Freezer(float x, float y,
-            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight,
-            float zoom)
+            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight)
     {
-		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, zoom, Enemies.allTextures.get(Enemies.FREEZER_ID));
+		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.FREEZER_ID));
     }
 
     @Override

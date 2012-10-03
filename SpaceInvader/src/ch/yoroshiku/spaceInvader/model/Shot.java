@@ -65,12 +65,12 @@ public abstract class Shot extends Rectangle
         this.damage = damage;
     }
     
-    public List<Shot> nextStep()
+    public List<Shot> nextStep(float delta)
     {
         if (acceleration != 1)
             accelarete();
-        x += movementX;
-        y += movementY;
+        x += movementX * delta;
+        y += movementY * delta;
         return new ArrayList<Shot>();
     }
     

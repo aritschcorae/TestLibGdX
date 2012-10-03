@@ -19,14 +19,14 @@ public class Prometheus extends AbstractEnemy
     private int enemyDirection = 1;
     private boolean leftWingAlive = true, rightWingAlive = true;
     private boolean alive = true, exploded = false;
-    private int[] xExplosion, yExplosion;
+    private float[] xExplosion, yExplosion;
     private int explosionHeight, explosionStep;
     private int circleX, circleY, circleRadius;
 
     public Prometheus(float x, float y, boolean powerUps, PrometheusWing leftWing,
-            PrometheusWing rightWing, int health, int points, float zoom)
+            PrometheusWing rightWing, int health, int points)
     {
-		super(x, y, Sizes.PROMETHEUS_WIDTH, Sizes.PROMETHEUS_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.PROMETHEUS_ID));
+		super(x, y, Sizes.PROMETHEUS_WIDTH, Sizes.PROMETHEUS_HEIGHT, powerUps, Enemies.ALL_TEXTURES.get(Enemies.PROMETHEUS_ID));
         this.leftWing = leftWing;
         this.rightWing = rightWing;
         this.leftWing.setDaddy(this);
@@ -41,15 +41,15 @@ public class Prometheus extends AbstractEnemy
         rightWing.setPoints(points * 0.8);
         barHeight = 13;
         shotVelocity = 10;
-        circleX = (int) (25 * zoom);
-        circleY = (int) (35 * zoom);
-        circleRadius = (int) (30 * zoom);
-        xExplosion = new int[] { (int) (30 * zoom), (int) (23 * zoom), (int) (11 * zoom), (int) (32 * zoom) };
-        yExplosion = new int[] { (int) (46 * zoom), (int) (17 * zoom), (int) (38 * zoom), (int) (16 * zoom) };
+        circleX = (int) (5);
+        circleY = (int) (7);
+        circleRadius = (int) (6);
+        xExplosion = new float[] { 6, 4.6f, 2.2f, 6.4f };
+        yExplosion = new float[] { 9.2f, 3.4f, 6,6f, 3.2f};
     }
     
     @Override
-    public void move()
+    public void move(float delta) //TODO
     {
         position ++;
         if(position == 40)

@@ -30,8 +30,7 @@ abstract public class PostThrower extends AbstractEnemy
     private int steps = 40, countSteps = 0;
 
     public PostThrower(float x, float y,
-            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight,
-            float zoom, Texture texture)
+            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight, Texture texture)
     {
 		super(x, y, Sizes.THROWER_WIDTH, Sizes.THROWER_HEIGHT, powerUps, texture);
         this.shootFrequency = shotFrequency;
@@ -41,7 +40,7 @@ abstract public class PostThrower extends AbstractEnemy
     }
 
     @Override
-    public void move()
+    public void move(float delta)//TODO
     {
         if (!isPostInPosition)
         {

@@ -21,14 +21,14 @@ public class MidbossSplash extends AbstractEnemy
             , int shotFrequency, boolean powerUps)
     {
 		super(x, y, Sizes.MIDSBOSS_SPLASS_WIDTH, Sizes.MIDSBOSS_SPLASS_HEIGHT,
-				powerUps, Enemies.allTextures.get(Enemies.SPLASHER_ID));
+				powerUps, Enemies.ALL_TEXTURES.get(Enemies.SPLASHER_ID));
         this.fieldHeight = fieldHeight;
         this.fieldWidth = fieldWidth;
         this.shootFrequency = shotFrequency;
     }
     
     @Override
-    public void move()
+    public void move(float delta)//TODO
     {
         float yposition;
         float xposition;

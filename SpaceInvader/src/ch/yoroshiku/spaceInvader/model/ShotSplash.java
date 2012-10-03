@@ -21,18 +21,18 @@ class ShotSplash extends Shot
 
     
     @Override
-    public List<Shot> nextStep()
+    public List<Shot> nextStep(float delta)
     {
-        super.nextStep();
+        super.nextStep(delta);
         if (countdown == -1)
         {
             List<Shot> splashShots = new ArrayList<Shot>();
-            splashShots.add(ShotFactory.createShotLaser(x, y,(int) damage, -5, 5));
-            splashShots.add(ShotFactory.createShotLaser(x,y,(int) damage, 5, 5));
+            splashShots.add(ShotFactory.createShotLaser(x, y,(int) damage, -25, 25));
+            splashShots.add(ShotFactory.createShotLaser(x,y,(int) damage, 25, 25));
             if (!triple)
             {
-                splashShots.add(ShotFactory.createShotLaser(x,y,(int) damage, -7, 3));
-                splashShots.add(ShotFactory.createShotLaser(x,y,(int) damage, 7, 3));
+                splashShots.add(ShotFactory.createShotLaser(x,y,(int) damage, -35, 15));
+                splashShots.add(ShotFactory.createShotLaser(x,y,(int) damage, 35, 15));
             }
             movementY = 10;
             return splashShots;

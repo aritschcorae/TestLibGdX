@@ -4,6 +4,7 @@ import java.util.Random;
 
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.enemies.PowerUpEater;
+import ch.yoroshiku.spaceInvader.screen.GameScreen;
 
 public abstract class AbstractEnemySetCreator
 {
@@ -13,16 +14,13 @@ public abstract class AbstractEnemySetCreator
     protected int displayLvl = 1;
     protected int amountOfMinPowerUps = 1;
     protected int enemyKind = 0;
-    protected float canvasHeight, canvasWidth;
+    protected float canvasHeight = GameScreen.DEFAULT_WORLD_HEIGHT;
+    protected float canvasWidth = GameScreen.DEFAULT_WORLD_WIDTH;
     protected EnemySet enemySet;
     private Random random = new Random();
-    protected final float zoom =1;
-    
-    
     
     public AbstractEnemySetCreator(Ship ship, EnemySet enemySet)
     {
-    	
     	//TODO canvas size
         this.ship = ship;
         this.enemySet = enemySet;
@@ -32,8 +30,7 @@ public abstract class AbstractEnemySetCreator
     public EnemyGroup createPowerUpEater()
     {
         EnemyGroup enemyRow = new EnemyGroup(false, -1, -10, 0, 1);
-        enemyRow.add(new PowerUpEater((float)canvasWidth /2, 
-                (float)canvasHeight / 3, true, zoom));
+        enemyRow.add(new PowerUpEater(canvasWidth /2,  canvasHeight / 2, true));
         return enemyRow;
     }
     

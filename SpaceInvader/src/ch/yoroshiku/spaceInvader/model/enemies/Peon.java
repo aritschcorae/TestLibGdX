@@ -12,45 +12,39 @@ import ch.yoroshiku.spaceInvader.util.Sizes;
 public class Peon extends AbstractEnemy
 {
 	private static final long serialVersionUID = 1L;
-	private int position = -2;
+    private float yPositionDif = 0;
     private boolean enemyDirection = false;
     private Random random = new Random();
     private final float move = (float) 0.2;
     
-    public Peon(float x, float y, boolean powerUps)
+    public Peon(final float x, final float y, final boolean powerUps)
     {
-    	//TODO
-        super(x, y, Sizes.PEON_WIDTH, Sizes.PEON_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.PEON_EASY_ID));
+        super(x, y, Sizes.PEON_WIDTH, Sizes.PEON_HEIGHT, powerUps, Enemies.ALL_TEXTURES.get(Enemies.PEON_EASY_ID));
     }
     
-    @Override
-    public void move()
-    {
-        
-        if(enemyDirection)
-        {
-            position += 1;
-            x += move;
-        }
-        else
-        {
-            position -= 1;
-            x -= move;
-        }
-        if(position == -3)
-        {
-            enemyDirection = true;
-            y -= 1.2;
-        }
-        else if (position == 3)
-        {
-            enemyDirection = false;
-            y -= 1.2;
-        }
-    }
+    
+	@Override
+	public void move(final float delta)
+	{
+
+		if (enemyDirection)
+		{
+			x += move * 25 * delta;
+		} else
+		{
+			x -= move * 25 * delta;
+		}
+		yPositionDif += 6 * delta;
+		if (yPositionDif >= 1.2)
+		{
+			y -= yPositionDif;
+			yPositionDif = 0;
+			enemyDirection = !enemyDirection;
+		}
+	}
     
     @Override
-    public List<Shot> shoot(Ship ship)
+    public List<Shot> shoot(final Ship ship)
     {
         if (random.nextInt(100 / shootFrequency) == 0)
         {
@@ -62,7 +56,7 @@ public class Peon extends AbstractEnemy
     }
     
     @Override
-    public boolean lowerHealth(double lowerHealth)
+    public boolean lowerHealth(final double lowerHealth)
     {
         return super.lowerHealth(lowerHealth);
     }

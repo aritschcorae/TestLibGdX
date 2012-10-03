@@ -7,10 +7,12 @@ import java.util.Random;
 import ch.yoroshiku.spaceInvader.model.enemies.AbstractEnemy;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Rectangle;
 
 public class EnemyGroup extends HashSet<AbstractEnemy>
 {
     private AbstractEnemy farLeft, farRight, bottom, top;
+    private Rectangle bounds = new Rectangle();
     private boolean visible, appeared = false;
     private boolean needForLevel = true;
     private Random random = new Random();
@@ -30,6 +32,7 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
         this.timeAppear = timeAppear;
         this.needForLevel = neededForLevel;
         this.kindAppear = appearKind;
+        bounds = new Rectangle();
         this.setSlowDown(slowDown);
     }
     
@@ -133,14 +136,14 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
     private void recheckTop()
     {
         for(AbstractEnemy enemy : this)
-            if(top == null || enemy.y < getY())
+            if(top == null || enemy.y > getY())
                 top = enemy;
     }
     
     private void recheckBottom()
     {
         for(AbstractEnemy enemy : this)
-            if(bottom == null || enemy.y + enemy.getHeight() > getYWithHeight())
+            if(bottom == null || enemy.y + enemy.getHeight() < getYWithHeight())
                 bottom = enemy;
     }
 
@@ -167,13 +170,13 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
         this.endPositionY = endPositionY;
     }
     
-    public void move()
+    public void move(final float delta)
     {
         if(appeared)
         {
             for(AbstractEnemy enemy : this)
             {
-                enemy.move();
+                enemy.move(delta);
             }
         }
         else if(visible)
@@ -273,7 +276,7 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
         visible = true;
     }
     
-    public void appear(long time)
+    public void appear(float time)
     {
         if(timeAppear > 0 && time >= timeAppear)
             visible = true;
@@ -296,6 +299,24 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
 
 	public Color getColor() {
 		return color;
+	}
+	
+	public Rectangle getBounds()
+	{
+		if(isEmpty())
+		{
+			bounds.x = 0;
+			bounds.y = 0;
+			bounds.height = 0;
+			bounds.width = 0;
+			return bounds;
+		}
+		bounds.x = farLeft.x;
+		bounds.width = (farRight.x + farRight.width) - bounds.x;
+		bounds.y = bottom.y;
+		bounds.height = (top.y + top.height) - bounds.y;
+		
+		return bounds;
 	}
 
 }

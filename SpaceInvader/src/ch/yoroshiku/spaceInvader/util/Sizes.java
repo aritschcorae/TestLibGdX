@@ -1,17 +1,23 @@
 package ch.yoroshiku.spaceInvader.util;
 
+
 public class Sizes {
 
-	public static final float POEWR_UP_WIDTH = 3;
-	public static final float POEWR_UP_HEIGHT = 3;
+	public static final float POWER_UP_WIDTH = 3;
+	public static final float POWER_UP_HEIGHT = 3;
 	public static final float SHIP_WIDTH = 6;
 	public static final float SHIP_HEIGHT = 6;
+	public static final float SHIP_POWERUP_REACH_BOOST = 1;
+	public static final float SHIP_POWERUP_REACH_BOOST_WIDTH = 8; //width + 2*boost
+	public static final float SHIP_HIT_EVADE = 0.5f;
+	public static final float SHIP_HIT_EVADE_WIDTH = 5; //width - 2*evadebonus
 	public static final float SHOT_LASER_WIDTH = 0.5f;
 	public static final float SHOT_LASER_HEIGHT = 2;
 	public static final float SHOT_CIRCLE_SMALL = 1.4f;
 	public static final float SHOT_CIRCLE_LARGE = 1.8f;
-	public static final float EXPLOSION_INIT_SIZE = 2;
-	public static final float EXPLOSION_INC_SIZE = 1;
+	public static final float BOMB_EXPLOSION_INIT_SIZE = 2;
+	public static final float BOMB_EXPLOSION_INC_SIZE = 1;
+	public static final float EXPLOSION_RADIUS = 4;
 	
 	public static final float THROWER_WIDTH = 4;
 	public static final float THROWER_HEIGHT = 6;

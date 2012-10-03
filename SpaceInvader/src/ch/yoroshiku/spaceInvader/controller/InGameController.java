@@ -8,25 +8,29 @@ import com.badlogic.gdx.InputProcessor;
 public class InGameController extends AbstractController implements InputProcessor{
 
 	private Ship ship;
-	private float width, height;
+	private float width;
 
 	public InGameController(Ship ship) {
 		this.ship = ship;
 	}
 
 	public void leftPressed() {
+		ship.setMovingLeft();
 		keys.put(IngameKeys.LEFT, true);
 	}
 
 	public void rightPressed() {
+		ship.setMovingRight();
 		keys.put(IngameKeys.RIGHT, true);
 	}
 
 	public void leftReleased() {
+		ship.setMovingStop();
 		keys.put(IngameKeys.LEFT, false);
 	}
 
 	public void rightReleased() {
+		ship.setMovingStop();
 		keys.put(IngameKeys.RIGHT, false);
 	}
 
@@ -41,10 +45,10 @@ public class InGameController extends AbstractController implements InputProcess
 
 	private void processInput(float change) {
 		if(keys.get(IngameKeys.LEFT) && !keys.get(IngameKeys.RIGHT)){
-			ship.moveLeft();
+			ship.moveLeft(change);
 		}
 		if(!keys.get(IngameKeys.LEFT) && keys.get(IngameKeys.RIGHT)){
-			ship.moveRight();
+			ship.moveRight(change);
 		}
 	}
 
@@ -90,7 +94,7 @@ public class InGameController extends AbstractController implements InputProcess
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		System.out.println(x + " - " + y + " - " + pointer);
+//		System.out.println(x + " - " + y + " - " + pointer);
 		return false;
 	}
 
@@ -107,7 +111,6 @@ public class InGameController extends AbstractController implements InputProcess
 	public void resize(float width, float height)
 	{
 		this.width = width;
-		this.height = height;
 	}
 	
 }

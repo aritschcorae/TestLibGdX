@@ -9,6 +9,7 @@ public class SpaceInvader extends Game {
 
 	@Override
 	public void create() {
+//		setScreen(new MenuScreen(this));
 		setScreen(new GameScreen(this));
 	}
 

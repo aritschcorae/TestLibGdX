@@ -80,7 +80,7 @@ public class EnemySet
         enemies.put(enemies.keySet().size() + 1, this.powerUpEaters);
     }
     
-    public void moveEnemies(long currentTime)
+    public void moveEnemies(float delta)
     {
         for (EnemyGroup enemyGroup : enemies.values())
         {
@@ -88,10 +88,10 @@ public class EnemySet
             {
                 if (!enemyGroup.isVisible())
                 {
-                    enemyGroup.appear(currentTime);
+                    enemyGroup.appear(delta);
                     continue;
                 }
-                enemyGroup.move();
+                enemyGroup.move(delta);
             }
         }
         enemyWait ++;

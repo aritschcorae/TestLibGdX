@@ -8,11 +8,13 @@ public class Explosion extends Circle
 {
 	private static final long serialVersionUID = 1L;
 	private int damage = 50;
-
+	private Circle outerRadius;
+	
     public Explosion(float x, float y, int damage)
     {
-    	super(x, y, Sizes.EXPLOSION_INIT_SIZE);
+    	super(x, y, Sizes.BOMB_EXPLOSION_INIT_SIZE);
         this.damage = damage;
+        outerRadius = new Circle(x, y, 0);
     }
     
     public int getDamage()
@@ -22,14 +24,15 @@ public class Explosion extends Circle
 
     public boolean expand()
     {
-        radius += Sizes.EXPLOSION_INC_SIZE;
+        radius += Sizes.BOMB_EXPLOSION_INC_SIZE;
         damage += 50;
-        return radius > 7 * Sizes.EXPLOSION_INIT_SIZE;
+        return radius > 7 * Sizes.BOMB_EXPLOSION_INIT_SIZE;
     }
     
-    public float getOuterRadius()
+    public Circle getOuterRadius()
     {
-        return radius + radius / 5;
+    	outerRadius.radius = radius + radius / 5;
+    	return outerRadius;
     }
 
 }

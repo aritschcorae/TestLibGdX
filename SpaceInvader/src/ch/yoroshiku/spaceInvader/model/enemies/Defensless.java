@@ -8,10 +8,9 @@ public class Defensless extends PostThrower
 {
 	private static final long serialVersionUID = 1L;
     public Defensless(float x, float y,
-            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight,
-            float zoom)
+            int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight)
     {
-		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, zoom, Enemies.allTextures.get(Enemies.DEFENSLESS_ID));
+		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.DEFENSLESS_ID));
     }
 
     @Override

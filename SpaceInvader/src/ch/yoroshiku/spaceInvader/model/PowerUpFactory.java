@@ -4,18 +4,12 @@ import java.util.Random;
 
 public class PowerUpFactory
 {
-    public static Integer POWER_UP_SPEED = new Integer(0);
-    public static Integer POWER_UP_SHOTS = new Integer(1);
-    public static Integer POWER_UP_SHIELD = new Integer(2);
-    public static Integer POWER_UP_DAMAGE = new Integer(3);
-    public static Integer POWER_UP_BOMB = new Integer(4);
-    public static Integer POWER_UP_HEAL = new Integer(5);
     private static Random random = new Random();
     private static int create;
     private static int specialPowerUpCounter = 2;
     private static int specialPowerUpFrequency = 4;
     
-    public static PowerUp createPowerUp(Ship ship, int lvl)
+    public static PowerUp createPowerUp(final Ship ship, final int lvl)
     {
         if(lvl >= 2 && !ship.isMaxShots())
             return createShotPowerUp();
@@ -59,32 +53,32 @@ public class PowerUpFactory
     
     private static PowerUp createSpeedPowerUp()
     {
-        return new PowerUp(POWER_UP_SPEED);
+        return new PowerUp(PowerUp.POWER_UP_SPEED);
     }
 
     private static PowerUp createShotPowerUp()
     {
-        return new PowerUp(POWER_UP_SHOTS);
+        return new PowerUp(PowerUp.POWER_UP_SHOTS);
     }
 
     private static PowerUp createShieldPowerUp()
     {
-        return new PowerUp(POWER_UP_SHIELD);
+        return new PowerUp(PowerUp.POWER_UP_SHIELD);
     }
 
     private static PowerUp createBombPowerUp()
     {
-        return new PowerUp(POWER_UP_BOMB);
+        return new PowerUp(PowerUp.POWER_UP_BOMB);
     }
 
     private static PowerUp createHealPowerUp()
     {
-        return new PowerUp(POWER_UP_HEAL);
+        return new PowerUp(PowerUp.POWER_UP_HEAL);
     }
     
     public static PowerUp createDamagePowerUp()
     {
-        return new PowerUp(POWER_UP_DAMAGE);
+        return new PowerUp(PowerUp.POWER_UP_DAMAGE);
     }
 
 }

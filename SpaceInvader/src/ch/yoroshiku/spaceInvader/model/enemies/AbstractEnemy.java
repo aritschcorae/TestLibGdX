@@ -18,7 +18,7 @@ public abstract class AbstractEnemy extends Rectangle
     protected int shootFrequency = 1;
     protected boolean visible = true;
     protected boolean invincible = false;
-    protected int shotVelocity = 8;
+    protected int shotVelocity = -40;
     private double points = 1;
     private boolean powerUps = false;
     protected List<Shot> emptyShotList = new ArrayList<Shot>();
@@ -87,7 +87,7 @@ public abstract class AbstractEnemy extends Rectangle
         this.invincible = invincible;
     }
 
-    abstract public void move();
+    abstract public void move(float delta);
     
     abstract public List<Shot> shoot(Ship ship);
     

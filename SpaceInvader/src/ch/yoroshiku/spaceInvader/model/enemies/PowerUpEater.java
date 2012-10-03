@@ -10,28 +10,28 @@ import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class PowerUpEater extends AbstractEnemy
 {
-    
-    private PowerUp eatingPowerUp;
+	private static final long serialVersionUID = 1L;
+	private PowerUp eatingPowerUp;
     private boolean powerUpGetting = false, powerUpDocked = false, powerUpEated = false;
     private float powerUpMoveX = 0, powerUpMoveY = 0;
     private long timeEated;
     private float powerUpXDestination;
     
-    public PowerUpEater(float x, float y, boolean powerUps, float zoom)
+    public PowerUpEater(final float x, final float y, final boolean powerUps)
     {
-		super(x, y, Sizes.POWER_UP_EATER_WIDTH, Sizes.POWER_UP_EATER_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.POWER_UP_EATER_ID));
+		super(x, y, Sizes.POWER_UP_EATER_WIDTH, Sizes.POWER_UP_EATER_HEIGHT, powerUps, Enemies.ALL_TEXTURES.get(Enemies.POWER_UP_EATER_ID));
         visible = false;
         invincible = true;
         width /= 2;
         health = 5;
-        powerUpXDestination = x + (5 * zoom); //TODO position
+        powerUpXDestination = x + 1;
     }
     
     /**
      * @param powerUp
      * @return true if powerUp will be eaten
      */
-    public boolean eatPowerUp(PowerUp powerUp)
+    public boolean eatPowerUp(final PowerUp powerUp)
     {
         if(eatingPowerUp == null)
         {
@@ -44,7 +44,7 @@ public class PowerUpEater extends AbstractEnemy
     }
     
     @Override
-    public void move()
+    public void move(final float delta)//TODO
     {
         if(eatingPowerUp != null)
         {
@@ -60,16 +60,16 @@ public class PowerUpEater extends AbstractEnemy
                     powerUpDocked = true;
                     eatingPowerUp.x = powerUpXDestination;
                     eatingPowerUp.y = y + height - eatingPowerUp.getHeight();
-                    timeEated = System.currentTimeMillis();
+                    timeEated = System.currentTimeMillis(); //TODO
                     powerUpGetting = false;
                 }
             } 
-            else if(eatingPowerUp.y > x + height + 60)
+            else if(eatingPowerUp.y < y - height)
             {
                 powerUpGetting = true;//in 6 rounds the the power should be docked
-                powerUpMoveY =  ((y + getHeight()) - eatingPowerUp.y) / 6;
+                powerUpMoveY =  (eatingPowerUp.y - y) / 6;
                 powerUpMoveX = (powerUpXDestination - eatingPowerUp.x) / 6;
-                eatingPowerUp.setVelocity(0);
+                eatingPowerUp.stop();
             }
         }
     }
@@ -88,7 +88,7 @@ public class PowerUpEater extends AbstractEnemy
     
     public void releasePowerUp()
     {
-        eatingPowerUp.setVelocity(4);
+        eatingPowerUp.setVelocity();
     }
 
     @Override

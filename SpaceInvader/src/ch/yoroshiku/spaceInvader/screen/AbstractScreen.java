@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 
@@ -15,6 +16,7 @@ public abstract class AbstractScreen implements Screen
 
 	protected final SpaceInvader game;
     protected final BitmapFont font;
+    protected final ShapeRenderer shapeRenderer;
     protected final SpriteBatch batch;
     protected final Stage stage;
 
@@ -23,6 +25,7 @@ public abstract class AbstractScreen implements Screen
         this.game = game;
         this.font = new BitmapFont();
         this.batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
         this.stage = new Stage( 0, 0, true );
     }
 
@@ -36,13 +39,8 @@ public abstract class AbstractScreen implements Screen
     public void render(
         float delta )
     {
-        // the following code clears the screen with the given RGB color (black)
         Gdx.gl.glClearColor( 0f, 0f, 0f, 1f );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT );
-
-        // update and draw the stage actors
-        stage.act( delta );
-        stage.draw();
     }
 
     @Override

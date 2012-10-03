@@ -25,12 +25,12 @@ public class Teleporter extends AbstractEnemy
     private int emergencyCounter = 0;
 
     public Teleporter(float x, float y, float fieldHeight, float fieldWidth, int shotFrequency
-            , boolean powerUps, List<Map<Integer, EnemyGroup>> emergency, float zoom)
+            , boolean powerUps, List<Map<Integer, EnemyGroup>> emergency)
     {
-		super(x, y, Sizes.TELEPORTER_WIDTH, Sizes.TELEPORTER_HEIGHT, powerUps, Enemies.allTextures.get(Enemies.TELEPORTER_ID));
-        leftShotX = 9 * zoom;
-        rightShotX = 20 * zoom;
-        shotY = 13 * zoom;
+		super(x, y, Sizes.TELEPORTER_WIDTH, Sizes.TELEPORTER_HEIGHT, powerUps, Enemies.ALL_TEXTURES.get(Enemies.TELEPORTER_ID));
+        leftShotX = 1.8f;
+        rightShotX = 5;
+        shotY = 2.6f;
         fieldWidthMiddle = (int)fieldWidth / 2;
         this.shootFrequency = shotFrequency;
         possiblePositionHeight = (int) (fieldHeight / 2);
@@ -38,7 +38,7 @@ public class Teleporter extends AbstractEnemy
     }
     
     @Override
-    public void move()
+    public void move(float render)
     {
         if(teleportCountDown == 0)
         {
