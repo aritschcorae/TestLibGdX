@@ -6,7 +6,6 @@ import java.util.List;
 import ch.yoroshiku.spaceInvader.screen.GameScreen;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -22,16 +21,14 @@ public abstract class Ship extends Rectangle
 {
 	private static final long serialVersionUID = 1L;
 	protected Integer powerUpTypeInUse = null;
-    private Color powerUpColor;
     protected List<Shot> leftShots = new ArrayList<Shot>();
     protected List<Shot> middleShots = new ArrayList<Shot>();
     protected List<Shot> rightShots = new ArrayList<Shot>();
     protected float speed, centerX, centerY;
-    private int shield = 1, health = 3;
+    private int shield = 5, health = 3;
     protected int  maxHealth = 3;
-    protected int damage = 1, shots = 3, bombs = 2;
+    protected int damage = 100, shots = 1, bombs = 2;
     protected int maxShots;
-    private int direction = 0;
     private boolean invincible = false;
     protected float shotLeft, shotMiddle, shotRight;
     protected boolean spray = false;
@@ -127,19 +124,6 @@ public abstract class Ship extends Rectangle
         {
             speed += PowerUp.SPEED_POWER_UP_VALUE;
         }
-        setPowerUpColor();
-    }
-    
-    private void setPowerUpColor()
-    {
-        if(powerUpTypeInUse.equals(PowerUp.POWER_UP_DAMAGE))
-        {
-            powerUpColor = Color.GREEN;
-        }
-        else if (powerUpTypeInUse.equals(PowerUp.POWER_UP_SPEED))
-        {
-            powerUpColor = Color.YELLOW;
-        }
     }
     
     private void removePowerUpInUse()
@@ -206,6 +190,8 @@ public abstract class Ship extends Rectangle
 
     public void gotHit(final int damage)
     {
+    	//TODO update pic
+    
         if(powerUpTypeInUse != null)
         {
             removePowerUpInUse();
@@ -240,7 +226,7 @@ public abstract class Ship extends Rectangle
         this.bombs = bombs;
     }
 
-    public void dropBombs()
+    public void dropBomb()
     {
         bombs --;
     }
@@ -289,7 +275,7 @@ public abstract class Ship extends Rectangle
     abstract public List<Shot> getMiddleShots();
     abstract public List<Shot> getRightShots();
     abstract public int getShotCoolDown();
-    abstract public void shoot(boolean spray);
+    abstract public void shoot(boolean spray, float delay);
 
 //    public void reload(Map<String, Integer> gameStats)
 //    {
@@ -457,5 +443,10 @@ public abstract class Ship extends Rectangle
 		shipPowerUpReach.x = x + Sizes.SHIP_POWERUP_REACH_BOOST;
 		shipPowerUpReach.y = y + Sizes.SHIP_POWERUP_REACH_BOOST;
 		return shipPowerUpReach;
+	}
+
+	public void setSpray(boolean spray)
+	{
+		this.spray = spray;
 	}
 }

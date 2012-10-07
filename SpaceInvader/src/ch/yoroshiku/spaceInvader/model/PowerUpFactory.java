@@ -11,7 +11,7 @@ public class PowerUpFactory
     
     public static PowerUp createPowerUp(final Ship ship, final int lvl)
     {
-        if(lvl >= 2 && !ship.isMaxShots())
+        if(lvl >= 3 && !ship.isMaxShots())
             return createShotPowerUp();
         else if(ship.getHealth() == 1 && random.nextBoolean())
             return createHealPowerUp();

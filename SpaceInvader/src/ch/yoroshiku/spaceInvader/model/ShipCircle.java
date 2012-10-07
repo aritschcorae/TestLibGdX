@@ -5,7 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Texture;
 
 
-public class ShipCircle extends Ship
+public class ShipCircle extends Ship //TODO test everything
 {
 	private static final long serialVersionUID = 1L;
 	private int shotWidthMiddle = 9, shotWidthWing = 7;
@@ -106,7 +106,7 @@ public class ShipCircle extends Ship
     }
 
     @Override
-    public void shoot(boolean spray)
+    public void shoot(boolean spray, float delay)
     { 
         middleShots.get(currentShot).x = (x + shotMiddle);
         middleShots.get(currentShot).y = y - shotWidthMiddle;

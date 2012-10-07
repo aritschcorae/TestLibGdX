@@ -8,10 +8,12 @@ import com.badlogic.gdx.InputProcessor;
 public class InGameController extends AbstractController implements InputProcessor{
 
 	private Ship ship;
+	private GameController gameController;
 	private float width;
 
-	public InGameController(Ship ship) {
-		this.ship = ship;
+	public InGameController(GameController controller) {
+		this.ship = controller.ship;
+		this.gameController = controller;
 	}
 
 	public void leftPressed() {
@@ -22,6 +24,14 @@ public class InGameController extends AbstractController implements InputProcess
 	public void rightPressed() {
 		ship.setMovingRight();
 		keys.put(IngameKeys.RIGHT, true);
+	}
+
+	public void upPressed() {
+		keys.put(IngameKeys.BOMB, true);
+	}
+
+	public void upReleased() {
+		keys.put(IngameKeys.BOMB, false);
 	}
 
 	public void leftReleased() {
@@ -39,15 +49,11 @@ public class InGameController extends AbstractController implements InputProcess
 		processInput(delta);
 	}
 	
-	public void changeMenuItem(float change)
-	{
-	}
-
 	private void processInput(float change) {
 		if(keys.get(IngameKeys.LEFT) && !keys.get(IngameKeys.RIGHT)){
 			ship.moveLeft(change);
 		}
-		if(!keys.get(IngameKeys.LEFT) && keys.get(IngameKeys.RIGHT)){
+		else if(!keys.get(IngameKeys.LEFT) && keys.get(IngameKeys.RIGHT)){
 			ship.moveRight(change);
 		}
 	}
@@ -56,8 +62,12 @@ public class InGameController extends AbstractController implements InputProcess
     public boolean keyDown(int keycode) {
         if (keycode == Keys.LEFT)
             leftPressed();
-        if (keycode == Keys.RIGHT)
+        else if (keycode == Keys.RIGHT)
             rightPressed();
+        else if (keycode == Keys.UP)
+            gameController.dropBomb();
+        else if (keycode == Keys.DOWN)
+        	ship.setSpray(!ship.isSpray());
         return true;
     }
  
@@ -67,6 +77,8 @@ public class InGameController extends AbstractController implements InputProcess
             leftReleased();
         if (keycode == Keys.RIGHT)
             rightReleased();
+        if (keycode == Keys.UP)
+            upReleased();
         return true;
     }
 	@Override
@@ -94,7 +106,6 @@ public class InGameController extends AbstractController implements InputProcess
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-//		System.out.println(x + " - " + y + " - " + pointer);
 		return false;
 	}
 

@@ -14,10 +14,9 @@ import ch.yoroshiku.spaceInvader.util.Sizes;
 public class Teleporter extends AbstractEnemy
 {
 	private static final long serialVersionUID = 1L;
-	private int fieldWidthMiddle, possiblePositionHeight;
-    protected int moveTeleportSpeed = 30;
-    private float oldX, oldY;
-    private int teleportCounter, teleportCountDown = moveTeleportSpeed;
+	private int possiblePositionHeight;
+    protected float moveTeleportSpeed = 5;
+    private float teleportCounter, teleportCountDown = moveTeleportSpeed;
     private boolean teleporting = false;
     private Random random = new Random();
     private List<Map<Integer, EnemyGroup>> emergencyPlan;
@@ -31,7 +30,6 @@ public class Teleporter extends AbstractEnemy
         leftShotX = 1.8f;
         rightShotX = 5;
         shotY = 2.6f;
-        fieldWidthMiddle = (int)fieldWidth / 2;
         this.shootFrequency = shotFrequency;
         possiblePositionHeight = (int) (fieldHeight / 2);
         emergencyPlan = emergency;
@@ -40,19 +38,29 @@ public class Teleporter extends AbstractEnemy
     @Override
     public void move(float render)
     {
-        if(teleportCountDown == 0)
+        teleportCountDown -= render;
+
+        if(teleporting)
+        {
+        	if(teleportCounter > 255)
+        	{
+        		teleporting = false;
+        		invincible = false;
+        		showHealthBar = true;
+        	}
+            teleportCounter += 30;
+        }
+        if(teleportCountDown <= 0)
         {
             teleport();
             teleportCountDown = moveTeleportSpeed;
         }
-        else
-            teleportCountDown --;
     }
     
     @Override
     public List<Shot> shoot(Ship ship)
     {
-        if (!teleporting && random.nextInt(20 / shootFrequency) == 0)
+        if (!teleporting && random.nextInt(60 / shootFrequency) == 0)
         {
             List<Shot> returnList = new ArrayList<Shot>();
             returnList.add(createAimingShot(ship, x + leftShotX, y + shotY));
@@ -72,7 +80,7 @@ public class Teleporter extends AbstractEnemy
     {
         if(!invincible)
         {
-            teleport();
+        	teleport();
             health -= damage;
             if(maxHealth / (emergencyPlan.size() + 1) * (emergencyPlan.size() - emergencyCounter) > health)
             {
@@ -91,15 +99,8 @@ public class Teleporter extends AbstractEnemy
         invincible = true;
         teleporting = true;
         teleportCounter = 50;
-        oldX = x;
-        x = random.nextInt(fieldWidthMiddle);
-        if(oldX - fieldWidthMiddle < 0)
-        {
-        	x += (fieldWidthMiddle - width);
-        }
-        oldY = y;
-        y = random.nextInt(possiblePositionHeight);
+        y = possiblePositionHeight + random.nextInt(possiblePositionHeight) - Sizes.TELEPORTER_HEIGHT;
+        showHealthBar = false;
     }
-    
     
 }

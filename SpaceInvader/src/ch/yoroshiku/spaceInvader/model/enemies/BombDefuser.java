@@ -10,7 +10,8 @@ public class BombDefuser extends PostThrower
     public BombDefuser(float x,float y,
             int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight)
     {
-		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.BOMB_DEFUSER_ID));
+		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.BOMB_DEFUSER_ID),
+				Enemies.BOMB_DEFUSER_ID);
     }
 
     @Override

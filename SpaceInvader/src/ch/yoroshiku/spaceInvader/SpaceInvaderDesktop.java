@@ -9,7 +9,7 @@ public class SpaceInvaderDesktop {
 	
 	public static void main(String[] args)//TODO DELETE
 	{
-		new LwjglApplication(new SpaceInvader(), "Space Invader", 480, 320, true);
+		new LwjglApplication(new SpaceInvader(), "Space Invader", 640, 360, true);
 	}
 	
 }

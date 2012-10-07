@@ -17,7 +17,7 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
     private boolean needForLevel = true;
     private Random random = new Random();
     private int id;
-    private int timeAppear, kindAppear;
+    private int timeAppear, kindAppear, timePassed;
     private float endPositionY, endPositionX, movementX, movementY;
     private int slowDown;
     private Color color = new Color(1, 1, 1, 0);
@@ -32,6 +32,7 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
         this.timeAppear = timeAppear;
         this.needForLevel = neededForLevel;
         this.kindAppear = appearKind;
+        timePassed = 0;
         bounds = new Rectangle();
         this.setSlowDown(slowDown);
     }
@@ -278,7 +279,8 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
     
     public void appear(float time)
     {
-        if(timeAppear > 0 && time >= timeAppear)
+    	timePassed += time * 1000;
+        if(timeAppear > 0 && timePassed >= timeAppear)
             visible = true;
     }
 

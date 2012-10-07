@@ -12,11 +12,13 @@ import ch.yoroshiku.spaceInvader.util.Sizes;
 
 public class Prometheus extends AbstractEnemy
 {
-    private Random random = new Random();
+	private static final long serialVersionUID = 1L;
+	private Random random = new Random();
     private PrometheusWing leftWing;
     private PrometheusWing rightWing;
-    private int position = 20;
-    private int enemyDirection = 1;
+    private float xMovement = 0;
+    private float directiona = 1;
+    private float duration = 0.75f;
     private boolean leftWingAlive = true, rightWingAlive = true;
     private boolean alive = true, exploded = false;
     private float[] xExplosion, yExplosion;
@@ -40,7 +42,7 @@ public class Prometheus extends AbstractEnemy
         leftWing.setPoints(points * 0.8);
         rightWing.setPoints(points * 0.8);
         barHeight = 13;
-        shotVelocity = 10;
+        shotVelocity = -45;
         circleX = (int) (5);
         circleY = (int) (7);
         circleRadius = (int) (6);
@@ -49,17 +51,18 @@ public class Prometheus extends AbstractEnemy
     }
     
     @Override
-    public void move(float delta) //TODO
+    public void move(float delta)
     {
-        position ++;
-        if(position == 40)
+    	xMovement = 5 * delta * directiona;
+    	duration -= delta;
+        if(duration < 0)
         {
-            enemyDirection *= -1;
-            position = 0;
+        	directiona *= -1;
+            duration = 1.5f;
         }
-        x += enemyDirection;
-        leftWing.x += enemyDirection;
-        rightWing.x += enemyDirection;
+        x += xMovement;
+        leftWing.x += xMovement;
+        rightWing.x += xMovement;
     }
     
     @Override
@@ -67,17 +70,16 @@ public class Prometheus extends AbstractEnemy
     {
         if(alive)
         {
-            if (random.nextInt(20) == 10)
+            if (random.nextInt(60) == 10)
             {
                 List<Shot> returnList = new ArrayList<Shot>();
-                //TODO zoom coords
-                returnList.add(ShotFactory.createShotLaser(x + 20, y + 31, 2, 0, shotVelocity, 30, 10));
+                returnList.add(ShotFactory.createShotLaser(x + 4, y + 6.2f, 2, 0, shotVelocity, 6, 2));
                 return returnList;
             }
-            if (random.nextInt(20) == 10)
+            if (random.nextInt(60) == 10)
             {
-                List<Shot> returnList = new ArrayList<Shot>();//TODO position
-                returnList.add(ShotFactory.createShotLaser(x + 20, y + 37, 2, 0, shotVelocity, 20, 10));
+                List<Shot> returnList = new ArrayList<Shot>();
+                returnList.add(ShotFactory.createShotLaser(x + 4, y + 7.4f, 2, 0, shotVelocity, 4, 2));
                 return returnList;
             }
         }

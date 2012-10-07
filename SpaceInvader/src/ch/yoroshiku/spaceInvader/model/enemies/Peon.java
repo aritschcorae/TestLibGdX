@@ -7,8 +7,9 @@ import java.util.Random;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.ShotFactory;
-import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
+
+import com.badlogic.gdx.graphics.Texture;
 public class Peon extends AbstractEnemy
 {
 	private static final long serialVersionUID = 1L;
@@ -17,9 +18,10 @@ public class Peon extends AbstractEnemy
     private Random random = new Random();
     private final float move = (float) 0.2;
     
-    public Peon(final float x, final float y, final boolean powerUps)
+    public Peon(final float x, final float y, final boolean powerUps, final Texture texture)
     {
-        super(x, y, Sizes.PEON_WIDTH, Sizes.PEON_HEIGHT, powerUps, Enemies.ALL_TEXTURES.get(Enemies.PEON_EASY_ID));
+        super(x, y, Sizes.PEON_WIDTH, Sizes.PEON_HEIGHT, powerUps, texture);
+        showHealthBar = false;
     }
     
     
@@ -46,10 +48,10 @@ public class Peon extends AbstractEnemy
     @Override
     public List<Shot> shoot(final Ship ship)
     {
-        if (random.nextInt(100 / shootFrequency) == 0)
+        if (random.nextInt(300 / shootFrequency) == 0)
         {
             List<Shot> returnList = new ArrayList<Shot>();
-            returnList.add(ShotFactory.createShotLaser(x, y, shotVelocity));
+            returnList.add(ShotFactory.createShotLaser(x, y + width / 2, shotVelocity));
             return returnList;
         }
         return emptyShotList;

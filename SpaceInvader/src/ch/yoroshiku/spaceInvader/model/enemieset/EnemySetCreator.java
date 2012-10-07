@@ -112,13 +112,12 @@ public class EnemySetCreator extends AbstractEnemySetCreator
     private Map<Integer, EnemyGroup> createTeleporterSet(int amount, int timeAppear, int kindAppear, int health,
             int points, int frequency, int id, int enemyBitmap, EnemySet enemySet)
     {
-    	//TODO
         Map<Integer, EnemyGroup> enemies = new HashMap<Integer, EnemyGroup>();
         EnemyGroup enemyRow = new EnemyGroup(true, id, timeAppear, kindAppear, 4);
-        final float x = (canvasWidth / 2 - Enemies.ENEMY_WIDTH.get(enemyBitmap) / 2);
-        final float y = random.nextInt(100) + Enemies.ENEMY_HEIGHT.get(enemyBitmap);
         List<Map<Integer, EnemyGroup>> helperEnemies = new ArrayList<Map<Integer, EnemyGroup>>();
 
+        final float x = (canvasWidth / 2 - Enemies.ENEMY_WIDTH.get(enemyBitmap) / 2);
+        final float y = canvasHeight - 3 * Enemies.ENEMY_HEIGHT.get(enemyBitmap);
         helperEnemies.add(createPeonSet(amount, -1, 1, health / 14, health, frequency, 2, Enemies.PEON_EASY_ID));
         helperEnemies.add(createPeonSet(amount, -1, 1, health / 12, health, frequency, 2, Enemies.PEON_NORMAL_ID));
         helperEnemies.add(createPeonSet(amount, -1, 1, health / 10, health, frequency, 2, Enemies.PEON_HARD_ID));
@@ -153,7 +152,7 @@ public class EnemySetCreator extends AbstractEnemySetCreator
             {
 				final float x = inLine * Enemies.ENEMY_WIDTH.get(enemyKind) + extraBorder + (inLine * 0.5f);
                 final float y = canvasHeight - 5 - row * Enemies.ENEMY_HEIGHT.get(enemyKind) - row * 1.5f;
-				final AbstractEnemy tempEnemy = new Peon(x, y, createPeonPowerUps(rows));
+				final AbstractEnemy tempEnemy = new Peon(x, y, createPeonPowerUps(rows), Enemies.ALL_TEXTURES.get(enemyKind));
                 tempEnemy.setHealth((int) (health * hpMultiplier));
                 tempEnemy.setPoints((int) (points * pointMultiplier));
                 tempEnemy.setShotFrequency(freq);
@@ -206,7 +205,8 @@ public class EnemySetCreator extends AbstractEnemySetCreator
             EnemyGroup enemyRow = new EnemyGroup(true, id, timeAppear, kindAppear, 4);
             final float x = canvasWidth / (amount + 1) * (i+1) - Sizes.MIDBOSS_WIDTH / 2;
             final float y = (canvasHeight / 4 * 3)  + random.nextInt(10) - 5;
-            AbstractEnemy tempEnemy = new Midboss(x,y, canvasHeight, canvasWidth, frequency, createBossPowerUps());
+            AbstractEnemy tempEnemy = new Midboss(x,y, canvasHeight, canvasWidth, frequency, 
+            		createBossPowerUps(), Enemies.ALL_TEXTURES.get(enemyBitmap));
             tempEnemy.setHealth((int) (health * hpMultiplier));
             tempEnemy.setPoints((int) (points * pointMultiplier));
             enemyRow.add(tempEnemy);
@@ -222,10 +222,9 @@ public class EnemySetCreator extends AbstractEnemySetCreator
         for(int i = 0; i < amount; i++)
         {
             EnemyGroup enemyRow = new EnemyGroup(true, id, timeAppear, kindAppear, 4);
-            final float x = canvasWidth / (amount + 1) * (i+1) - Enemies.ALL_TEXTURES.get(enemyBitmap).getWidth() / 2;
+            final float x = canvasWidth / (amount + 1) * (i+1) - Enemies.ENEMY_WIDTH.get(Enemies.SPLASHER_ID) / 2;
             final float y = (canvasHeight / 4 * 3)  + random.nextInt(10) - 5;
-            AbstractEnemy tempEnemy = new MidbossSplash(x,y,
-                    canvasHeight, canvasWidth, frequency, createBossPowerUps());
+            AbstractEnemy tempEnemy = new MidbossSplash(x, y, frequency, createBossPowerUps());
             tempEnemy.setHealth((int) (health * hpMultiplier));
             tempEnemy.setPoints((int) (points * pointMultiplier));
 
@@ -244,8 +243,8 @@ public class EnemySetCreator extends AbstractEnemySetCreator
         Map<Integer, EnemyGroup> enemies = new HashMap<Integer, EnemyGroup>();
         EnemyGroup enemyGroup = new EnemyGroup(true, id, timeAppear, kindAppear, 1);
 
-        final float x = (canvasWidth / 2) - (Enemies.ALL_TEXTURES.get(Enemies.FREEZER_ID).getWidth() / 2);
-        final float y = canvasHeight - 5;
+        final float x = (canvasWidth / 2) - (Sizes.THROWER_WIDTH / 2);
+        final float y = canvasHeight - Sizes.POST_HEIGHT * 2;
         if(enemyBitmap == Enemies.FREEZER_ID)
         {
             enemyGroup.add(new Freezer(x,y, 3, true, canvasWidth, canvasHeight));
@@ -271,7 +270,7 @@ public class EnemySetCreator extends AbstractEnemySetCreator
         EnemyGroup enemyGroup = new EnemyGroup(true, id, timeAppear, kindAppear, 4);
         
         final float xDeplacement = canvasWidth / 2 - (Sizes.PROMETHEUS_WIDTH / 2);
-        final float yDeplacement = canvasHeight / 6 * 5;
+        final float yDeplacement = canvasHeight / 6 * 4;
         float x = xDeplacement - Sizes.WING_WIDTH;
         float y = yDeplacement + Sizes.PROMETHEUS_HEIGHT - Sizes.WING_HEIGHT;
         PrometheusWing leftWing = new PrometheusWing(x,y, createPeonPowerUps(1), 1);
@@ -287,10 +286,6 @@ public class EnemySetCreator extends AbstractEnemySetCreator
                 leftWing, rightWing, 400, 6000);
         enemyGroup.add(tempEnemy);
             
-        System.out.println("leftwing: " + leftWing.x + " - " + leftWing.y + " - " + leftWing.width + " - " + leftWing.height);
-        System.out.println("rightwing: " + rightWing.x + " - " + rightWing.y + " - " + rightWing.width + " - " + rightWing.height);
-        System.out.println("prom: " + tempEnemy.x + " - " + tempEnemy.y + " - " + tempEnemy.width + " - " + tempEnemy.height);
-        
         enemies.put(id, enemyGroup);
         return enemies;
     }

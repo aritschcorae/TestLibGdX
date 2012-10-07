@@ -21,7 +21,6 @@ public abstract class AbstractEnemySetCreator
     
     public AbstractEnemySetCreator(Ship ship, EnemySet enemySet)
     {
-    	//TODO canvas size
         this.ship = ship;
         this.enemySet = enemySet;
     }
@@ -60,15 +59,6 @@ public abstract class AbstractEnemySetCreator
         enemyKind = (lvl / 10);
     }
     
-    public void setNextDisplaylvl()
-    {
-        displayLvl ++;
-    }
-
-    public int getLvl()
-    {
-        return displayLvl;
-    }
     
     public int getPlainLvl()
     {

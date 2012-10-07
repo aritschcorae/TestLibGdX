@@ -12,7 +12,7 @@ public class Freezer extends PostThrower
 	public Freezer(float x, float y,
             int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight)
     {
-		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.FREEZER_ID));
+		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.FREEZER_ID), Enemies.FREEZER_ID);
     }
 
     @Override

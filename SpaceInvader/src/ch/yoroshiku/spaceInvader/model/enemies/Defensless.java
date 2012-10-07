@@ -10,7 +10,8 @@ public class Defensless extends PostThrower
     public Defensless(float x, float y,
             int shotFrequency, boolean powerUps, float fieldWidth, float fieldHeight)
     {
-		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, Enemies.ALL_TEXTURES.get(Enemies.DEFENSLESS_ID));
+		super(x, y, shotFrequency, powerUps, fieldWidth, fieldHeight, 
+				Enemies.ALL_TEXTURES.get(Enemies.DEFENSLESS_ID), Enemies.DEFENSLESS_ID);
     }
 
     @Override

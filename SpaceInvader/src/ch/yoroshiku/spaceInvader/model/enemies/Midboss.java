@@ -8,17 +8,18 @@ import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.ShotFactory;
 import ch.yoroshiku.spaceInvader.screen.GameScreen;
-import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
+
+import com.badlogic.gdx.graphics.Texture;
 
 public class Midboss extends AbstractEnemy
 {
 	private static final long serialVersionUID = 1L;
     private Random random = new Random();
     
-    public Midboss(float x, float y, float fieldHeight, float fieldWidth, int shotFrequency, boolean powerUps)
+    public Midboss(float x, float y, float fieldHeight, float fieldWidth, int shotFrequency, boolean powerUps, Texture texture)
     {
-		super(x, y, Sizes.MIDBOSS_WIDTH, Sizes.MIDBOSS_HEIGHT, powerUps, Enemies.ALL_TEXTURES.get(Enemies.MIDBOSS_EASY_ID));
+		super(x, y, Sizes.MIDBOSS_WIDTH, Sizes.MIDBOSS_HEIGHT, powerUps, texture);
         this.shootFrequency = shotFrequency;
     }
     
@@ -44,7 +45,7 @@ public class Midboss extends AbstractEnemy
     @Override
     public List<Shot> shoot(Ship ship)
     {
-        if (random.nextInt(50 / shootFrequency) == 0)
+        if (random.nextInt(150 / shootFrequency) == 0)
         {
             List<Shot> returnList = new ArrayList<Shot>();
             returnList.add(ShotFactory.createShotLaser(x + width / 5, y, 1, 0, shotVelocity));

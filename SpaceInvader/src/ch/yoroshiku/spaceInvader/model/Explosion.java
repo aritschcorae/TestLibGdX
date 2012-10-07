@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Circle;
 public class Explosion extends Circle
 {
 	private static final long serialVersionUID = 1L;
-	private int damage = 50;
+	private int damage;
 	private Circle outerRadius;
 	
     public Explosion(float x, float y, int damage)
@@ -25,11 +25,11 @@ public class Explosion extends Circle
     public boolean expand()
     {
         radius += Sizes.BOMB_EXPLOSION_INC_SIZE;
-        damage += 50;
-        return radius > 7 * Sizes.BOMB_EXPLOSION_INIT_SIZE;
+        damage *= 3 / 2;
+        return radius > 5 * Sizes.BOMB_EXPLOSION_INIT_SIZE;
     }
     
-    public Circle getOuterRadius()
+    public Circle getOuterRadius(float ppux)
     {
     	outerRadius.radius = radius + radius / 5;
     	return outerRadius;

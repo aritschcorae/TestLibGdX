@@ -7,6 +7,9 @@ public class Sizes {
 	public static final float POWER_UP_HEIGHT = 3;
 	public static final float SHIP_WIDTH = 6;
 	public static final float SHIP_HEIGHT = 6;
+	public static final float SHIP_CORE = 3;
+	public static final float SHIP_RADIUS = 3.7f;
+	public static final float SHIP_RADIUS_DOUBLE = 4;
 	public static final float SHIP_POWERUP_REACH_BOOST = 1;
 	public static final float SHIP_POWERUP_REACH_BOOST_WIDTH = 8; //width + 2*boost
 	public static final float SHIP_HIT_EVADE = 0.5f;
@@ -15,12 +18,20 @@ public class Sizes {
 	public static final float SHOT_LASER_HEIGHT = 2;
 	public static final float SHOT_CIRCLE_SMALL = 1.4f;
 	public static final float SHOT_CIRCLE_LARGE = 1.8f;
+	public static final float SHOT_BOMB_HEIGHT = 4;
+	public static final float SHOT_BOMB_WIDTH = 3;
+	public static final float DESTROY_EXPLOSION_RADIUS = 4;
+	
 	public static final float BOMB_EXPLOSION_INIT_SIZE = 2;
-	public static final float BOMB_EXPLOSION_INC_SIZE = 1;
+	public static final float BOMB_EXPLOSION_INC_SIZE = 0.25f;
 	public static final float EXPLOSION_RADIUS = 4;
 	
-	public static final float THROWER_WIDTH = 4;
-	public static final float THROWER_HEIGHT = 6;
+	public static final float ENEMY_HEALTHBAR_DISTANCE = 1;
+	public static final float HEALTHBAR_HEIGHT = 1;
+	
+	//ENEMY Sizes
+	public static final float THROWER_WIDTH = 6;
+	public static final float THROWER_HEIGHT = 4;
 	public static final float POST_WIDTH = 2;
 	public static final float POST_HEIGHT = 3;
 	

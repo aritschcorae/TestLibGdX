@@ -2,6 +2,8 @@ package ch.yoroshiku.spaceInvader.model.enemies;
 
 import java.util.List;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import ch.yoroshiku.spaceInvader.model.PowerUp;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.Shot;
@@ -19,11 +21,15 @@ public class PowerUpEater extends AbstractEnemy
     
     public PowerUpEater(final float x, final float y, final boolean powerUps)
     {
-		super(x, y, Sizes.POWER_UP_EATER_WIDTH, Sizes.POWER_UP_EATER_HEIGHT, powerUps, Enemies.ALL_TEXTURES.get(Enemies.POWER_UP_EATER_ID));
+		super(x, y, Sizes.POWER_UP_EATER_WIDTH, 
+				Sizes.POWER_UP_EATER_HEIGHT, powerUps, 
+				new TextureRegion(Enemies.ALL_TEXTURES.get(Enemies.POWER_UP_EATER_ID), 
+						Enemies.ALL_TEXTURES.get(Enemies.POWER_UP_EATER_ID).getWidth() / 2,
+						Enemies.ALL_TEXTURES.get(Enemies.POWER_UP_EATER_ID).getHeight()));
         visible = false;
         invincible = true;
-        width /= 2;
         health = 5;
+        maxHealth = 5;
         powerUpXDestination = x + 1;
     }
     

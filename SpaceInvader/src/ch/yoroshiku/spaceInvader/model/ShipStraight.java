@@ -22,6 +22,7 @@ public class ShipStraight extends Ship
         shotRight = (width * 0.8f);
         shotNormalVelocity = 50;
         shotSlowerVelocity = 40;
+        shotDriftVelocity = 10;
         createShotsList();
         speed = 40f;
         maxShots = 3;
@@ -89,20 +90,20 @@ public class ShipStraight extends Ship
     }
 
     @Override
-    public void shoot(final boolean spray)
+    public void shoot(final boolean spray, float delay)
     {
-        middleShots.get(currentShot).x = (x + shotMiddle);
+        middleShots.get(currentShot).x = (x + shotMiddle) + shotNormalVelocity * delay;
         middleShots.get(currentShot).y = Sizes.SHIP_HEIGHT;
         middleShots.get(currentShot).setDamage(damage);
         if (shots > 1)
         {
-            leftShots.get(currentShot).x = (x + shotLeft);
+            leftShots.get(currentShot).x = (x + shotLeft) + shotNormalVelocity * delay;
             leftShots.get(currentShot).y = Sizes.SHIP_HEIGHT;
             leftShots.get(currentShot).setDamage(damage);
         }
         if (shots > 2)
         {
-        	rightShots.get(currentShot).x = (x + shotRight);
+        	rightShots.get(currentShot).x = (x + shotRight) + shotNormalVelocity * delay;
             rightShots.get(currentShot).y = Sizes.SHIP_HEIGHT;
             if (spray)
             {
