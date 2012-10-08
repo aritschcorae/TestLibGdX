@@ -1,6 +1,7 @@
 package ch.yoroshiku.spaceInvader.model.enemies;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -102,9 +103,7 @@ public abstract class AbstractEnemy extends Rectangle
     
     public List<AbstractEnemy> getDestroyedEnemies()
     {
-        List<AbstractEnemy> destroyedEnemies = new ArrayList<AbstractEnemy>();
-        destroyedEnemies.add(this);
-        return destroyedEnemies;
+        return Collections.singletonList(this);
     }
     
     /**

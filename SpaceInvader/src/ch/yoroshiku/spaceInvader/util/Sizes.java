@@ -54,4 +54,9 @@ public class Sizes {
 	public static final float WING_WIDTH = 10;
 	public static final float WING_HEIGHT = 8;
 	
+	//
+	public static final float TEXTBOX_WIDTH = 42;
+	public static final float TEXTBOX_HEIGHT = 1.4f;
+	
+	
 }

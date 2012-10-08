@@ -36,11 +36,16 @@ public class GameController
 	public EnemySet enemySet = new EnemySet();
 	private EnemySetCreator enemySetCreator;
 	public int points;
-	
+	private GameState state;
+	public enum GameState {
+		PAUSE, PLAY, LEVELEND, GAMEOVER
+	};
+
 	public GameController()
 	{
 		ship = new ShipStraight(0, 0, new Texture(Gdx.files.internal("images/ship_straight.gif")));
 		ship.x = (GameScreen.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH) / 2;
+		state = GameState.PAUSE;
 		ship.y = 0;
 		points = 0;
 		allShots = new ArrayList<Shot>();
@@ -353,6 +358,11 @@ public class GameController
 	        ship.dropBomb();
 	        ship.setInvincible(true);	
 		}
+	}
+
+	public GameState getState()
+	{
+		return state;
 	}
 
 //    public void loadNextLvl()

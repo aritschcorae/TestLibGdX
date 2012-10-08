@@ -23,7 +23,7 @@ public abstract class AbstractScreen implements Screen
     public AbstractScreen(SpaceInvader game)
     {
         this.game = game;
-        this.font = new BitmapFont();
+        font = new BitmapFont(Gdx.files.internal("level/testFont.fnt"), false);
         this.batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         this.stage = new Stage( 0, 0, true );

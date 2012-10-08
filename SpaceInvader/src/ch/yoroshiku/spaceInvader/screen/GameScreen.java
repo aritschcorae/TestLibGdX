@@ -6,6 +6,7 @@ import java.util.Random;
 
 import ch.yoroshiku.spaceInvader.SpaceInvader;
 import ch.yoroshiku.spaceInvader.controller.GameController;
+import ch.yoroshiku.spaceInvader.controller.GameController.GameState;
 import ch.yoroshiku.spaceInvader.controller.InGameController;
 import ch.yoroshiku.spaceInvader.model.Explosion;
 import ch.yoroshiku.spaceInvader.model.PowerUp;
@@ -79,9 +80,12 @@ public class GameScreen extends AbstractScreen
 	public void render(float delta)
 	{
 		super.render(delta);
-		shipController.update(delta);
-		gameController.process(delta);
-		handleStars(delta);
+		if(gameController.getState().equals(GameState.PLAY))
+		{
+			shipController.update(delta);
+			gameController.process(delta);
+			handleStars(delta);
+		}
 		drawCanvas();
 	}
 	
@@ -101,20 +105,32 @@ public class GameScreen extends AbstractScreen
     
 	private void drawCanvas()
 	{
-		batch.begin();
-		drawEnemies();
-	    drawBombs();
-	    drawButtons();
-	    drawPowerUps();
-		drawStats();
-		batch.draw(gameController.ship.getShipTexture(), border + gameController.ship.x * ppuX, gameController.ship.y * ppuY,
-                0, 0, gameController.ship.width, gameController.ship.height, ppuX, ppuY, 0);
-		batch.end();
-		drawHealth();
-		drawShots();
-		drawBorder();
-		drawStars();
-		drawCircle();
+		if(gameController.getState().equals(GameState.PLAY))
+		{
+			batch.begin();
+			drawEnemies();
+		    drawBombs();
+		    drawButtons();
+		    drawPowerUps();
+			drawStats();
+			batch.draw(gameController.ship.getShipTexture(), border + gameController.ship.x * ppuX, gameController.ship.y * ppuY,
+	                0, 0, gameController.ship.width, gameController.ship.height, ppuX, ppuY, 0);
+			batch.end();
+			drawHealth();
+			drawShots();
+			drawBorder();
+			drawStars();
+			drawCircle();
+		}
+		else if(gameController.getState().equals(GameState.PAUSE))
+		{
+			batch.begin();
+			drawTextBox();
+			drawPauseText();
+			drawStats();
+			batch.end();
+			drawBorder();
+		}
 		debug();
 	}
 
@@ -199,6 +215,7 @@ public class GameScreen extends AbstractScreen
 
 	private void drawStats()
 	{
+		font.setColor(Color.WHITE);
 		final String pointAmount = "Points: " + gameController.points;
 		font.draw(batch, pointAmount , border + 1 * ppuX, DEFAULT_WORLD_HEIGHT * ppuY);
 		final String lvl = "lvl " + gameController.getEnemySetCreator().getPlainLvl();
@@ -298,7 +315,34 @@ public class GameScreen extends AbstractScreen
 	        }
 		}
 	}
-	
+
+	private void drawTextBox()
+	{
+		batch.draw(Textures.TEXTBOX_TOP_TEXTURE, 
+				border + (DEFAULT_WORLD_WIDTH / 2 - Sizes.TEXTBOX_WIDTH / 2) * ppuX,
+				(DEFAULT_WORLD_HEIGHT - 4) * ppuY,
+				Sizes.TEXTBOX_WIDTH * ppuX, Sizes.TEXTBOX_HEIGHT * ppuY);
+		
+		batch.draw(Textures.TEXTBOX_MIDDLE_TEXTURE, 
+				border + (DEFAULT_WORLD_WIDTH / 2 - Sizes.TEXTBOX_WIDTH / 2) * ppuX,
+				(DEFAULT_WORLD_HEIGHT - (4 + Sizes.TEXTBOX_HEIGHT)) * ppuY,
+				Sizes.TEXTBOX_WIDTH * ppuX, Sizes.TEXTBOX_HEIGHT * ppuY);
+
+		batch.draw(Textures.TEXTBOX_BOTTOM_TEXTURE, 
+				border + (DEFAULT_WORLD_WIDTH / 2 - Sizes.TEXTBOX_WIDTH / 2) * ppuX,
+				(DEFAULT_WORLD_HEIGHT - (4 + Sizes.TEXTBOX_HEIGHT * 2)) * ppuY,
+				Sizes.TEXTBOX_WIDTH * ppuX, Sizes.TEXTBOX_HEIGHT * ppuY);
+	}
+
+	private final String pauseText = "Pause";
+	private void drawPauseText()
+	{
+		font.setColor(Color.RED);
+		font.draw(batch, pauseText , border, 50);
+		font.setScale(2);
+		font.draw(batch, pauseText , border + 30 * ppuX, 50);
+		font.setScale(0.9f);
+	}
 
 	private void debug()
 	{
