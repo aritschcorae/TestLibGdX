@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 
+
 import ch.yoroshiku.spaceInvader.model.enemies.AbstractEnemy;
 
 import com.badlogic.gdx.graphics.Color;

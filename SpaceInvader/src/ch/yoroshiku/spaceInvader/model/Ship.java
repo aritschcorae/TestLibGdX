@@ -1,15 +1,15 @@
 package ch.yoroshiku.spaceInvader.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ch.yoroshiku.spaceInvader.screen.GameScreen;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 
 /**
@@ -17,17 +17,17 @@ import com.badlogic.gdx.math.Vector2;
  * {@link ShipStraight}
  * {@link ShipCircle}
  */
-public abstract class Ship extends Rectangle
+public abstract class Ship extends AbstractGameObject
 {
 	private static final long serialVersionUID = 1L;
 	protected Integer powerUpTypeInUse = null;
-    protected List<Shot> leftShots = new ArrayList<Shot>();
-    protected List<Shot> middleShots = new ArrayList<Shot>();
-    protected List<Shot> rightShots = new ArrayList<Shot>();
+    protected Array<Shot> leftShots = new Array<Shot>();
+    protected Array<Shot> middleShots = new Array<Shot>();
+    protected Array<Shot> rightShots = new Array<Shot>();
     protected float speed, centerX, centerY;
     private int shield = 5, health = 3;
     protected int  maxHealth = 3;
-    protected int damage = 100, shots = 1, bombs = 2;
+    protected int damage = 1, shots = 1, bombs = 2;
     protected int maxShots;
     private boolean invincible = false;
     protected float shotLeft, shotMiddle, shotRight;
@@ -51,7 +51,7 @@ public abstract class Ship extends Rectangle
         shipPowerUpReach.height = Sizes.SHIP_POWERUP_REACH_BOOST_WIDTH;
     }
     
-    public void resetShip(Vector2 coord, float zoom)
+    public void resetShip()
     {
         health = 3;
         shield = 1;
@@ -61,10 +61,64 @@ public abstract class Ship extends Rectangle
         }
     }
     
-    public int getHealth()
-    {
-        return health;
+	@Override
+	public boolean move(float delta) {
+		// not needed since processor does the needful
+		return false;
+	}
+    
+    public void moveLeft(float delta){
+    	x -= speed * delta;
+    	if(x < 0)
+    		x = 0;
     }
+    
+    public void moveRight(float delta){
+    	x += speed * delta;
+    	if(x > Sizes.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH)
+    		x = Sizes.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH;
+    }
+	
+	public void drawSprite(final SpriteBatch batch, final float ppuX, final float ppuY, final float border){
+		batch.begin();
+		batch.draw(getShipTexture(), border + x * ppuX, y * ppuY, 0, 0, width, height, ppuX, ppuY, 0);
+		batch.end();
+	}
+	
+	public void drawShape(final ShapeRenderer shapeRenderer, final float ppuX, final float ppuY, final float border){
+		shapeRenderer.begin(ShapeType.Circle);
+		if (isInvincible())
+		{
+			shapeRenderer.setColor(0, 1, 0, 0);
+			shapeRenderer.circle(border + (x + Sizes.SHIP_CORE) * ppuX, 
+					(y + Sizes.SHIP_CORE) * ppuY, Sizes.SHIP_RADIUS * ppuX);
+		}
+		else
+		{
+			final float shield = getShield();
+	        if (shield >= 5)
+	        {
+				shapeRenderer.setColor(1, 1, 1, 1);
+				shapeRenderer.circle(border + (x + Sizes.SHIP_CORE) * ppuX, 
+						(y + Sizes.SHIP_CORE) * ppuY, Sizes.SHIP_RADIUS * ppuX);
+	            if (shield < 10)
+	            {
+	    			shapeRenderer.setColor(1, 1, 1, (shield - 5) * 0.2f);
+	            }
+				shapeRenderer
+					.circle(border + (x + Sizes.SHIP_CORE) * ppuX, 
+							(y + Sizes.SHIP_CORE) * ppuY, Sizes.SHIP_RADIUS_DOUBLE * ppuX);
+	        }
+	        else if(shield > 0)
+	        {
+				shapeRenderer.setColor(1, 1, 1, (1 - 0.2f) * shield);
+				shapeRenderer.circle(border + (x + Sizes.SHIP_CORE) * ppuX, 
+						(y + Sizes.SHIP_CORE) * ppuY, Sizes.SHIP_RADIUS * ppuX);
+	        }
+		}
+		shapeRenderer.end();
+	}
+    
 
     public void addPowerUp(final PowerUp powerUp)
     {
@@ -157,154 +211,12 @@ public abstract class Ship extends Rectangle
             powerUpTypeInUse = null;
         }
     }
-    
-    public Integer getPowerUpTypeInUse()
-    {
-        return powerUpTypeInUse;
-    }
-    
-    protected void handleShotPowerup()
-    {
-        if (shots < maxShots)
-            shots++;
-        else if(!spray)
-            spray = true;
-        else
-            shield ++; //TODO max power up
-    }
 
-    public boolean isSpray()
-    {
-        return spray;
-    }
-
-    public float getSpeed()
-    {
-        return speed;
-    }
-
-    public int getShield()
-    {
-        return shield;
-    }
-
-    public void gotHit(final int damage)
-    {
-    	//TODO update pic
-    
-        if(powerUpTypeInUse != null)
-        {
-            removePowerUpInUse();
-        }
-        else if(shield > 0)
-        {
-            this.shield -= damage;
-        }
-        else
-        {
-            health -= damage;
-        }
-        if(shield < 0)
-        {
-            health += shield;
-            shield = 0;
-        }
-    }
-
-    public int getDamage()
-    {
-        return damage;
-    }
-
-    public int getBombs()
-    {
-        return bombs;
-    }
-
-    public void setBombs(int bombs)
-    {
-        this.bombs = bombs;
-    }
-
-    public void dropBomb()
-    {
-        bombs --;
-    }
-
-    public int getShots()
-    {
-        return shots;
-    }
-    
-    public int getMaxShots()
-    {
-        return maxShots;
-    }
-
-    public void setShield(int shield)
-    {
-        this.shield = shield;
-    }
-
-    public void setSpeed(int speed)
-    {
-        this.speed = speed;
-    }
-
-    public void setHealth(int health)
-    {
-
-        this.health = health;
-    }
-
-    abstract public boolean isMaxShots();
-    
-    abstract public void setSettingsByDifficulty(int difficulty);
-
-    public void setInvincible(boolean invincible)
-    {
-        this.invincible = invincible;
-    }
-
-    public boolean isInvincible()
-    {
-        return invincible;
-    }
-
-    abstract public List<Shot> getLeftShots();
-    abstract public List<Shot> getMiddleShots();
-    abstract public List<Shot> getRightShots();
+    abstract public Array<Shot> getLeftShots();
+    abstract public Array<Shot> getMiddleShots();
+    abstract public Array<Shot> getRightShots();
     abstract public int getShotCoolDown();
     abstract public void shoot(boolean spray, float delay);
-
-//    public void reload(Map<String, Integer> gameStats)
-//    {
-//        damage = gameStats.get(GameStateSave.MAP_KEY_WORD_SHIP_DAMAGE);
-//        health = gameStats.get(GameStateSave.MAP_KEY_WORD_SHIP_HEALTH);
-//        shield = gameStats.get(GameStateSave.MAP_KEY_WORD_SHIP_SHIELD);
-//        shots = gameStats.get(GameStateSave.MAP_KEY_WORD_SHIP_SHOTS);
-//        speed = gameStats.get(GameStateSave.MAP_KEY_WORD_SHIP_SPEED);
-//        bombs = gameStats.get(GameStateSave.MAP_KEY_WORD_SHIP_BOMB);
-//        powerupDamage = gameStats.get(GameStateSave.MAP_KEY_WORD_POWER_UP_DAMAGE) == 1;
-//        powerupSpeed = gameStats.get(GameStateSave.MAP_KEY_WORD_POWER_UP_SPEED) == 1;
-//        powerUpTypeInUse = gameStats.get(GameStateSave.MAP_KEY_WORD_POWER_UP_USED) == -1 ? null : gameStats
-//                .get(GameStateSave.MAP_KEY_WORD_POWER_UP_USED);
-//        setPowerUpColor();
-//    }
-//
-//    public Map<String, Integer> save(Map<String, Integer> stats)
-//    {
-//        stats.put(GameStateSave.MAP_KEY_WORD_SHIP_DAMAGE, damage);
-//        stats.put(GameStateSave.MAP_KEY_WORD_SHIP_HEALTH, health);
-//        stats.put(GameStateSave.MAP_KEY_WORD_SHIP_SHIELD, shield);
-//        stats.put(GameStateSave.MAP_KEY_WORD_SHIP_SHOTS, shots);
-//        stats.put(GameStateSave.MAP_KEY_WORD_SHIP_SPEED, speed);
-//        stats.put(GameStateSave.MAP_KEY_WORD_SHIP_BOMB, bombs);
-//        stats.put(GameStateSave.MAP_KEY_WORD_POWER_UP_DAMAGE, powerupDamage ? 1 : 0);
-//        stats.put(GameStateSave.MAP_KEY_WORD_POWER_UP_SPEED, powerupSpeed ? 1 : 0);
-//        stats.put(GameStateSave.MAP_KEY_WORD_POWER_UP_USED, powerUpTypeInUse == null ? -1 : powerUpTypeInUse);
-//        return stats;
-//    }
 
     private float tempSpeed = 0;
     public void slowDownShip(boolean slowDown)
@@ -400,6 +312,120 @@ public abstract class Ship extends Rectangle
         }
     }
     
+    public Integer getPowerUpTypeInUse()
+    {
+        return powerUpTypeInUse;
+    }
+    
+    protected void handleShotPowerup()
+    {
+        if (shots < maxShots)
+            shots++;
+        else if(!spray)
+            spray = true;
+        else
+            shield ++; //TODO max power up
+    }
+
+    public int getHealth()
+    {
+        return health;
+    }
+    
+    public boolean isSpray()
+    {
+        return spray;
+    }
+
+    public float getSpeed()
+    {
+        return speed;
+    }
+
+    public int getShield()
+    {
+        return shield;
+    }
+
+    public void gotHit(final int damage)
+    {
+        if(powerUpTypeInUse != null)
+        {
+            removePowerUpInUse();
+        }
+        else if(shield > 0)
+        {
+            this.shield -= damage;
+        }
+        else
+        {
+            health -= damage;
+        }
+        if(shield < 0)
+        {
+            health += shield;
+            shield = 0;
+        }
+    }
+
+    public int getDamage()
+    {
+        return damage;
+    }
+
+    public int getBombs()
+    {
+        return bombs;
+    }
+
+    public void setBombs(int bombs)
+    {
+        this.bombs = bombs;
+    }
+
+    public void dropBomb()
+    {
+        bombs --;
+    }
+
+    public int getShots()
+    {
+        return shots;
+    }
+    
+    public int getMaxShots()
+    {
+        return maxShots;
+    }
+
+    public void setShield(int shield)
+    {
+        this.shield = shield;
+    }
+
+    public void setSpeed(int speed)
+    {
+        this.speed = speed;
+    }
+
+    public void setHealth(int health)
+    {
+
+        this.health = health;
+    }
+
+    abstract public boolean isMaxShots();
+    
+    public void setInvincible(boolean invincible)
+    {
+        this.invincible = invincible;
+    }
+
+    public boolean isInvincible()
+    {
+        return invincible;
+    }
+    
     public void setMovingLeft()
     {
     	shipTexture.setRegion((maxHealth - health) * 28, 0, 28, 28);
@@ -413,18 +439,6 @@ public abstract class Ship extends Rectangle
     public void setMovingStop()
     {
     	shipTexture.setRegion((maxHealth - health) * 28, 28, 28, 28);
-    }
-    
-    public void moveLeft(float delta){
-    	x -= speed * delta;
-    	if(x < 0)
-    		x = 0;
-    }
-    
-    public void moveRight(float delta){
-    	x += speed * delta;
-    	if(x > GameScreen.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH)
-    		x = GameScreen.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH;
     }
 
 	public TextureRegion getShipTexture() {
@@ -449,4 +463,5 @@ public abstract class Ship extends Rectangle
 	{
 		this.spray = spray;
 	}
+	
 }

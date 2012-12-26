@@ -1,15 +1,20 @@
 package ch.yoroshiku.spaceInvader.model.enemies;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+
+
 import ch.yoroshiku.spaceInvader.model.Ship;
-import ch.yoroshiku.spaceInvader.model.Shot;
 import ch.yoroshiku.spaceInvader.model.enemieset.EnemyGroup;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
 import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 public class Teleporter extends AbstractEnemy
 {
@@ -35,8 +40,7 @@ public class Teleporter extends AbstractEnemy
         emergencyPlan = emergency;
     }
     
-    @Override
-    public void move(float render)
+    public boolean move(float render)
     {
         teleportCountDown -= render;
 
@@ -55,14 +59,15 @@ public class Teleporter extends AbstractEnemy
             teleport();
             teleportCountDown = moveTeleportSpeed;
         }
+        return true;
     }
     
     @Override
-    public List<Shot> shoot(Ship ship)
+    public Array<Shot> shoot(Ship ship)
     {
         if (!teleporting && random.nextInt(60 / shootFrequency) == 0)
         {
-            List<Shot> returnList = new ArrayList<Shot>();
+        	Array<Shot> returnList = new Array<Shot>();
             returnList.add(createAimingShot(ship, x + leftShotX, y + shotY));
             returnList.add(createAimingShot(ship, x + rightShotX, y + shotY));
             return returnList;
@@ -102,5 +107,10 @@ public class Teleporter extends AbstractEnemy
         y = possiblePositionHeight + random.nextInt(possiblePositionHeight) - Sizes.TELEPORTER_HEIGHT;
         showHealthBar = false;
     }
+
+	@Override
+	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
+		drawHealthBar(shapeRenderer, ppux, ppuy, offset);
+	}
     
 }

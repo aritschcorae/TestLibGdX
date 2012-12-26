@@ -4,10 +4,11 @@ import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
-public class PowerUp extends Rectangle
+public class PowerUp extends AbstractSprite
 {
 	private static final long serialVersionUID = 3831898918602444432L;
     public final static Integer POWER_UP_SPEED = new Integer(0);
@@ -84,9 +85,10 @@ public class PowerUp extends Rectangle
         this.eated = eated;
     }
 
-    public void move(float delta)
+    public boolean move(float delta)
     {
     	y += velocity * delta;
+    	return true;
     }
 
     public void setCoordinates(float x, float y)
@@ -109,5 +111,14 @@ public class PowerUp extends Rectangle
 		return powerUpTexture;
 	}
 
+	@Override
+	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, float offset) {
+		batch.draw(getPowerUpTexture(), offset + x * ppux, y * ppuy, width * ppux, height * ppuy);
+	}
+
+	@Override
+	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
+		// not used
+	}
     
 }

@@ -6,15 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
+
 
 import ch.yoroshiku.spaceInvader.model.Ship;
-import ch.yoroshiku.spaceInvader.model.Shot;
-import ch.yoroshiku.spaceInvader.model.ShotFactory;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
 import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 import ch.yoroshiku.spaceInvader.util.Textures;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
 public class Prometheus extends AbstractEnemy
 {
@@ -69,7 +74,7 @@ public class Prometheus extends AbstractEnemy
     }
     
     @Override
-    public void move(float delta)
+    public boolean move(float delta)
     {
     	if(!alive && !exploded)
     	{
@@ -101,22 +106,23 @@ public class Prometheus extends AbstractEnemy
             leftWing.x += xMovement;
             rightWing.x += xMovement;
     	}
+    	return true;
     }
     
     @Override
-    public List<Shot> shoot(Ship ship)
+    public Array<Shot> shoot(Ship ship)
     {
         if(alive)
         {
             if (random.nextInt(60) == 10)
             {
-                List<Shot> returnList = new ArrayList<Shot>();
+            	Array<Shot> returnList = new Array<Shot>();
                 returnList.add(ShotFactory.createShotLaser(x + 4, y + 6.2f, 2, 0, shotVelocity, 6, 2));
                 return returnList;
             }
             if (random.nextInt(60) == 10)
             {
-                List<Shot> returnList = new ArrayList<Shot>();
+            	Array<Shot> returnList = new Array<Shot>();
                 returnList.add(ShotFactory.createShotLaser(x + 4, y + 7.4f, 2, 0, shotVelocity, 4, 2));
                 return returnList;
             }
@@ -161,9 +167,9 @@ public class Prometheus extends AbstractEnemy
     }
     
     @Override
-    public List<AbstractEnemy> getDestroyedEnemies()
+    public Array<AbstractEnemy> getDestroyedEnemies()
     {
-        List<AbstractEnemy> destroyedEnemies = new ArrayList<AbstractEnemy>();
+    	Array<AbstractEnemy> destroyedEnemies = new Array<AbstractEnemy>();
         destroyedEnemies.add(this);
         destroyedEnemies.add(leftWing);
         destroyedEnemies.add(rightWing);
@@ -195,5 +201,10 @@ public class Prometheus extends AbstractEnemy
     	}
     	return null;
     }
+    
+	@Override
+	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
+		drawHealthBar(shapeRenderer, ppux, ppuy, offset);
+	}
 
 }

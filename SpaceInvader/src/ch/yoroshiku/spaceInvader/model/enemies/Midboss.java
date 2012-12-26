@@ -1,16 +1,18 @@
 package ch.yoroshiku.spaceInvader.model.enemies;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
+
+
 import ch.yoroshiku.spaceInvader.model.Ship;
-import ch.yoroshiku.spaceInvader.model.Shot;
-import ch.yoroshiku.spaceInvader.model.ShotFactory;
-import ch.yoroshiku.spaceInvader.screen.GameScreen;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 public class Midboss extends AbstractEnemy
 {
@@ -24,7 +26,7 @@ public class Midboss extends AbstractEnemy
     }
     
     @Override
-    public void move(final float delta)
+    public boolean move(final float delta)
     {
         float yposition;
         float xposition;
@@ -32,22 +34,23 @@ public class Midboss extends AbstractEnemy
         {
             yposition = y + (random.nextFloat() - 0.5f) * 100 * delta;
         }
-        while(yposition > GameScreen.DEFAULT_WORLD_HEIGHT || yposition < GameScreen.DEFAULT_WORLD_HEIGHT / 3);
+        while(yposition > Sizes.DEFAULT_WORLD_HEIGHT || yposition < Sizes.DEFAULT_WORLD_HEIGHT / 3);
         y = yposition;
         do
         {
             xposition = x + (random.nextFloat() - 0.5f) * 100 * delta;
         }
-        while(xposition + width > GameScreen.DEFAULT_WORLD_WIDTH || xposition < 1);
+        while(xposition + width > Sizes.DEFAULT_WORLD_WIDTH || xposition < 1);
         x = xposition;
+        return true;
     }
     
     @Override
-    public List<Shot> shoot(Ship ship)
+    public Array<Shot> shoot(Ship ship)
     {
         if (random.nextInt(150 / shootFrequency) == 0)
         {
-            List<Shot> returnList = new ArrayList<Shot>();
+        	Array<Shot> returnList = new Array<Shot>();
             returnList.add(ShotFactory.createShotLaser(x + width / 5, y, 1, 0, shotVelocity));
             returnList.add(ShotFactory.createShotLaser(x + width / 2, y, 1, 0, shotVelocity));
             returnList.add(ShotFactory.createShotLaser(x + width / 5 * 4, y, 1, 0, shotVelocity));
@@ -56,5 +59,11 @@ public class Midboss extends AbstractEnemy
         }
         return emptyShotList;
     }
+
+
+	@Override
+	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
+		drawHealthBar(shapeRenderer, ppux, ppuy, offset);
+	}
     
 }

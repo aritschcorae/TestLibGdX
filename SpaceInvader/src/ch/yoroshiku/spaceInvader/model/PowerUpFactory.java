@@ -2,6 +2,7 @@ package ch.yoroshiku.spaceInvader.model;
 
 import java.util.Random;
 
+
 public class PowerUpFactory
 {
     private static Random random = new Random();

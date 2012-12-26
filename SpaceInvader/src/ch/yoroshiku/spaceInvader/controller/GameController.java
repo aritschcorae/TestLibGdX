@@ -1,69 +1,44 @@
 package ch.yoroshiku.spaceInvader.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+import ch.yoroshiku.spaceInvader.manager.EnemyManager;
+import ch.yoroshiku.spaceInvader.manager.ShotManager;
 import ch.yoroshiku.spaceInvader.model.Explosion;
 import ch.yoroshiku.spaceInvader.model.PowerUp;
-import ch.yoroshiku.spaceInvader.model.PowerUpFactory;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.ShipStraight;
-import ch.yoroshiku.spaceInvader.model.Shot;
-import ch.yoroshiku.spaceInvader.model.ShotFactory;
-import ch.yoroshiku.spaceInvader.model.enemies.AbstractEnemy;
-import ch.yoroshiku.spaceInvader.model.enemieset.EnemyGroup;
-import ch.yoroshiku.spaceInvader.model.enemieset.EnemySet;
-import ch.yoroshiku.spaceInvader.model.enemieset.EnemySetCreator;
-import ch.yoroshiku.spaceInvader.screen.GameScreen;
+import ch.yoroshiku.spaceInvader.model.enemieset.EnemySetFactory;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
+import ch.yoroshiku.spaceInvader.util.Helper;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 import ch.yoroshiku.spaceInvader.util.Textures;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 
 public class GameController
 {
-	private EnemyGroup toRemoveEnemies;
-	public List<Shot> enemyShots, allShots, shotsBombs;
-	private List<Shot> toDeleteShots, newEnemyShots;
-	public List<PowerUp> powerUps;
-	public List<Explosion> explosions;
-	private List<Explosion> toDeleteExplosions;
+	public Array<Explosion> explosions;
+	private Array<Explosion> toDeleteExplosions;
 	private float shotCounter = 0;
 	private boolean nextLevel;
-	public Ship ship;
-	public EnemySet enemySet = new EnemySet();
-	private EnemySetCreator enemySetCreator;
+	public EnemyManager enemyManager = new EnemyManager();
+	private EnemySetFactory enemySetCreator;
 	public int points;
-	private GameState state;
-	public enum GameState {
-		PAUSE, PLAY, LEVELEND, GAMEOVER
-	};
-
-	public GameController()
+	
+	public GameController(final ShotManager shotManager)
 	{
-		ship = new ShipStraight(0, 0, new Texture(Gdx.files.internal("images/ship_straight.gif")));
-		ship.x = (GameScreen.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH) / 2;
-		state = GameState.PAUSE;
-		ship.y = 0;
 		points = 0;
-		allShots = new ArrayList<Shot>();
-		allShots.addAll(ship.getLeftShots());
-		allShots.addAll(ship.getMiddleShots());
-		allShots.addAll(ship.getRightShots());
-		toDeleteShots = new ArrayList<Shot>();
-		enemyShots = new ArrayList<Shot>();
-		shotsBombs = new ArrayList<Shot>();
-		powerUps = new ArrayList<PowerUp>();
-		explosions = new ArrayList<Explosion>();
-		toDeleteExplosions = new ArrayList<Explosion>();
-		toRemoveEnemies = new EnemyGroup(false, 1, 0, 0, 0);
+		explosions = new Array<Explosion>();
+		toDeleteExplosions = new Array<Explosion>();
 	}
 	
 	public void resize() throws IOException
 	{
-		enemySetCreator = new EnemySetCreator(ship, enemySet);
+		enemySetCreator = new EnemySetFactory(ship, enemyManager);
 		enemySetCreator.loadEnemiesOfNextLvl();
 	}
 
@@ -73,8 +48,8 @@ public class GameController
 		toDeleteShots.clear();
 		checkForPowerUp();
 		// checkForEnemyGotThrough();TODO
-		checkForBomb();
-		checkForKilledEnemies();
+		enemyManager.checkForBomb(explosions);
+		enemyManager.checkForKilledEnemies(shotsBombs, allShots);
 		destroyEnemyShots();
 
 		checkForGotHit();
@@ -86,8 +61,8 @@ public class GameController
 		} else
 			shotCounter += delta;
 
-		enemySet.moveEnemies(delta);
-		enemyShots.addAll(enemySet.shoot(ship));
+		enemyManager.moveEnemies(delta);
+		enemyShots.addAll(enemyManager.shoot(ship));
 		
         movePowerUps(delta);
 
@@ -99,17 +74,17 @@ public class GameController
             }
         }
 		moveShot(delta);
-        explosions.removeAll(toDeleteExplosions);
+        Helper.removeAll(explosions, toDeleteExplosions);
         toDeleteExplosions.clear();
-        shotsBombs.removeAll(toDeleteShots);
-        enemyShots.removeAll(toDeleteShots);
-        if ( shotsBombs.size() == 0 && explosions.size() == 0)
+        Helper.removeAll(shotsBombs, toDeleteShots);
+        Helper.removeAll(enemyShots, toDeleteShots);
+        if ( shotsBombs.size == 0 && explosions.size == 0)
         {
             ship.setInvincible(false);
             
         }
-        removeEnemies();
-        if (!enemySet.existsEnemies())//TODO next lvl
+        points += enemyManager.removeEnemies();
+        if (!enemyManager.existsEnemies())//TODO next lvl
         {
             cleanUpAllShots();
             nextLvl();
@@ -119,9 +94,9 @@ public class GameController
 
     protected void checkForPowerUp()
     {
-    	if(powerUps.isEmpty())
+    	if(powerUps.size == 0)
     		return;
-        List<PowerUp> powerUpsToRemove = new ArrayList<PowerUp>();
+    	Array<PowerUp> powerUpsToRemove = new Array<PowerUp>();
         for (final PowerUp powerUp : powerUps)
         {
             if(powerUp.overlaps(ship.getShipPowerUpReach()))
@@ -134,121 +109,9 @@ public class GameController
                 }
             }
         }
-        powerUps.removeAll(powerUpsToRemove);
+        Helper.removeAll(powerUps, powerUpsToRemove);
     }
     
-
-    private void checkForBomb()
-    {
-        for (final Explosion explosion : explosions)
-        {
-            for (final EnemyGroup enemyGroup : enemySet.getEnemies().values())
-            {
-                if (enemyGroup.isAppeared())
-                {
-                    for (final AbstractEnemy enemy : enemyGroup)
-                    {
-                        if (explosion.getOuterRadius(1).contains(enemy.x, enemy.y)
-                        		&& !explosion.contains(enemy.x, enemy.y))
-                        {
-                            if(enemy.bombDamage(explosion.getDamage()))
-                            {
-                                enemyKilled(enemy);
-                            }
-                        }
-                    }
-                }
-                enemySet.remove(enemyGroup, toRemoveEnemies);
-            }
-        }
-    }
-
-    private void checkForKilledEnemies()
-    {
-        iterateShotList(shotsBombs, true);
-        iterateShotList(allShots, false);
-    }
-
-    private void iterateShotList(final List<Shot> shots, final boolean bomb)
-    {
-        for (final Shot shoot : shots)
-        {
-            if (shoot.y + shoot.getHeight() < GameScreen.DEFAULT_WORLD_HEIGHT 
-            		&& shoot.x >= 0 
-            		&& shoot.x <= GameScreen.DEFAULT_WORLD_WIDTH)
-            {
-                for (final EnemyGroup enemies : enemySet.getEnemies().values())
-                {
-                    if (!enemies.isEmpty() && enemies.isAppeared()
-                    		&& shoot.overlaps(enemies.getBounds()))
-                    {
-                        if (checkHit(shoot, enemies, bomb))
-                        {
-                            enemySet.remove(enemies, toRemoveEnemies);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @return true if hitted
-     */
-    public boolean checkHit(final Shot shoot, final EnemyGroup enemies, final boolean bomb)
-    {
-        for (final AbstractEnemy enemy : enemies)
-        {
-            if (shoot.overlaps(enemy))
-            {
-                if((bomb && enemy.bombDamage(shoot.getDamage()))
-                	|| (!bomb && enemy.lowerHealth(shoot.getDamage())))
-                {
-                    enemyKilled(enemy); 
-                }
-                if (!shoot.isSimpleShot())
-                {
-                    final float x;
-                    final float y;
-                    if (shoot.x <= enemy.x)
-                        x = enemy.x;
-                    else
-                        x = shoot.getX();
-                    if (shoot.y <= enemy.y)
-                        y = enemy.y;
-                    else
-                        y = shoot.getY();
-                    final Explosion newExplosion = new Explosion(x, y, 40 * ship.getDamage());
-                    explosions.add(newExplosion);
-                    toDeleteShots.add(shoot);
-                }
-                else
-                {
-                    shoot.setY(GameScreen.DEFAULT_WORLD_HEIGHT + 20);
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void enemyKilled(final AbstractEnemy enemy)
-    {
-        for (final AbstractEnemy destroyedEnemy : enemy.getDestroyedEnemies())
-        {
-            toRemoveEnemies.add(destroyedEnemy);
-            if (enemy.hasPowerUp())
-            {
-                PowerUp powerUp = PowerUpFactory.createPowerUp(ship, enemySetCreator.getPlainLvl());
-                powerUp.setCoordinates(enemy.getX() + enemy.getWidth() / 2, (enemy.getY() + enemy.getHeight() / 2));
-                powerUps.add(powerUp);
-                enemySet.registerPowerUp(powerUp);
-            }
-        }
-    }
-
-	
 	private void destroyEnemyShots()
 	{
 	        for (Shot bomb : shotsBombs)
@@ -257,67 +120,19 @@ public class GameController
 	                    toDeleteShots.add(enemyShot);
 	}
 
-	private void checkForGotHit()
-	{
-        if (!ship.isInvincible())
-        {
-            for (final Shot shot : enemyShots)
-            {
-                if(shot.overlaps(ship.getShipHitSpace()))
-                {
-                    ship.gotHit((int) shot.getDamage());
-                    if (ship.getHealth() <= 0)
-                    {
-//                        gameOver(); //TODO
-                    }
-                    toDeleteShots.add(shot);
-                }
-            }
-        }
-	}
 	
     private void movePowerUps(float delta)
     {
-        final List<PowerUp> toRemovePowerUps = new ArrayList<PowerUp>();
+        final Array<PowerUp> toRemovePowerUps = new Array<PowerUp>();
         for (final PowerUp powerUp : powerUps)
         {
             powerUp.move(delta);
             if (powerUp.y < 0 || powerUp.isEated())
                 toRemovePowerUps.add(powerUp);
         }
-        powerUps.removeAll(toRemovePowerUps);
+        Helper.removeAll(powerUps, toRemovePowerUps);
     }
 
-    private void moveShot(float delta)
-    {
-		for(Shot shot : allShots)
-		{
-			shot.nextStep(delta);
-		}
-        for (Shot bomb : shotsBombs)
-        {
-            bomb.nextStep(delta);
-            if (bomb.y + bomb.height > GameScreen.DEFAULT_WORLD_HEIGHT)
-                toDeleteShots.add(bomb);
-        }
-        newEnemyShots = new ArrayList<Shot>();
-        for (Shot shoot : enemyShots)
-        {
-            newEnemyShots.addAll(shoot.nextStep(delta));
-            if (shoot.y - shoot.height < 0)
-                toDeleteShots.add(shoot);
-        }
-        enemyShots.addAll(newEnemyShots);
-    }
-
-    public void removeEnemies()
-    {
-        for (AbstractEnemy enemy : toRemoveEnemies)
-        {
-            points += enemy.getPoints();
-        }
-        toRemoveEnemies.clear();
-    }
 
     public void cleanUpAllShots()
     {
@@ -330,7 +145,7 @@ public class GameController
     private void cleanUpShipShots()
     {
         for (final Shot shot : allShots)
-            shot.setY(GameScreen.DEFAULT_WORLD_HEIGHT + 50);
+            shot.setY(Sizes.DEFAULT_WORLD_HEIGHT + 50);
     }
 
     private void nextLvl()
@@ -344,7 +159,7 @@ public class GameController
         System.gc();
     }
 
-	public EnemySetCreator getEnemySetCreator()
+	public EnemySetFactory getEnemySetCreator()
 	{
 		return enemySetCreator;
 	}
@@ -360,10 +175,6 @@ public class GameController
 		}
 	}
 
-	public GameState getState()
-	{
-		return state;
-	}
 
 //    public void loadNextLvl()
 //    {

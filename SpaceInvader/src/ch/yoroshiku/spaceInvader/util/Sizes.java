@@ -3,6 +3,9 @@ package ch.yoroshiku.spaceInvader.util;
 
 public class Sizes {
 
+	public static float DEFAULT_WORLD_WIDTH = 54;
+	public static final float DEFAULT_WORLD_HEIGHT = 64;
+	
 	public static final float POWER_UP_WIDTH = 3;
 	public static final float POWER_UP_HEIGHT = 3;
 	public static final float SHIP_WIDTH = 6;
@@ -57,6 +60,7 @@ public class Sizes {
 	//
 	public static final float TEXTBOX_WIDTH = 42;
 	public static final float TEXTBOX_HEIGHT = 1.4f;
+	public static final float BUTTON_WIDTH = 25;
 	
 	
 }

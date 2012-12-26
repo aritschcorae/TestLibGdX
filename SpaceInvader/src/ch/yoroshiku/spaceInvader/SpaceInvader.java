@@ -1,24 +1,38 @@
 package ch.yoroshiku.spaceInvader;
 
 
-import java.io.IOException;
-
 import ch.yoroshiku.spaceInvader.screen.GameScreen;
 
 import com.badlogic.gdx.Game;
 
 public class SpaceInvader extends Game {
 
-	@Override
-	public void create() {
-//		setScreen(new MenuScreen(this));
-		try
-		{
-			setScreen(new GameScreen(this));
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+    private GameScreen gameScreen;
+
+
+    @Override
+    public void create() {
+        //loader screens
+    	initScreens();
+    	setScreen(gameScreen);
+    }
+    
+    public void initScreens() {
+        createNewGame();
+    }
+
+    public void gameOver() {
+    	System.exit(0);
+//        setScreen(mainMenuScreen);
+    }
+
+
+    public void createNewGame() {
+        gameScreen = new GameScreen(this);
+    }
+
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
 
 }

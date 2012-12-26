@@ -1,14 +1,13 @@
 package ch.yoroshiku.spaceInvader.model.enemies;
 
-import java.util.List;
-
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import ch.yoroshiku.spaceInvader.model.PowerUp;
 import ch.yoroshiku.spaceInvader.model.Ship;
-import ch.yoroshiku.spaceInvader.model.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
 import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 public class PowerUpEater extends AbstractEnemy
 {
@@ -50,7 +49,7 @@ public class PowerUpEater extends AbstractEnemy
     }
     
     @Override
-    public void move(final float delta)//TODO
+    public boolean move(final float delta)//TODO
     {
         if(eatingPowerUp != null)
         {
@@ -78,6 +77,7 @@ public class PowerUpEater extends AbstractEnemy
                 eatingPowerUp.stop();
             }
         }
+        return true;
     }
     
     @Override
@@ -98,7 +98,7 @@ public class PowerUpEater extends AbstractEnemy
     }
 
     @Override
-    public List<Shot> shoot(Ship ship)
+    public Array<Shot> shoot(Ship ship)
     {
         if(powerUpDocked)
         {

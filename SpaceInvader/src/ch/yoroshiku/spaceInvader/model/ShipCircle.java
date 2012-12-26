@@ -1,8 +1,14 @@
 package ch.yoroshiku.spaceInvader.model;
 
-import java.util.List;
+
+
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 
 public class ShipCircle extends Ship //TODO test everything
@@ -49,28 +55,6 @@ public class ShipCircle extends Ship //TODO test everything
         return shots == maxShots;
     }
     
-    @Override
-    public void setSettingsByDifficulty(int difficulty)
-    {
-//        setSpeed(2);
-//        switch (difficulty)
-//        {
-//        case 1:
-//            setShield(10);
-//            break;
-//        case 2:
-//            setShield(5);
-//            break;
-//        case 6:
-//            setShield(15);
-//        case 4:
-//        case 5:
-//            setSpeed(1);
-//            break;
-//        }
-    }
-
-    
     private void createShotsList()
     {
         for(int i = 0; i < 10; i++)
@@ -82,19 +66,19 @@ public class ShipCircle extends Ship //TODO test everything
     }
 
     @Override
-    public List<Shot> getLeftShots()
+    public Array<Shot> getLeftShots()
     {
         return leftShots;
     }
 
     @Override
-    public List<Shot> getMiddleShots()
+    public Array<Shot> getMiddleShots()
     {
         return middleShots;
     }
 
     @Override
-    public List<Shot> getRightShots()
+    public Array<Shot> getRightShots()
     {
         return rightShots;
     }
@@ -144,10 +128,10 @@ public class ShipCircle extends Ship //TODO test everything
             rightShots.get(currentShot).setWidth(shotWidthWing);
         }
         
-        if(currentShot == middleShots.size() -1)
+        if(currentShot == middleShots.size -1)
             currentShot = 0;
         else
             currentShot ++;
     }
-    
+
 }

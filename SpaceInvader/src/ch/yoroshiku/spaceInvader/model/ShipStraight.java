@@ -1,11 +1,13 @@
 package ch.yoroshiku.spaceInvader.model;
 
-import java.util.List;
-
-import ch.yoroshiku.spaceInvader.screen.GameScreen;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 
 public class ShipStraight extends Ship
@@ -34,51 +36,30 @@ public class ShipStraight extends Ship
         return shots == maxShots;
     }
 
-    @Override
-    public void setSettingsByDifficulty(int difficulty)
-    {
-//        switch (difficulty)
-//        {
-//        case 1:
-//            setShield(10);
-//            break;
-//        case 2:
-//            setShield(5);
-//            break;
-//        case 6:
-//            setShield(15);
-//        case 4:
-//        case 5:
-//            setSpeed(1);
-//            break;
-        
-//        }
-    }
-
-    private void createShotsList()//TODO
+    private void createShotsList()
     {
         for (int i = 0; i < 10; i++)
         {
-            leftShots.add(ShotFactory.createShotLaser(-10f, GameScreen.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
-            rightShots.add(ShotFactory.createShotLaser(-10f, GameScreen.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
-            middleShots.add(ShotFactory.createShotLaser(-10f, GameScreen.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
+            leftShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
+            rightShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
+            middleShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
         }
     }
 
     @Override
-    public List<Shot> getLeftShots()
+    public Array<Shot> getLeftShots()
     {
         return leftShots;
     }
 
     @Override
-    public List<Shot> getMiddleShots()
+    public Array<Shot> getMiddleShots()
     {
         return middleShots;
     }
 
     @Override
-    public List<Shot> getRightShots()
+    public Array<Shot> getRightShots()
     {
         return rightShots;
     }
@@ -122,7 +103,7 @@ public class ShipStraight extends Ship
             }
         }
 
-        if (currentShot == middleShots.size() - 1)
+        if (currentShot == middleShots.size - 1)
             currentShot = 0;
         else
             currentShot++;

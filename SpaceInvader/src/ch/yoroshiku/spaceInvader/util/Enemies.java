@@ -59,14 +59,6 @@ public class Enemies {
         ALL_TEXTURES.add(POWER_UP_EATER_ID, new Texture(Gdx.files.internal("images/power_up_eater.png")));
         
         //explosion
-//        int height = BitmapFactory.decodeResource(context.getResources(), R.drawable.explosion).getHeight();
-//        float explosionZoom;
-//        if(3 <  (height * zoom) % 6)
-//            explosionZoom = ((height * zoom) + (6 - (height * zoom) % 6)) / height;
-//        else
-//            explosionZoom = ((height * zoom) - (height * zoom) % 6) / height;
-//        
-//        matrix.postScale(explosionZoom, explosionZoom);
         ALL_TEXTURES.add(EXPLOSION_ID, new Texture(Gdx.files.internal("images/explosion.gif")));
         
         //postThrower

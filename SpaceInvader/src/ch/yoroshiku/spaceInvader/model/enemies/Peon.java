@@ -1,15 +1,16 @@
 package ch.yoroshiku.spaceInvader.model.enemies;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
+
+
 import ch.yoroshiku.spaceInvader.model.Ship;
-import ch.yoroshiku.spaceInvader.model.Shot;
-import ch.yoroshiku.spaceInvader.model.ShotFactory;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 public class Peon extends AbstractEnemy
 {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +27,7 @@ public class Peon extends AbstractEnemy
     
     
 	@Override
-	public void move(final float delta)
+	public boolean move(final float delta)
 	{
 
 		if (enemyDirection)
@@ -43,14 +44,15 @@ public class Peon extends AbstractEnemy
 			yPositionDif = 0;
 			enemyDirection = !enemyDirection;
 		}
+		return true;
 	}
     
     @Override
-    public List<Shot> shoot(final Ship ship)
+    public Array<Shot> shoot(final Ship ship)
     {
         if (random.nextInt(300 / shootFrequency) == 0)
         {
-            List<Shot> returnList = new ArrayList<Shot>();
+        	Array<Shot> returnList = new Array<Shot>();
             returnList.add(ShotFactory.createShotLaser(x, y + width / 2, shotVelocity));
             return returnList;
         }

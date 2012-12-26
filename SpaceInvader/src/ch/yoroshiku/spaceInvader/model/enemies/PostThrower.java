@@ -1,15 +1,12 @@
 package ch.yoroshiku.spaceInvader.model.enemies;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import ch.yoroshiku.spaceInvader.model.Ship;
-import ch.yoroshiku.spaceInvader.model.Shot;
-import ch.yoroshiku.spaceInvader.screen.GameScreen;
-import ch.yoroshiku.spaceInvader.util.Calculator;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.util.Helper;
 import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
@@ -17,6 +14,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
 abstract public class PostThrower extends AbstractEnemy
 {
@@ -43,14 +41,14 @@ abstract public class PostThrower extends AbstractEnemy
         
         postY = 0;
         leftPostX = 0;
-        rightPostX = GameScreen.DEFAULT_WORLD_WIDTH - Sizes.POST_WIDTH;
-        moveLeft = Calculator.createDirection(leftPost.x, leftPost.y, leftPostX, postY);
-        moveRight = Calculator.createDirection(leftPost.x, leftPost.y, rightPostX, postY);
+        rightPostX = Sizes.DEFAULT_WORLD_WIDTH - Sizes.POST_WIDTH;
+        moveLeft = Helper.createDirection(leftPost.x, leftPost.y, leftPostX, postY);
+        moveRight = Helper.createDirection(leftPost.x, leftPost.y, rightPostX, postY);
         moveDown = -35;
     }
 
     @Override
-    public void move(float delta)
+    public boolean move(float delta)
     {
         if (!isPostInPosition)
         {
@@ -69,6 +67,7 @@ abstract public class PostThrower extends AbstractEnemy
                 rightPost.y = postY;
             }
         }
+        return true;
     }
     
     @Override
@@ -85,23 +84,20 @@ abstract public class PostThrower extends AbstractEnemy
     
     abstract protected void setModification(boolean actiaved);
 
-    @Override
-    public List<Shot> shoot(Ship ship)
-    {
-        if (random.nextInt(100 / shootFrequency) == 0)
-        {
-            List<Shot> returnList = new ArrayList<Shot>();
-            returnList.add(createAimingShot(ship, x, y));
-            return returnList;
-        }
-        return emptyShotList;
-    }
-    
+	@Override
+	public Array<Shot> shoot(Ship ship) {
+		if (random.nextInt(100 / shootFrequency) == 0) {
+			Array<Shot> returnList = new Array<Shot>();
+			returnList.add(createAimingShot(ship, x, y));
+			return returnList;
+		}
+		return emptyShotList;
+	}
+
     abstract protected Color getLaserColor();
-    
-    public Map<Rectangle, TextureRegion> getSubTextures()
-    {
+
+	public Map<Rectangle, TextureRegion> getSubTextures() {
 		return posts;
-    }
-    
+	}
+
 }

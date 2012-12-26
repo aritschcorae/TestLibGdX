@@ -1,20 +1,24 @@
 package ch.yoroshiku.spaceInvader.model.enemies;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
+
+import ch.yoroshiku.spaceInvader.model.AbstractGameObject;
 import ch.yoroshiku.spaceInvader.model.Ship;
-import ch.yoroshiku.spaceInvader.model.Shot;
-import ch.yoroshiku.spaceInvader.model.ShotFactory;
-import ch.yoroshiku.spaceInvader.util.Calculator;
+import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
+import ch.yoroshiku.spaceInvader.util.Helper;
+import ch.yoroshiku.spaceInvader.util.Sizes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
-public abstract class AbstractEnemy extends Rectangle
+public abstract class AbstractEnemy extends AbstractGameObject
 {
 	private static final long serialVersionUID = 1L;
 	protected double health = 1;
@@ -25,7 +29,7 @@ public abstract class AbstractEnemy extends Rectangle
     protected int shotVelocity = -35;
     private double points = 1;
     private boolean powerUps = false;
-    protected List<Shot> emptyShotList = new ArrayList<Shot>();
+    protected Array<Shot> emptyShotList = new Array<Shot>();
     protected TextureRegion texture;
     
     public AbstractEnemy(final float x, final float y, final float width, final float height, final boolean powerUps, final Texture texture)
@@ -41,11 +45,6 @@ public abstract class AbstractEnemy extends Rectangle
         this.powerUps = powerUps;
     }
     
-    public double getHealth()
-    {
-        return health;
-    }
-
     public double getPoints()
     {
         return points;
@@ -97,13 +96,13 @@ public abstract class AbstractEnemy extends Rectangle
         this.invincible = invincible;
     }
 
-    abstract public void move(float delta);
+    abstract public Array<Shot> shoot(Ship ship);
     
-    abstract public List<Shot> shoot(Ship ship);
-    
-    public List<AbstractEnemy> getDestroyedEnemies()
+    public Array<AbstractEnemy> getDestroyedEnemies()
     {
-        return Collections.singletonList(this);
+    	Array<AbstractEnemy> a = new Array<AbstractEnemy>();
+    	a.add(this);
+        return a;
     }
     
     /**
@@ -140,7 +139,7 @@ public abstract class AbstractEnemy extends Rectangle
     
     protected Shot createAimingShot(Ship ship, float x, float y)
     {
-        return createShot(x, y, Calculator.createDirection(x, y, ship.x, ship.y));
+        return createShot(x, y, Helper.createDirection(x, y, ship.x, ship.y));
     }
     
     public Map<Rectangle, TextureRegion> getSubTextures()
@@ -162,4 +161,40 @@ public abstract class AbstractEnemy extends Rectangle
 	{
 		return maxHealth;
 	}
+	
+	public void drawHealthBar(final ShapeRenderer shapeRenderer, final float ppux, final float ppuy, final float offset){
+
+		//border
+		shapeRenderer.setColor(Color.YELLOW);
+		shapeRenderer.filledRect(offset + x * ppux, (Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy - 1, 
+				width * ppux, 1);
+		shapeRenderer.filledRect(offset + x * ppux, (Sizes.HEALTHBAR_HEIGHT + Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy, 
+				width * ppux, 1);
+		//Total Health
+		shapeRenderer.setColor(Color.RED);
+		shapeRenderer.filledRect(offset + x * ppux, (Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy, 
+				width * ppux, Sizes.HEALTHBAR_HEIGHT * ppuy);
+		//health remaining
+		shapeRenderer.setColor(Color.GREEN);
+		shapeRenderer.filledRect(offset + x * ppux, (Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy, 
+				(float)(width * ppux * health / maxHealth), Sizes.HEALTHBAR_HEIGHT * ppuy);
+	}
+	
+	public void drawSprite(final SpriteBatch batch, final float ppuX, final float ppuY, final float border){
+		batch.draw(getTexture(), border + x * ppuX, y * ppuY, ppuX * width, ppuY * height);
+		if(getSubTextures() != null)
+		{
+			final Map<Rectangle, TextureRegion> map = getSubTextures();
+			for(final Rectangle rect : map.keySet())
+			{
+				batch.draw(map.get(rect), border + rect.x * ppuX, rect.y * ppuY, rect.width * ppuX, rect.height * ppuY);
+			}
+		}
+	}
+	
+	@Override
+	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
+		//dummy method
+	}
+	
 }
