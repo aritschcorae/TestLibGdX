@@ -6,6 +6,8 @@ import java.util.Map;
 
 
 import ch.yoroshiku.spaceInvader.model.Ship;
+import ch.yoroshiku.spaceInvader.screen.GameScreen;
+import ch.yoroshiku.spaceInvader.screen.GameScreen.GamePhase;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -64,10 +66,30 @@ public class Gamepad implements InputProcessor{
 	}
 
 
-	public void update(float delta) {
-		processInput(delta);
+	public void update(float delta, final GamePhase phase) {
+		switch (phase) {
+		case GAMESTART:
+		case GAMING:
+			processInput(delta);
+			break;
+		case PAUSE:
+		case LEVEL_LOAD:
+		case LEVEL_WAIT:
+			if(isKeyPressed())
+				GameScreen.updatePhase(GamePhase.GAMING);
+			break;
+		case DEAD:
+			break;
+		case FINISHED:
+			//TODO
+			break;
+		}
 	}
 	
+	private boolean isKeyPressed() {
+		return keys.get(IngameKeys.LEFT) || keys.get(IngameKeys.RIGHT);
+	}
+
 	private void processInput(float change) {
 		if(keys.get(IngameKeys.LEFT) && !keys.get(IngameKeys.RIGHT)){
 			ship.moveLeft(change);
@@ -84,7 +106,7 @@ public class Gamepad implements InputProcessor{
         else if (keycode == Keys.RIGHT)
             rightPressed();
         else if (keycode == Keys.UP)
-            gameController.dropBomb();
+            gameController.dropBomb(ship);
         else if (keycode == Keys.DOWN)
         	ship.setSpray(!ship.isSpray());
         return true;

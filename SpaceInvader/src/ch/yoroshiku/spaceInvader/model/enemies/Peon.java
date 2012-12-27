@@ -17,7 +17,7 @@ public class Peon extends AbstractEnemy
     private float yPositionDif = 0;
     private boolean enemyDirection = false;
     private Random random = new Random();
-    private final float move = (float) 0.2;
+    private final float move = (float) 2;
     
     public Peon(final float x, final float y, final boolean powerUps, final Texture texture)
     {
@@ -32,12 +32,12 @@ public class Peon extends AbstractEnemy
 
 		if (enemyDirection)
 		{
-			x += move * 25 * delta;
+			x += move * delta;
 		} else
 		{
-			x -= move * 25 * delta;
+			x -= move * delta;
 		}
-		yPositionDif += 6 * delta;
+		yPositionDif += 3 * delta;
 		if (yPositionDif >= 1.2)
 		{
 			y -= yPositionDif;
@@ -50,7 +50,7 @@ public class Peon extends AbstractEnemy
     @Override
     public Array<Shot> shoot(final Ship ship)
     {
-        if (random.nextInt(300 / shootFrequency) == 0)
+        if (random.nextInt(250 / shootFrequency) == 0)
         {
         	Array<Shot> returnList = new Array<Shot>();
             returnList.add(ShotFactory.createShotLaser(x, y + width / 2, shotVelocity));

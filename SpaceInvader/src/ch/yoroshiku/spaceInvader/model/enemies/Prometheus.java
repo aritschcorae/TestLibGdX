@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-
-
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.shot.Shot;
 import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
@@ -15,7 +13,6 @@ import ch.yoroshiku.spaceInvader.util.Enemies;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 import ch.yoroshiku.spaceInvader.util.Textures;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,7 +25,7 @@ public class Prometheus extends AbstractEnemy
     private PrometheusWing leftWing;
     private PrometheusWing rightWing;
     private float xMovement = 0;
-    private float directiona = 1;
+    private float directions = 1;
     private float duration = 0.75f;
     private boolean leftWingAlive = true, rightWingAlive = true;
     private boolean alive = true, exploded = false;
@@ -95,11 +92,11 @@ public class Prometheus extends AbstractEnemy
     	}
     	else
     	{
-        	xMovement = 5 * delta * directiona;
+        	xMovement = delta * directions;
         	duration -= delta;
             if(duration < 0)
             {
-            	directiona *= -1;
+            	directions *= -1;
                 duration = 1.5f;
             }
             x += xMovement;

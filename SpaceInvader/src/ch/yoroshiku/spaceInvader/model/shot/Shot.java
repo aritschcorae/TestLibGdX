@@ -64,7 +64,7 @@ public abstract class Shot extends AbstractSprite
     {
         this.damage = damage;
     }
-    //TODO
+    
     public Array<Shot> nextStep(float delta)
     {
         if (acceleration != 1)

@@ -44,16 +44,8 @@ public abstract class AbstractSprite extends Rectangle {
 		return health;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
 	public float getSpeed() {
 		return speed;
-	}
-
-	public void setSpeed(final float speed) {
-		this.speed = speed;
 	}
 
 	public TextureRegion getTextureRegion() {

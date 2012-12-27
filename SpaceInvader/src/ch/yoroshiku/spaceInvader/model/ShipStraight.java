@@ -5,15 +5,12 @@ import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 
 public class ShipStraight extends Ship
 {
 	private static final long serialVersionUID = 1L;
-	private int shotDistance = 3;
     private float shotNormalVelocity, shotSlowerVelocity, shotDriftVelocity;
     
     public ShipStraight(float x, float y, Texture texture)
@@ -38,7 +35,7 @@ public class ShipStraight extends Ship
 
     private void createShotsList()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 8; i++)
         {
             leftShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
             rightShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
@@ -73,19 +70,19 @@ public class ShipStraight extends Ship
     @Override
     public void shoot(final boolean spray, float delay)
     {
-        middleShots.get(currentShot).x = (x + shotMiddle) + shotNormalVelocity * delay;
-        middleShots.get(currentShot).y = Sizes.SHIP_HEIGHT;
+        middleShots.get(currentShot).x = (x + shotMiddle);
+        middleShots.get(currentShot).y = Sizes.SHIP_HEIGHT + shotNormalVelocity * delay;
         middleShots.get(currentShot).setDamage(damage);
         if (shots > 1)
         {
-            leftShots.get(currentShot).x = (x + shotLeft) + shotNormalVelocity * delay;
-            leftShots.get(currentShot).y = Sizes.SHIP_HEIGHT;
+            leftShots.get(currentShot).x = (x + shotLeft);
+            leftShots.get(currentShot).y = Sizes.SHIP_HEIGHT + shotNormalVelocity * delay;
             leftShots.get(currentShot).setDamage(damage);
         }
         if (shots > 2)
         {
-        	rightShots.get(currentShot).x = (x + shotRight) + shotNormalVelocity * delay;
-            rightShots.get(currentShot).y = Sizes.SHIP_HEIGHT;
+        	rightShots.get(currentShot).x = (x + shotRight);
+            rightShots.get(currentShot).y = Sizes.SHIP_HEIGHT + shotNormalVelocity * delay;
             if (spray)
             {
                 leftShots.get(currentShot).setMovementX(shotDriftVelocity);

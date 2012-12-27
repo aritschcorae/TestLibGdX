@@ -13,11 +13,15 @@ public class SpaceInvader extends Game {
     @Override
     public void create() {
         //loader screens
-    	initScreens();
+    	try {
+			initScreens();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     	setScreen(gameScreen);
     }
     
-    public void initScreens() {
+    public void initScreens() throws Exception {
         createNewGame();
     }
 
@@ -27,7 +31,7 @@ public class SpaceInvader extends Game {
     }
 
 
-    public void createNewGame() {
+    public void createNewGame() throws Exception {
         gameScreen = new GameScreen(this);
     }
 

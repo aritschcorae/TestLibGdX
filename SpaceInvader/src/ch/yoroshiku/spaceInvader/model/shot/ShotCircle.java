@@ -2,6 +2,7 @@ package ch.yoroshiku.spaceInvader.model.shot;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 
 
@@ -18,19 +19,20 @@ class ShotCircle extends Shot
 	@Override
 	public boolean move(float delta) {
 		// TODO Auto-generated method stub
+		nextStep(delta);
 		return false;
 	}
 
 	@Override
 	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
+		//note used
 	}
 
 	@Override
 	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
+		shapeRenderer.begin(ShapeType.Circle);
+		shapeRenderer.circle(offset + x * ppux, y * ppuy, height);
+		shapeRenderer.end();
 	}
 
 }

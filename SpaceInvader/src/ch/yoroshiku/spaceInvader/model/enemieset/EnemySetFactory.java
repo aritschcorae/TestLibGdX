@@ -272,21 +272,16 @@ public class EnemySetFactory
         Map<Integer, EnemyGroup> enemies = new HashMap<Integer, EnemyGroup>();
         EnemyGroup enemyGroup = new EnemyGroup(true, id, timeAppear, kindAppear, 1);
 
-        final float x = (canvasWidth / 2) - (Sizes.THROWER_WIDTH / 2);
-        final float y = canvasHeight - Sizes.POST_HEIGHT * 2;
-        if(enemyBitmap == Enemies.FREEZER_ID)
-        {
-            enemyGroup.add(new Freezer(x,y, 3, true, canvasWidth, canvasHeight));
-        }
-        else if(enemyBitmap == Enemies.BOMB_DEFUSER_ID)
-        {
-            enemyGroup.add(new BombDefuser(x,y, 3, true, canvasWidth, canvasHeight));
-        }
-        else if(enemyBitmap == Enemies.DEFENSLESS_ID)
-        {
-            enemyGroup.add(new Defensless(x,y, 3, true, canvasWidth, canvasHeight));
-        }
-        enemies.put(id, enemyGroup);
+		final float x = (canvasWidth / 2) - (Sizes.THROWER_WIDTH / 2);
+		final float y = canvasHeight - Sizes.POST_HEIGHT * 2;
+		if (enemyBitmap == Enemies.FREEZER_ID) {
+			enemyGroup.add(new Freezer(x, y, 3, true, canvasWidth, canvasHeight));
+		} else if (enemyBitmap == Enemies.BOMB_DEFUSER_ID) {
+			enemyGroup.add(new BombDefuser(x, y, 3, true, canvasWidth, canvasHeight));
+		} else if (enemyBitmap == Enemies.DEFENSLESS_ID) {
+			enemyGroup.add(new Defensless(x, y, 3, true, canvasWidth, canvasHeight));
+		}
+		enemies.put(id, enemyGroup);
         return enemies;
     }
     

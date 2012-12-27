@@ -20,7 +20,7 @@ public class Helper {
     }
 
 	public static <T> void removeAll(Array<T> base, Array<T> toRemove){
-		for(T element : base){
+		for(T element : toRemove){
 			base.removeValue(element, false);
 		}
 	}

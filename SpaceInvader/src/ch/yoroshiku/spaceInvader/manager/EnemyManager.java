@@ -13,6 +13,8 @@ import ch.yoroshiku.spaceInvader.model.enemieset.EnemyGroup;
 import ch.yoroshiku.spaceInvader.model.shot.Shot;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 public class EnemyManager extends Manager {
@@ -21,30 +23,49 @@ public class EnemyManager extends Manager {
     private Map<Integer, EnemyGroup> enemies;
     private EnemyGroup powerUpEaters;
 	private EnemyGroup toRemoveEnemies;
-    private int enemyWait = 0;
     private Random random = new Random();
-    private static Integer ENEMY_SHOT_SLOW_DOWN = 4;
+    private static Float ENEMY_SHOT_SLOW_DOWN = 0.1f;
+    private float lastShot = 0;
     
     public EnemyManager()
     {
         enemies = new HashMap<Integer, EnemyGroup>();
 		toRemoveEnemies = new EnemyGroup(false, 1, 0, 0, 0);
     }
-    
+
+	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, float border) {
+		for (EnemyGroup enemyGroup : enemies.values()){
+			if(enemyGroup.isVisible())
+			{
+				for(AbstractEnemy enemy : enemyGroup){
+	        		if(enemy.isVisible()){
+	        			enemy.drawSprite(batch, ppux, ppuy, border);
+	        		}
+	        	}
+			}
+		}
+	}
+
+	public void drawHealthBar(ShapeRenderer shapeRenderer, float ppux, float ppuy, float border) {
+        for (EnemyGroup enemyGroup : enemies.values()){
+        	if(enemyGroup.isVisible())
+        	for(AbstractEnemy enemy : enemyGroup){
+        		if(enemy.isShowHealthBar() && enemy.isVisible())
+        			enemy.drawHealthBar(shapeRenderer, ppux, ppuy, border);
+        	}
+        }
+	}
+	
 	public void move(float delta) {
         for (EnemyGroup enemyGroup : enemies.values())
         {
-            if(enemyWait % enemyGroup.getSlowDown() == 0)
-            {
-                if (!enemyGroup.isVisible())
-                {
-                    enemyGroup.appear(delta);
-                    continue;
-                }
-                enemyGroup.move(delta);
-            }
+			if (!enemyGroup.isVisible()) {
+				enemyGroup.appear(delta);
+				continue;
+			}
+			enemyGroup.move(delta);
         }
-        enemyWait ++;
+        lastShot += delta;
 	}
 
     
@@ -74,13 +95,12 @@ public class EnemyManager extends Manager {
         cleanedUp = false;
     }
     
-    
 
-    public void checkForKilledEnemies(final Array<Shot> shotsBombs, final Array<Shot> allShots)
-    {
-        iterateShotList(shotsBombs, true);
-        iterateShotList(allShots, false);
-    }
+	public void checkForCollision(ShotManager shotManager) {
+		checkForExplosionCollision(shotManager.getExplosions());
+        iterateShotList(shotManager.getShotsBombs(), true);
+        iterateShotList(shotManager.getAllShots(), false);		
+	}    
 
     private void iterateShotList(final Array<Shot> shots, final boolean bomb)
     {
@@ -161,7 +181,7 @@ public class EnemyManager extends Manager {
         }
     }
 
-    public void checkForBomb(Array<Explosion> explosions)
+    public void checkForExplosionCollision(Array<Explosion> explosions)
     {
         for (final Explosion explosion : explosions)
         {
@@ -227,10 +247,10 @@ public class EnemyManager extends Manager {
     }
     
     
-    public Array<Shot> shoot(Ship ship)
+    public Array<Shot> shot(Ship ship)
     {
     	Array<Shot> returnList = new Array<Shot>();
-        if(enemyWait % ENEMY_SHOT_SLOW_DOWN == 0)
+        if(lastShot >= ENEMY_SHOT_SLOW_DOWN)
         {
             for(EnemyGroup enemyGroup : enemies.values())
             {
@@ -242,6 +262,7 @@ public class EnemyManager extends Manager {
                     }
                 }
             }
+            lastShot = 0;
         }
         return returnList;
     }

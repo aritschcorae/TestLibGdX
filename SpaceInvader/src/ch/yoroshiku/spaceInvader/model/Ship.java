@@ -27,7 +27,7 @@ public abstract class Ship extends AbstractGameObject
     protected float speed, centerX, centerY;
     private int shield = 5, health = 3;
     protected int  maxHealth = 3;
-    protected int damage = 1, shots = 1, bombs = 2;
+    protected int damage = 1, shots = 3, bombs = 2;
     protected int maxShots;
     private boolean invincible = false;
     protected float shotLeft, shotMiddle, shotRight;
@@ -80,9 +80,7 @@ public abstract class Ship extends AbstractGameObject
     }
 	
 	public void drawSprite(final SpriteBatch batch, final float ppuX, final float ppuY, final float border){
-		batch.begin();
 		batch.draw(getShipTexture(), border + x * ppuX, y * ppuY, 0, 0, width, height, ppuX, ppuY, 0);
-		batch.end();
 	}
 	
 	public void drawShape(final ShapeRenderer shapeRenderer, final float ppuX, final float ppuY, final float border){

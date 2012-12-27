@@ -18,10 +18,10 @@ import com.badlogic.gdx.Screen;
 public class GameScreen implements Screen
 {
 	
-	enum GamePhase{
-		GAMESTART, GAMING, PAUSE, LEVEL_END, DEAD
+	public enum GamePhase{
+		GAMESTART, GAMING, PAUSE, LEVEL_LOAD, HIGHSCORE, LEVEL_WAIT, DEAD, FINISHED
 	}
-	private GamePhase phase = GamePhase.GAMING;
+	private static GamePhase phase = GamePhase.GAMING;
 
 	private Renderer renderer;
 	public static float buttonHeight;
@@ -35,17 +35,18 @@ public class GameScreen implements Screen
 	private Gamepad gamepad;
 	
 	
-	public GameScreen(SpaceInvader game) {
+	public GameScreen(SpaceInvader game) throws Exception {
 		//TODO init game (ship and so on).
 		starManager = new StarManager();
 		enemyManager = new EnemyManager();
 		powerupManager = new PowerUpManager();
 		shotManager = new ShotManager();
+//		ship = new ShipCircle(0, 0, Textures.SHIP_STRAIGHT_TEXTURE); //
 		ship = new ShipStraight(0, 0, Textures.SHIP_STRAIGHT_TEXTURE);
 		ship.x = (Sizes.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH) / 2;
 		shotManager.addShipShots(ship);
-		gameController = new GameController(shotManager);
-		gamepad = new Gamepad(null, ship);
+		gameController = new GameController(shotManager, ship, enemyManager, phase);
+		gamepad = new Gamepad(gameController, ship);
 	}
 
 	
@@ -63,37 +64,31 @@ public class GameScreen implements Screen
 	public void render(float delta)
 	{
 		renderer.cleanScreen();
-		renderer.draw(ship, starManager, enemyManager, powerupManager, shotManager);
+		gamepad.update(delta, phase);
+		renderer.draw(ship, starManager, enemyManager, powerupManager, shotManager, phase);
 		renderer.drawMisc();
 		//TODO call renderer for drawing
-		switch (phase) {
-		case GAMESTART:
-			//TODO
-			break;
-		case GAMING:
-			starManager.move(delta);
-			gamepad.update(delta);
-			//TODO
-			break;
-		case DEAD:
-			//TODO
-			break;
-		case LEVEL_END:
-			//TODO
-			break;
-		case PAUSE:
-			//TODO
-			break;
-		}
+		gameController.process(delta, ship, enemyManager, shotManager, starManager, powerupManager, phase);
 	}
 
+	public static void updatePhase(GamePhase updatedPhase){
+		phase = updatedPhase;
+	}
 
 	@Override
 	public void hide() {}
+	GamePhase stateBeforeBreak;
 	@Override
-	public void pause() {}
+	public void pause() {
+		stateBeforeBreak = phase;
+		phase = GamePhase.PAUSE;
+	}
 	@Override
-	public void resume() {}
+	public void resume() {
+		phase = stateBeforeBreak;
+	}
 	@Override
-	public void dispose() {	}
+	public void dispose() {
+		System.exit(0);
+	}
 }

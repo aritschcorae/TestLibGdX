@@ -2,6 +2,7 @@ package ch.yoroshiku.spaceInvader.model.shot;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 
 
@@ -17,20 +18,23 @@ public class ShotLaser extends Shot
 
 	@Override
 	public boolean move(float delta) {
-		// TODO Auto-generated method stub
-		return false;
+		x += movementX;
+		y += movementY;
+		return true;
 	}
 
 	@Override
 	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
+		//not used
 	}
 
 	@Override
 	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
+		shapeRenderer.begin(ShapeType.Line);
+		for(int i = 0 ; i < width; i ++){
+			shapeRenderer.line(offset + x * ppux, y * ppuy, offset + (x + i) * ppux, (y + height) * ppuy);
+		}
+		shapeRenderer.end();
 	}
 
 }

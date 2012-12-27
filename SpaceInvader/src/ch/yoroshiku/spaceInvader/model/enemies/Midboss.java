@@ -2,15 +2,12 @@ package ch.yoroshiku.spaceInvader.model.enemies;
 
 import java.util.Random;
 
-
-
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.shot.Shot;
 import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
@@ -32,13 +29,13 @@ public class Midboss extends AbstractEnemy
         float xposition;
         do
         {
-            yposition = y + (random.nextFloat() - 0.5f) * 100 * delta;
+            yposition = y + (random.nextFloat() - 0.5f) * 40 * delta;
         }
         while(yposition > Sizes.DEFAULT_WORLD_HEIGHT || yposition < Sizes.DEFAULT_WORLD_HEIGHT / 3);
         y = yposition;
         do
         {
-            xposition = x + (random.nextFloat() - 0.5f) * 100 * delta;
+            xposition = x + (random.nextFloat() - 0.5f) * 40 * delta;
         }
         while(xposition + width > Sizes.DEFAULT_WORLD_WIDTH || xposition < 1);
         x = xposition;

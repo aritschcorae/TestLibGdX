@@ -43,7 +43,7 @@ class ShotSplash extends Shot
 
 	@Override
 	public boolean move(float delta) {
-		// TODO Auto-generated method stub
+		nextStep(delta);
 		return false;
 	}
 

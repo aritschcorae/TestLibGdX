@@ -16,11 +16,9 @@ public abstract class Manager {
 
 	public void drawSprite(final SpriteBatch batch, final float ppux, final float ppuy, final float offset,
 			final Array<? extends AbstractSprite> sprites) {
-		batch.begin();
 		for (AbstractSprite sprite : sprites) {
 			sprite.drawSprite(batch, ppux, ppuy, offset);
 		}
-		batch.end();
 	}
 
 	/**
