@@ -32,13 +32,13 @@ public class MidbossSplash extends AbstractEnemy
         float xposition;
         do
         {
-            yposition = y + (random.nextFloat() - 0.5f) * 100 * delta;
+            yposition = y + (random.nextFloat() - 0.5f) * 40 * delta;
         }
         while(yposition > Sizes.DEFAULT_WORLD_HEIGHT || yposition < Sizes.DEFAULT_WORLD_HEIGHT / 3);
         y = yposition;
         do
         {
-            xposition = x + (random.nextFloat() - 0.5f) * 100 * delta;
+            xposition = x + (random.nextFloat() - 0.5f) * 40 * delta;
         }
         while(xposition + width > Sizes.DEFAULT_WORLD_WIDTH || xposition < 1);
         x = xposition;
@@ -48,12 +48,12 @@ public class MidbossSplash extends AbstractEnemy
     @Override
     public Array<Shot> shoot(Ship ship)
     {
-        if (random.nextInt(50 / shootFrequency) == 0)
-        {
-        	Array<Shot> returnList = new Array<Shot>();
-            returnList.add(ShotFactory.createShotSplash(x + width / 2, y - height, 1, 0, y - height, true));
-            return returnList;
-        }
+//        if (random.nextInt(50 / shootFrequency) == 0)
+//        {
+//        	Array<Shot> returnList = new Array<Shot>();
+//            returnList.add(ShotFactory.createShotSplash(x + width / 2, y - height, 1, 0, y - height, true));
+//            return returnList;
+//        }
         return emptyShotList;
     }
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-class ShotSplash extends Shot
+class ShotSplash extends ShotLaser
 {
 	private static final long serialVersionUID = 8862516614730444636L;
     private boolean triple, splashed = false;
@@ -50,15 +50,12 @@ class ShotSplash extends Shot
 
 	@Override
 	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
 	}
 
 
 	@Override
 	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
+		super.drawShape(shapeRenderer, ppux, ppuy, offset);
 	}
 
 }

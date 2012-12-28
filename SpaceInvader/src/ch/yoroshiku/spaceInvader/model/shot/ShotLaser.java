@@ -3,12 +3,13 @@ package ch.yoroshiku.spaceInvader.model.shot;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 
 
 
 public class ShotLaser extends Shot
 {
-
 	private static final long serialVersionUID = 1L;
 
 	public ShotLaser(float x, float y, int damage, float movementX, float movementY, float height, float width, boolean enemyShot)
@@ -18,8 +19,7 @@ public class ShotLaser extends Shot
 
 	@Override
 	public boolean move(float delta) {
-		x += movementX;
-		y += movementY;
+		nextStep(delta);
 		return true;
 	}
 
@@ -30,9 +30,13 @@ public class ShotLaser extends Shot
 
 	@Override
 	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
-		shapeRenderer.begin(ShapeType.Line);
-		for(int i = 0 ; i < width; i ++){
-			shapeRenderer.line(offset + x * ppux, y * ppuy, offset + (x + i) * ppux, (y + height) * ppuy);
+		if(width != 1){
+			shapeRenderer.begin(ShapeType.FilledRectangle);
+			shapeRenderer.filledRect(offset + x * ppux, y * ppuy, width * ppux, height * ppuy);
+		}else{
+			shapeRenderer.begin(ShapeType.Line);
+			System.out.println(x + " - " + y + " - "  + movementX + " - " + movementY);
+			shapeRenderer.line(offset + x * ppux, y * ppuy, offset + (x + movementX) * ppux, (y + height + movementY) * ppuy);
 		}
 		shapeRenderer.end();
 	}

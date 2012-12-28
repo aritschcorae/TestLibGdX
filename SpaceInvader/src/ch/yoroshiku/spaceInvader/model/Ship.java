@@ -27,11 +27,11 @@ public abstract class Ship extends AbstractGameObject
     protected float speed, centerX, centerY;
     private int shield = 5, health = 3;
     protected int  maxHealth = 3;
-    protected int damage = 1, shots = 3, bombs = 2;
+    protected int damage = 10, shots = 3, bombs = 2;
     protected int maxShots;
     private boolean invincible = false;
     protected float shotLeft, shotMiddle, shotRight;
-    protected boolean spray = false;
+    protected boolean spray = true;
     protected int currentShot = 0;
     private boolean slowedDown = false, defensless = false, bombless = false, illness = false, position = true;
     private boolean powerupDamage = false, powerupSpeed = false;
@@ -214,7 +214,7 @@ public abstract class Ship extends AbstractGameObject
     abstract public Array<Shot> getMiddleShots();
     abstract public Array<Shot> getRightShots();
     abstract public int getShotCoolDown();
-    abstract public void shoot(boolean spray, float delay);
+    abstract public void shoot(float delay);
 
     private float tempSpeed = 0;
     public void slowDownShip(boolean slowDown)

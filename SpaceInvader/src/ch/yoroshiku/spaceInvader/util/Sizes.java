@@ -17,7 +17,7 @@ public class Sizes {
 	public static final float SHIP_POWERUP_REACH_BOOST_WIDTH = 8; //width + 2*boost
 	public static final float SHIP_HIT_EVADE = 0.5f;
 	public static final float SHIP_HIT_EVADE_WIDTH = 5; //width - 2*evadebonus
-	public static final float SHOT_LASER_WIDTH = 0.5f;
+	public static final float SHOT_LASER_WIDTH = 1;
 	public static final float SHOT_LASER_HEIGHT = 2;
 	public static final float SHOT_CIRCLE_SMALL = 1.4f;
 	public static final float SHOT_CIRCLE_LARGE = 1.8f;

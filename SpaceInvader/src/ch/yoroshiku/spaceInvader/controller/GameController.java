@@ -38,7 +38,7 @@ public class GameController
 			shotManager.gotShipHit(ship);
 
 			if (shotCounter > 0.16) {
-				ship.shoot(false, shotCounter - 0.16f);
+				ship.shoot(shotCounter - 0.16f);
 				shotCounter = 0;
 			} else
 				shotCounter += delta;

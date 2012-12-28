@@ -71,7 +71,7 @@ public abstract class Shot extends AbstractSprite
             accelarete();
         x += movementX * delta;
         y += movementY * delta;
-        return new Array<Shot>();
+        return EMPTY_SHOT_ARRAY;
     }
     
     private void accelarete()

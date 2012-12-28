@@ -28,16 +28,13 @@ public class Peon extends AbstractEnemy
     
 	@Override
 	public boolean move(final float delta)
-	{
-
-		if (enemyDirection)
-		{
+ {
+		if (enemyDirection) {
 			x += move * delta;
-		} else
-		{
+		} else {
 			x -= move * delta;
 		}
-		yPositionDif += 3 * delta;
+		yPositionDif += delta;
 		if (yPositionDif >= 1.2)
 		{
 			y -= yPositionDif;
@@ -53,7 +50,7 @@ public class Peon extends AbstractEnemy
         if (random.nextInt(250 / shootFrequency) == 0)
         {
         	Array<Shot> returnList = new Array<Shot>();
-            returnList.add(ShotFactory.createShotLaser(x, y + width / 2, shotVelocity));
+            returnList.add(ShotFactory.createShotLaser(x  + width / 2, y, shotVelocity));
             return returnList;
         }
         return emptyShotList;

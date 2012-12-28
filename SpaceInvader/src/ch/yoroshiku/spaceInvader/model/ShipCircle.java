@@ -90,7 +90,7 @@ public class ShipCircle extends Ship //TODO test everything
     }
 
     @Override
-    public void shoot(boolean spray, float delay)
+    public void shoot(float delay)
     { 
         middleShots.get(currentShot).x = (x + shotMiddle);
         middleShots.get(currentShot).y = y - shotWidthMiddle;

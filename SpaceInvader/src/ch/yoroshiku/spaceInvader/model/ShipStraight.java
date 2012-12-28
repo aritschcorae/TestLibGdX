@@ -20,8 +20,8 @@ public class ShipStraight extends Ship
         shotMiddle = (width * 0.5f);
         shotRight = (width * 0.8f);
         shotNormalVelocity = 50;
-        shotSlowerVelocity = 40;
-        shotDriftVelocity = 10;
+        shotSlowerVelocity = 45;
+        shotDriftVelocity = 5;
         createShotsList();
         speed = 40f;
         maxShots = 3;
@@ -35,11 +35,11 @@ public class ShipStraight extends Ship
 
     private void createShotsList()
     {
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 1; i++)
         {
             leftShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
-            rightShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
-            middleShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
+//            rightShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
+//            middleShots.add(ShotFactory.createShotLaser(-10f, Sizes.DEFAULT_WORLD_HEIGHT, shotNormalVelocity, false));
         }
     }
 
@@ -68,11 +68,11 @@ public class ShipStraight extends Ship
     }
 
     @Override
-    public void shoot(final boolean spray, float delay)
+    public void shoot(float delay)
     {
-        middleShots.get(currentShot).x = (x + shotMiddle);
-        middleShots.get(currentShot).y = Sizes.SHIP_HEIGHT + shotNormalVelocity * delay;
-        middleShots.get(currentShot).setDamage(damage);
+//        middleShots.get(currentShot).x = (x + shotMiddle);
+//        middleShots.get(currentShot).y = Sizes.SHIP_HEIGHT + shotNormalVelocity * delay;
+//        middleShots.get(currentShot).setDamage(damage);
         if (shots > 1)
         {
             leftShots.get(currentShot).x = (x + shotLeft);
@@ -81,26 +81,27 @@ public class ShipStraight extends Ship
         }
         if (shots > 2)
         {
-        	rightShots.get(currentShot).x = (x + shotRight);
-            rightShots.get(currentShot).y = Sizes.SHIP_HEIGHT + shotNormalVelocity * delay;
+//        	rightShots.get(currentShot).x = (x + shotRight);
+//            rightShots.get(currentShot).y = Sizes.SHIP_HEIGHT + shotNormalVelocity * delay;
             if (spray)
             {
-                leftShots.get(currentShot).setMovementX(shotDriftVelocity);
-                rightShots.get(currentShot).setMovementX(-shotDriftVelocity);
+                leftShots.get(currentShot).setMovementX(-shotDriftVelocity);
+//                rightShots.get(currentShot).setMovementX(shotDriftVelocity);
                 leftShots.get(currentShot).setMovementY(shotSlowerVelocity);
-                rightShots.get(currentShot).setMovementY(shotSlowerVelocity);
+//                rightShots.get(currentShot).setMovementY(shotSlowerVelocity);
             }
             else
             {
                 leftShots.get(currentShot).setMovementX(0);
-                rightShots.get(currentShot).setMovementX(0);
+//                rightShots.get(currentShot).setMovementX(0);
                 leftShots.get(currentShot).setMovementY(shotNormalVelocity);
-                rightShots.get(currentShot).setMovementY(shotNormalVelocity);
-                rightShots.get(currentShot).setDamage(damage);
+//                rightShots.get(currentShot).setMovementY(shotNormalVelocity);
+//                rightShots.get(currentShot).setDamage(damage);
             }
         }
 
         if (currentShot == middleShots.size - 1)
+        if (currentShot == leftShots.size - 1)      	
             currentShot = 0;
         else
             currentShot++;
