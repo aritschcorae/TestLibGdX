@@ -3,6 +3,7 @@ package ch.yoroshiku.spaceInvader.model;
 import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Circle;
 
 public class Explosion extends Circle
@@ -37,13 +38,13 @@ public class Explosion extends Circle
     }
     
     public void draw(final ShapeRenderer shapeRenderer, final float ppuX, final float ppuY, final float border){
-        for(int i = (int) (getOuterRadius(ppuX).radius - radius); i >=0 ; i--)
-        {
-        	float green = 1 / (getOuterRadius(ppuX).radius - radius);
-        	shapeRenderer.setColor(1, green, 0, 0);
+		shapeRenderer.begin(ShapeType.Circle);
+		for (int i = (int) (getOuterRadius(ppuX).radius - radius); i >= 0; i--) {
+			float green = 1 / (getOuterRadius(ppuX).radius - radius);
+			shapeRenderer.setColor(1, green, 0, 0);
         	shapeRenderer.circle(border + x  * ppuX, y * ppuY, radius * ppuX);
-            
         }
+		shapeRenderer.end();
     }
 
 }

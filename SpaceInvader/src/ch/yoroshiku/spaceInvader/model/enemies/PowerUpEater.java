@@ -49,7 +49,7 @@ public class PowerUpEater extends AbstractEnemy
     }
     
     @Override
-    public boolean move(final float delta)//TODO
+    public boolean move(final float delta)//TODO review powerup eater
     {
         if(eatingPowerUp != null)
         {
@@ -65,7 +65,7 @@ public class PowerUpEater extends AbstractEnemy
                     powerUpDocked = true;
                     eatingPowerUp.x = powerUpXDestination;
                     eatingPowerUp.y = y + height - eatingPowerUp.getHeight();
-                    timeEated = System.currentTimeMillis(); //TODO
+                    timeEated = System.currentTimeMillis();
                     powerUpGetting = false;
                 }
             } 

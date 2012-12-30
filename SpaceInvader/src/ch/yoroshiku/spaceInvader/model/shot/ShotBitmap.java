@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class ShotBitmap extends Shot
 {
 	private static final long serialVersionUID = 1L;
-	private Texture bitmap;
+	private Texture texture;
 
     public ShotBitmap(Texture bitmap, float x, float y, int damage, float movementX, float movementY,
             boolean enemyShot, float acceleration)
@@ -18,30 +18,24 @@ public class ShotBitmap extends Shot
         this.acceleration = acceleration;
         this.enemyShot = enemyShot;
         this.simpleShoot = false;
-        this.bitmap = bitmap;
+        this.texture = bitmap;
     }
 
-	public Texture getBitmap()
-	{
-		return bitmap;
-	}
 
 	@Override
 	public boolean move(float delta) {
-		// TODO Auto-generated method stub
-		return false;
+		nextStep(delta);
+		return true;
 	}
 
 	@Override
 	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
+		batch.draw(texture, offset + x * ppux, y * ppuy, ppux * width, ppuy * height);
 	}
 
 	@Override
 	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, float offset) {
-		// TODO Auto-generated method stub
-		
+		//not used
 	}
 
 }

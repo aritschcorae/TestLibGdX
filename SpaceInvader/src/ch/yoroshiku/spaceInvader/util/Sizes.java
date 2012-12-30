@@ -21,8 +21,8 @@ public class Sizes {
 	public static final float SHOT_LASER_HEIGHT = 2;
 	public static final float SHOT_CIRCLE_SMALL = 1.4f;
 	public static final float SHOT_CIRCLE_LARGE = 1.8f;
-	public static final float SHOT_BOMB_HEIGHT = 4;
-	public static final float SHOT_BOMB_WIDTH = 3;
+	public static final float SHOT_BOMB_HEIGHT = 3.5f;
+	public static final float SHOT_BOMB_WIDTH = 2.625f;
 	public static final float DESTROY_EXPLOSION_RADIUS = 4;
 	
 	public static final float BOMB_EXPLOSION_INIT_SIZE = 2;
@@ -31,6 +31,8 @@ public class Sizes {
 	
 	public static final float ENEMY_HEALTHBAR_DISTANCE = 1;
 	public static final float HEALTHBAR_HEIGHT = 1;
+	public static final float HEALTHBAR_INNER_BORDER = 0.2f;
+	
 	
 	//ENEMY Sizes
 	public static final float THROWER_WIDTH = 6;
@@ -57,10 +59,14 @@ public class Sizes {
 	public static final float WING_WIDTH = 10;
 	public static final float WING_HEIGHT = 8;
 	
-	//
+	// Text
+	public static final float TEXTBOX_OFFSET = 10;
 	public static final float TEXTBOX_WIDTH = 42;
 	public static final float TEXTBOX_HEIGHT = 1.4f;
 	public static final float BUTTON_WIDTH = 25;
+	public static final float FONT_SIZE_MISC = 2.4f;
+	public static final float MISC_BOMB_INFO_OFFSET = 6f;
+	public static final float MISC_POINT_INFO_OFFSET = 1f;
 	
 	
 }

@@ -3,8 +3,6 @@ package ch.yoroshiku.spaceInvader.model.shot;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
 
 
 
@@ -33,10 +31,18 @@ public class ShotLaser extends Shot
 		if(width != 1){
 			shapeRenderer.begin(ShapeType.FilledRectangle);
 			shapeRenderer.filledRect(offset + x * ppux, y * ppuy, width * ppux, height * ppuy);
-		}else{
+		} else {
 			shapeRenderer.begin(ShapeType.Line);
-			System.out.println(x + " - " + y + " - "  + movementX + " - " + movementY);
-			shapeRenderer.line(offset + x * ppux, y * ppuy, offset + (x + movementX) * ppux, (y + height + movementY) * ppuy);
+			if (movementX != 0) {
+				if (enemyShot) {
+					shapeRenderer.line(offset + movementX/3 + (x) * ppux, y * ppuy, offset + x * ppux, (y + height) * ppuy);
+				} else {
+					shapeRenderer.line(offset + x * ppux, y * ppuy, offset + movementX /3 + (x) * ppux, (y + height)
+							* ppuy);
+				}
+			} else {
+				shapeRenderer.line(offset + x * ppux, y * ppuy, offset + x * ppux, (y + height) * ppuy);
+			}
 		}
 		shapeRenderer.end();
 	}

@@ -67,47 +67,39 @@ public class PowerUp extends AbstractSprite
 			powerUpTexture = POWER_UP_TEXTURE_HEAL;
 			break;
 		}
-    }
+	}
 
-    public Integer getType()
-    {
-        return type;
-    }
+	public Integer getType() {
+		return type;
+	}
 
-    
-    public boolean isEated()
-    {
-        return eated;
-    }
+	public boolean isEated() {
+		return eated;
+	}
 
-    public void setEated(boolean eated)
-    {
-        this.eated = eated;
-    }
+	public void setEated(boolean eated) {
+		this.eated = eated;
+	}
 
-    public boolean move(float delta)
-    {
-    	y += velocity * delta;
-    	return true;
-    }
+	public boolean move(float delta) {
+		y += velocity * delta;
+		return true;
+	}
 
-    public void setCoordinates(float x, float y)
-    {
-    	this.x = x;
-    	this.y = y;
-    }
+	public void setCoordinates(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
 
 	public void setVelocity() {
 		this.velocity = -20;
 	}
-	
-	public void stop()
-	{
+
+	public void stop() {
 		this.velocity = 0;
 	}
 
-	public Texture getPowerUpTexture()
-	{
+	public Texture getPowerUpTexture() {
 		return powerUpTexture;
 	}
 

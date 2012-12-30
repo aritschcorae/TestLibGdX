@@ -96,13 +96,13 @@ public class EnemyManager extends Manager {
     }
     
 
-	public void checkForCollision(ShotManager shotManager) {
-		checkForExplosionCollision(shotManager.getExplosions());
-        iterateShotList(shotManager.getShotsBombs(), true);
-        iterateShotList(shotManager.getAllShots(), false);		
+	public void checkForCollision(ShotManager shotManager, PowerUpManager powerUpManager) {
+		checkForExplosionCollision(shotManager.getExplosions(), powerUpManager);
+        iterateShotList(shotManager.getShotsBombs(), true, shotManager, powerUpManager);
+        iterateShotList(shotManager.getAllShots(), false, shotManager, powerUpManager);		
 	}    
 
-    private void iterateShotList(final Array<Shot> shots, final boolean bomb)
+    private void iterateShotList(final Array<Shot> shots, final boolean bomb, ShotManager shotManager, final PowerUpManager powerUpManager)
     {
         for (final Shot shoot : shots)
         {
@@ -115,7 +115,7 @@ public class EnemyManager extends Manager {
                     if (!enemyGroup.isEmpty() && enemyGroup.isAppeared()
                     		&& shoot.overlaps(enemyGroup.getBounds()))
                     {
-                        if (checkHit(shoot, enemyGroup, bomb))
+                        if (checkHit(shoot, enemyGroup, bomb, shotManager, powerUpManager))
                         {
                             remove(enemyGroup, toRemoveEnemies);
                             break;
@@ -129,36 +129,35 @@ public class EnemyManager extends Manager {
     /**
      * @return true if hitted
      */
-    public boolean checkHit(final Shot shoot, final EnemyGroup enemies, final boolean bomb)
+    public boolean checkHit(final Shot shot, final EnemyGroup enemies, final boolean bomb, ShotManager shotManager, final PowerUpManager powerUpManager)
     {
         for (final AbstractEnemy enemy : enemies)
         {
-            if (shoot.overlaps(enemy))
+            if (shot.overlaps(enemy))
             {
-                if((bomb && enemy.bombDamage(shoot.getDamage()))
-                	|| (!bomb && enemy.lowerHealth(shoot.getDamage())))
+                if((bomb && enemy.bombDamage(shot.getDamage()))
+                	|| (!bomb && enemy.lowerHealth(shot.getDamage())))
                 {
-                    enemyKilled(enemy); 
+                    enemyKilled(enemy, powerUpManager); 
                 }
-                if (!shoot.isSimpleShot())
+                if (!shot.isSimpleShot())
                 {
                     final float x;
                     final float y;
-                    if (shoot.x <= enemy.x)
+                    if (shot.x <= enemy.x)
                         x = enemy.x;
                     else
-                        x = shoot.getX();
-                    if (shoot.y <= enemy.y)
+                        x = shot.x;
+                    if (shot.y <= enemy.y)
                         y = enemy.y;
                     else
-                        y = shoot.getY();
-//                    final Explosion newExplosion = new Explosion(x, y, 40 * ship.getDamage());
-//                    explosions.add(newExplosion);
-//                    toDeleteShots.add(shoot);
+                        y = shot.getY();
+                    shotManager.addExplosion(x, y, (int)(20 * shot.getDamage()));
+                    shotManager.removeShot(shot);
                 }
                 else
                 {
-                    shoot.setY(Sizes.DEFAULT_WORLD_HEIGHT + 20);
+                    shot.setY(Sizes.DEFAULT_WORLD_HEIGHT + 20);
                 }
                 return true;
             }
@@ -166,7 +165,7 @@ public class EnemyManager extends Manager {
         return false;
     }
 
-    public void enemyKilled(final AbstractEnemy enemy)
+    public void enemyKilled(final AbstractEnemy enemy, final PowerUpManager powerUpManager)
     {
         for (final AbstractEnemy destroyedEnemy : enemy.getDestroyedEnemies())
         {
@@ -181,7 +180,7 @@ public class EnemyManager extends Manager {
         }
     }
 
-    public void checkForExplosionCollision(Array<Explosion> explosions)
+    public void checkForExplosionCollision(Array<Explosion> explosions, final PowerUpManager powerUpManager)
     {
         for (final Explosion explosion : explosions)
         {
@@ -196,7 +195,7 @@ public class EnemyManager extends Manager {
                         {
                             if(enemy.bombDamage(explosion.getDamage()))
                             {
-                                enemyKilled(enemy);
+                                enemyKilled(enemy, powerUpManager);
                             }
                         }
                     }

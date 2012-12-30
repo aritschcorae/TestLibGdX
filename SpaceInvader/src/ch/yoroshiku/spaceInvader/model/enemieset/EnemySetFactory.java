@@ -176,7 +176,8 @@ public class EnemySetFactory
         for(int row = rows; row > 0; row--) // starts with lowest row
         {   
             group = 1;
-            final float extraBorder = 2 + ((row%2 - 1) * Enemies.ENEMY_WIDTH.get(enemyKind) * -1) / 2; 
+			final float extraBorder = Sizes.DEFAULT_WORLD_WIDTH / 2
+					- (Enemies.ENEMY_WIDTH.get(enemyKind) * 10 + 4.5f) / 2 - (row%2 - 1) * Enemies.ENEMY_WIDTH.get(enemyKind) / 2;
 			for (int inLine = 0, enemieCounter = 0; inLine < 9 + row % 2; inLine++, enemieCounter++)
             {
 				final float x = inLine * Enemies.ENEMY_WIDTH.get(enemyKind) + extraBorder + (inLine * 0.5f);
@@ -207,7 +208,7 @@ public class EnemySetFactory
                     enemy.x -= movementX;
                     enemy.y -= movementY;
                 }
-                enemies.get(i).setAppearanceVariable(movementX / 4, movementY / 4, endX, endY);
+                enemies.get(i).setAppearanceVariable(movementX / 16, movementY / 16, endX, endY);
             }
             break;
         }

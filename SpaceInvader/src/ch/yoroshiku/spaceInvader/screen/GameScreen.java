@@ -3,6 +3,7 @@ package ch.yoroshiku.spaceInvader.screen;
 import ch.yoroshiku.spaceInvader.SpaceInvader;
 import ch.yoroshiku.spaceInvader.controller.GameController;
 import ch.yoroshiku.spaceInvader.controller.Gamepad;
+import ch.yoroshiku.spaceInvader.controller.GesturePad;
 import ch.yoroshiku.spaceInvader.manager.EnemyManager;
 import ch.yoroshiku.spaceInvader.manager.PowerUpManager;
 import ch.yoroshiku.spaceInvader.manager.ShotManager;
@@ -19,9 +20,9 @@ public class GameScreen implements Screen
 {
 	
 	public enum GamePhase{
-		GAMESTART, GAMING, PAUSE, LEVEL_LOAD, HIGHSCORE, LEVEL_WAIT, DEAD, FINISHED
+		GAMESTART, GAMING, PAUSE, LEVEL_LOAD, LEVEL_SCORE, LEVEL_WAIT, DEAD, FINISHED
 	}
-	private static GamePhase phase = GamePhase.GAMING;
+	private static GamePhase phase = GamePhase.GAMESTART;
 
 	private Renderer renderer;
 	public static float buttonHeight;
@@ -33,6 +34,7 @@ public class GameScreen implements Screen
 	private ShotManager shotManager;
 	private GameController gameController;
 	private Gamepad gamepad;
+	private GesturePad gesturePad;
 	
 	
 	public GameScreen(SpaceInvader game) throws Exception {
@@ -46,13 +48,22 @@ public class GameScreen implements Screen
 		ship.x = (Sizes.DEFAULT_WORLD_WIDTH - Sizes.SHIP_WIDTH) / 2;
 		shotManager.addShipShots(ship);
 		gameController = new GameController(shotManager, ship, enemyManager, phase);
-		gamepad = new Gamepad(gameController, ship);
+		gesturePad = new GesturePad(this);
+		gamepad = new Gamepad(this, ship, gesturePad);
 	}
 
+	public void dropBomb() {
+		gameController.dropBomb(ship, shotManager);
+	}
+	public void spray() {
+		//TODO check if spray possible + set spray button to activated
+    	ship.setSpray(!ship.isSpray());
+	}
 	
 	public void resize(int width, int height) {
 		gamepad.resize(width, height);
 		renderer = new Renderer((float) height / Sizes.DEFAULT_WORLD_HEIGHT,  ((width - (height / 8 * 7)) / 2));
+		gesturePad.resize(renderer.getPpux());
 	}
 
 	public void show() 
@@ -65,8 +76,9 @@ public class GameScreen implements Screen
 	{
 		renderer.cleanScreen();
 		gamepad.update(delta, phase);
-		renderer.draw(ship, starManager, enemyManager, powerupManager, shotManager, phase);
-		renderer.drawMisc();
+		renderer.drawMisc(ship, gameController);
+		renderer.draw(ship, starManager, enemyManager, powerupManager, shotManager, phase, gameController);
+		renderer.cleanBorders();
 		//TODO call renderer for drawing
 		gameController.process(delta, ship, enemyManager, shotManager, starManager, powerupManager, phase);
 	}
@@ -89,6 +101,10 @@ public class GameScreen implements Screen
 	}
 	@Override
 	public void dispose() {
+		renderer.dispose();
+//		gameController.dispose(); TODO of all textures
 		System.exit(0);
 	}
+
+
 }

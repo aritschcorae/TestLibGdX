@@ -3,6 +3,7 @@ package ch.yoroshiku.spaceInvader.manager;
 import ch.yoroshiku.spaceInvader.model.PowerUp;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.util.Helper;
+import ch.yoroshiku.spaceInvader.util.Sizes;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -28,7 +29,6 @@ public class PowerUpManager extends Manager {
                 toRemovePowerUps.add(powerUp);
         }
         Helper.removeAll(powerUps, toRemovePowerUps);
-//		super.move(delta, powerUps);
 	}
 
 	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, final float offset) {
@@ -60,7 +60,6 @@ public class PowerUpManager extends Manager {
 
 
 	public void createHealthPowerUp() {
-		// TODO Auto-generated method stub
-//		powerUps.add(PowerUpFactory.createHealPowerUp(new Coordinates(canvasWidth / 2, canvasHeight / 2), getContext()));
+		powerUps.add(new PowerUp(Sizes.DEFAULT_WORLD_WIDTH / 2, Sizes.DEFAULT_WORLD_HEIGHT / 3 * 2, PowerUp.POWER_UP_HEAL));
 	}
 }

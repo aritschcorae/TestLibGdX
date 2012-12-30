@@ -172,7 +172,7 @@ public class EnemyGroup extends HashSet<AbstractEnemy>
         this.endPositionY = endPositionY;
     }
     
-    public void move(final float delta) //TODO slowdown?
+    public void move(final float delta)
     {
         if(appeared)
         {

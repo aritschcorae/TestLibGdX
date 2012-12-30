@@ -17,7 +17,7 @@ public class Defensless extends PostThrower
     @Override
     protected void setModification(boolean actiaved)
     {
-//        gameField.removeShipShield(actiaved);TODO
+//        gameField.removeShipShield(actiaved);TODO modification activate
     }
 
     @Override

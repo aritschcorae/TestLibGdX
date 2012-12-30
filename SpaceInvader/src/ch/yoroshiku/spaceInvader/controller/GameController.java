@@ -1,5 +1,7 @@
 package ch.yoroshiku.spaceInvader.controller;
 
+import com.badlogic.gdx.Game;
+
 import ch.yoroshiku.spaceInvader.manager.EnemyManager;
 import ch.yoroshiku.spaceInvader.manager.PowerUpManager;
 import ch.yoroshiku.spaceInvader.manager.ShotManager;
@@ -26,13 +28,14 @@ public class GameController
 			final StarManager starManager, final PowerUpManager powerUpManager, final GamePhase phase) {
 		switch (phase) {
 		case GAMESTART:
-			// TODO
+			// TODO display overlay with explanation how to do what
+			GameScreen.updatePhase(GamePhase.GAMING);
 			break;
 		case GAMING:
 			starManager.move(delta);
 			powerUpManager.obtainedPowerUp(ship);
-			// checkForEnemyGotThrough();TODO
-			enemyManager.checkForCollision(shotManager);
+			// checkForEnemyGotThrough();TODO either kill enemies or hero dies
+			enemyManager.checkForCollision(shotManager, powerUpManager);
 			shotManager.destroyEnemyShots();
 
 			shotManager.gotShipHit(ship);
@@ -50,28 +53,27 @@ public class GameController
 
 			shotManager.move(delta);
 			shotManager.cleanUpShots();
-			if (shotManager.isBombAround()) {
+			if (shotManager.isBombAround()) 
 				ship.setInvincible(false);
-
-			}
+			
 			points += enemyManager.removeEnemies();
 			if (!enemyManager.existsEnemies())
 				GameScreen.updatePhase(GamePhase.LEVEL_LOAD);
-			// TODO
 			break;
 		case LEVEL_LOAD:
 			shotManager.cleanUpAllShots();
 			nextLvl(enemyManager, powerUpManager);
-			GameScreen.updatePhase(GamePhase.HIGHSCORE);
+			GameScreen.updatePhase(GamePhase.LEVEL_SCORE);
 			break;
 		case PAUSE:
-		case HIGHSCORE:
+		case LEVEL_SCORE:
 		case LEVEL_WAIT:
 			break;
 		case DEAD:
-			// TODO
+			// TODO //check for gameover and display "you're dead"
 			break;
 		case FINISHED:
+			//TODO // check for highscore and display "congrats"
 			break;
 		default:
 			break;
@@ -104,13 +106,24 @@ public class GameController
 		return enemySetCreator;
 	}
 
-	public void dropBomb(Ship ship) {
+	public void dropBomb(Ship ship, ShotManager shotmanager) {
 		if (ship.getBombs() > 0) {
-			// shotsBombs.add(ShotFactory.createShotBitmap(Textures.BOMB_TEXTURE,
-			// ship.x + ship.width / 2, ship.y, 60, 30, 1.03f, false));
-			// ship.dropBomb();
-			// ship.setInvincible(true);
+			shotmanager.addBomb(ship);
+			ship.dropBomb();
+			ship.setInvincible(true);
 		}
+	}
+	
+	public int getLevel(){
+		return enemySetCreator.getPlainLvl();
+	}
+
+	public int getTimeNeeded() {
+		return 20;
+	}
+
+	public int getTimeBonus() {
+		return 1000;
 	}
 
 }

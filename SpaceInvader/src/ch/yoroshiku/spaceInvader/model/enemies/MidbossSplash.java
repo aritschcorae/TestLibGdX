@@ -48,12 +48,12 @@ public class MidbossSplash extends AbstractEnemy
     @Override
     public Array<Shot> shoot(Ship ship)
     {
-//        if (random.nextInt(50 / shootFrequency) == 0)
-//        {
-//        	Array<Shot> returnList = new Array<Shot>();
-//            returnList.add(ShotFactory.createShotSplash(x + width / 2, y - height, 1, 0, y - height, true));
-//            return returnList;
-//        }
+        if (random.nextInt(50 / shootFrequency) == 0)
+        {
+        	Array<Shot> returnList = new Array<Shot>();
+            returnList.add(ShotFactory.createShotSplash(x + width / 2, y - height, 1, 0, y - height, true));
+            return returnList;
+        }
         return emptyShotList;
     }
 

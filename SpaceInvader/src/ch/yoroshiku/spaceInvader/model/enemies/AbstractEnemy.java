@@ -50,11 +50,6 @@ public abstract class AbstractEnemy extends AbstractGameObject
         return points;
     }
 
-    public boolean getPowerUps()
-    {
-        return powerUps;
-    }
-
     public void setPoints(double points)
     {
         this.points = points;
@@ -166,18 +161,26 @@ public abstract class AbstractEnemy extends AbstractGameObject
 
 		//border
 		shapeRenderer.setColor(Color.YELLOW);
-		shapeRenderer.filledRect(offset + x * ppux, (Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy - 1, 
-				width * ppux, 1);
-		shapeRenderer.filledRect(offset + x * ppux, (Sizes.HEALTHBAR_HEIGHT + Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy, 
-				width * ppux, 1);
-		//Total Health
+		shapeRenderer.filledRect(
+				offset + (x + Sizes.HEALTHBAR_INNER_BORDER) * ppux, 
+				(Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy, 
+				(width - Sizes.HEALTHBAR_INNER_BORDER) * ppux, 
+				Sizes.HEALTHBAR_HEIGHT * ppuy);
+		
+//		//Total Health
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.filledRect(offset + x * ppux, (Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy, 
-				width * ppux, Sizes.HEALTHBAR_HEIGHT * ppuy);
-		//health remaining
+		shapeRenderer.filledRect(
+				offset + (x + Sizes.HEALTHBAR_INNER_BORDER) * ppux,
+				(Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height + Sizes.HEALTHBAR_INNER_BORDER) * ppuy, 
+				(width - Sizes.HEALTHBAR_INNER_BORDER) * ppux, 
+				(Sizes.HEALTHBAR_HEIGHT - 2 * Sizes.HEALTHBAR_INNER_BORDER) * ppuy);
+//		//health remaining
 		shapeRenderer.setColor(Color.GREEN);
-		shapeRenderer.filledRect(offset + x * ppux, (Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height) * ppuy, 
-				(float)(width * ppux * health / maxHealth), Sizes.HEALTHBAR_HEIGHT * ppuy);
+		shapeRenderer.filledRect(
+				offset + (x + Sizes.HEALTHBAR_INNER_BORDER) * ppux,
+				(Sizes.ENEMY_HEALTHBAR_DISTANCE + y + height + Sizes.HEALTHBAR_INNER_BORDER) * ppuy, 
+				(float)((width - Sizes.HEALTHBAR_INNER_BORDER) * ppux * health / maxHealth), 
+				(Sizes.HEALTHBAR_HEIGHT - 2 * Sizes.HEALTHBAR_INNER_BORDER) * ppuy);
 	}
 	
 	public void drawSprite(final SpriteBatch batch, final float ppuX, final float ppuY, final float border){

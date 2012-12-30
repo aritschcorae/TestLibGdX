@@ -3,8 +3,12 @@ package ch.yoroshiku.spaceInvader.manager;
 import ch.yoroshiku.spaceInvader.model.Explosion;
 import ch.yoroshiku.spaceInvader.model.Ship;
 import ch.yoroshiku.spaceInvader.model.shot.Shot;
+import ch.yoroshiku.spaceInvader.model.shot.ShotFactory;
+import ch.yoroshiku.spaceInvader.screen.GameScreen;
+import ch.yoroshiku.spaceInvader.screen.GameScreen.GamePhase;
 import ch.yoroshiku.spaceInvader.util.Helper;
 import ch.yoroshiku.spaceInvader.util.Sizes;
+import ch.yoroshiku.spaceInvader.util.Textures;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,15 +31,18 @@ public class ShotManager extends Manager {
 		explosions = new Array<Explosion>();
 		toDeleteExplosions = new Array<Explosion>();
 	}
-	
 
 	public void move(float delta) {
-		//TODO
 		nextStep(allShots, delta);
 		nextStep(shotsBombs, delta);
 		nextStep(enemyShots, delta);
 		removeOutOfRangeShots(shotsBombs, false);
 		removeOutOfRangeShots(enemyShots, true);
+		for(Explosion explosion : explosions){
+			if(explosion.expand()){
+				toDeleteExplosions.add(explosion);
+			}
+		}
 	}
 	
 	private void nextStep(Array<Shot> shots, final float delta){
@@ -60,7 +67,10 @@ public class ShotManager extends Manager {
 	}
 
 	public void drawSprite(SpriteBatch batch, float ppux, float ppuy, final float offset) {
-		super.drawSprite(batch, ppux, ppuy, offset, allShots);
+		for(Shot shot : shotsBombs)
+			shot.drawSprite(batch, ppux, ppuy, offset);
+		for(Shot shot : enemyShots)
+			shot.drawSprite(batch, ppux, ppuy, offset);
 	}
 
 	public void drawShape(ShapeRenderer shapeRenderer, float ppux, float ppuy, final float offset) {
@@ -69,7 +79,10 @@ public class ShotManager extends Manager {
 		
 		shapeRenderer.setColor(Color.YELLOW);
 		super.drawShape(shapeRenderer, ppux, ppuy, offset, enemyShots);
-		
+
+		for(Explosion explosion : explosions){
+			explosion.draw(shapeRenderer, ppux, ppux, offset);
+		}
 	}
 
 
@@ -79,6 +92,10 @@ public class ShotManager extends Manager {
 		allShots.addAll(ship.getRightShots());
 	}
 
+	public void addBomb(Ship ship) {
+		shotsBombs.add(ShotFactory.createShotBitmap(Textures.BOMB_TEXTURE, ship.x + Sizes.SHIP_CORE
+				- Sizes.SHOT_BOMB_WIDTH / 2, Sizes.SHIP_HEIGHT, 60, 30, 1.03f, false));
+	}
 
 	public void cleanUpShots() {
 		Helper.removeAll(enemyShots, toDeleteShots);
@@ -98,7 +115,7 @@ public class ShotManager extends Manager {
 				if (shot.overlaps(ship.getShipHitSpace())) {
 					ship.gotHit((int) shot.getDamage());
 					if (ship.getHealth() <= 0) {
-						// gameOver(); //TODO
+						GameScreen.updatePhase(GamePhase.DEAD);
 					}
 					toDeleteShots.add(shot);
 				}
@@ -158,4 +175,13 @@ public class ShotManager extends Manager {
 	public Array<Explosion> getExplosions() {
 		return explosions;
 	}
+
+	public void addExplosion(float x, float y, int d) {
+		explosions.add(new Explosion(x, y, d));
+	}
+
+	public void removeShot(Shot shot) {
+		toDeleteShots.add(shot);
+	}
+
 }

@@ -18,7 +18,7 @@ public class Freezer extends PostThrower
     @Override
     protected void setModification(boolean actiaved)
     {
-        //gameField.slowDownShip(actiaved);TODO
+        //gameField.slowDownShip(actiaved);TODO modification activate
     }
 
     @Override

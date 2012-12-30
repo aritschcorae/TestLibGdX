@@ -17,7 +17,7 @@ public class BombDefuser extends PostThrower
     @Override
     protected void setModification(boolean actiaved)
     {
-//        gameField.deactivateBombs(actiaved);TODO
+//        gameField.deactivateBombs(actiaved);TODO modification activate
     }
 
     @Override

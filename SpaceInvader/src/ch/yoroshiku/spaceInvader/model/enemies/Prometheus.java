@@ -129,7 +129,7 @@ public class Prometheus extends AbstractEnemy
 
     
     @Override
-    public boolean lowerHealth(double lowerHealth)
+    public boolean lowerHealth(double lowerHealth)//TODO die after explosion
     {
         if(exploded)
             return true;
