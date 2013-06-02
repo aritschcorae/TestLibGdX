@@ -31,7 +31,7 @@ public class Helper {
 		TEXTBOX_TEXT.add("Tap for the next Level");
 		TEXTBOX_SIZE.add(2f);
 		TEXTBOX_TEXT.add("Game Over");
-		TEXTBOX_SIZE.add(7f);
+		TEXTBOX_SIZE.add(4f);
 		TEXTBOX_TEXT.add("Score: ");
 		TEXTBOX_SIZE.add(7f);
 		TEXTBOX_TEXT.add("New Highscore!");
@@ -39,7 +39,7 @@ public class Helper {
 		TEXTBOX_TEXT.add("Pause");
 		TEXTBOX_SIZE.add(6f);
 		TEXTBOX_TEXT.add("Gratz");
-		TEXTBOX_SIZE.add(10f);
+		TEXTBOX_SIZE.add(8f);
 
 		//	    <item>8;Continue?;24</item>
 //	    <item>9;YES   |    NO;24</item>

@@ -27,6 +27,8 @@ public class GameScreen implements Screen
 	private Renderer renderer;
 	public static float buttonHeight;
 	
+	private SpaceInvader game;
+	
 	private Ship ship;
 	private StarManager starManager;
 	private EnemyManager enemyManager;
@@ -38,7 +40,8 @@ public class GameScreen implements Screen
 	
 	
 	public GameScreen(SpaceInvader game) throws Exception {
-		//TODO init game (ship and so on).
+		this.game = game;
+		phase = GamePhase.GAMESTART;
 		starManager = new StarManager();
 		enemyManager = new EnemyManager();
 		powerupManager = new PowerUpManager();
@@ -66,25 +69,30 @@ public class GameScreen implements Screen
 		gesturePad.resize(renderer.getPpux());
 	}
 
-	public void show() 
-	{
+	public void show() {
 		Gdx.input.setInputProcessor(gamepad);
 	}
 
 	@Override
-	public void render(float delta)
-	{
+	public void render(float delta) {
 		renderer.cleanScreen();
 		gamepad.update(delta, phase);
 		renderer.drawMisc(ship, gameController);
 		renderer.draw(ship, starManager, enemyManager, powerupManager, shotManager, phase, gameController);
 		renderer.cleanBorders();
-		//TODO call renderer for drawing
 		gameController.process(delta, ship, enemyManager, shotManager, starManager, powerupManager, phase);
 	}
 
 	public static void updatePhase(GamePhase updatedPhase){
 		phase = updatedPhase;
+	}
+	
+	public void releaseButtons(){
+		gamepad.releaseButtons();
+	}
+	
+	public void gameOver(){
+		game.gameFinished(gameController.points);
 	}
 
 	@Override

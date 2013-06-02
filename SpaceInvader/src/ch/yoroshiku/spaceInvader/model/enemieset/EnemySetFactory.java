@@ -31,7 +31,6 @@ public class EnemySetFactory
     private Map<Integer, String[]> levelStructure;
     protected Ship ship;
     protected int lvl = 1;
-    protected int displayLvl = 1;
     protected int amountOfMinPowerUps = 1;
     protected int enemyKind = 0;
     protected float canvasHeight = Sizes.DEFAULT_WORLD_HEIGHT;
@@ -40,24 +39,15 @@ public class EnemySetFactory
     protected EnemyManager enemySet;
     private Random random = new Random();
     
-    public void setLvl(int level)
-    {
-        lvl = level;
-        displayLvl = level + 1;
-    }
-    
-    public void setNextlvl()
-    {
-        lvl ++;
-        enemyKind = (lvl / 10);
-    }
-    
-    
-    public int getPlainLvl()
-    {
-        return lvl;
-    }
-    
+	public void setNextlvl() {
+		lvl++;
+		enemyKind = (lvl / 10);
+	}
+
+	public int getPlainLvl() {
+		return lvl;
+	}
+
     public EnemySetFactory(Ship ship, EnemyManager enemySet) throws IOException
     {
         this.ship = ship;

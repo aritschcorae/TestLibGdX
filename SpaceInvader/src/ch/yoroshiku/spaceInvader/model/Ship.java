@@ -21,7 +21,7 @@ public abstract class Ship extends AbstractGameObject {
 	protected Array<Shot> middleShots = new Array<Shot>();
 	protected Array<Shot> rightShots = new Array<Shot>();
 	protected float speed, centerX, centerY;
-	private int shield = 5, health = 3;
+	private int shield = 1, health = 3;
 	protected int maxHealth = 3;
 	protected int damage = 10, shots = 3, bombs = 9;
 	protected int maxShots;

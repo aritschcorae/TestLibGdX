@@ -18,6 +18,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -33,7 +34,7 @@ public class Renderer {
 	private Map<Float, BitmapFont> genericTextBoxMap;
 	private float ppux, ppuy; // pixels per unit
 	private float border;
-	private BitmapFont.TextBounds pauseBounds, levelFinishedBounds;
+	private BitmapFont.TextBounds pauseBounds, levelFinishedBounds, tapBounds, gameFinishedBounds, gameOverBounds;
 
 	public Renderer(final float ppux, final float border) {
 		this.ppux = ppux;
@@ -57,12 +58,17 @@ public class Renderer {
 		miscTextFont = generator.generateFont((int) (Sizes.FONT_SIZE_MISC * ppux));
 		generator.dispose();
 
-		pauseBounds = new Label("", new LabelStyle(genericTextBoxMap.get(Helper.TEXTBOX_SIZE
-				.get(Helper.TEXTBOX_INDEX_PAUSE)), Color.WHITE)).getStyle().font.getBounds(Helper.TEXTBOX_TEXT
-				.get(Helper.TEXTBOX_INDEX_PAUSE));
-		levelFinishedBounds = new Label("", new LabelStyle(genericTextBoxMap.get(Helper.TEXTBOX_SIZE
-				.get(Helper.TEXTBOX_INDEX_LEVEL)), Color.WHITE)).getStyle().font
-				.getBounds(Helper.TEXTBOX_TEXT.get(Helper.TEXTBOX_INDEX_TIME));
+		pauseBounds = createBounds(Helper.TEXTBOX_INDEX_PAUSE);
+		levelFinishedBounds = createBounds(Helper.TEXTBOX_INDEX_LEVEL);
+		tapBounds = createBounds(Helper.TEXTBOX_INDEX_TAP);
+		gameFinishedBounds = createBounds(Helper.TEXTBOX_INDEX_GRATULATION);
+		gameOverBounds = createBounds(Helper.TEXTBOX_INDEX_GAME_OVER);
+	}
+	
+	private TextBounds createBounds(Integer index){
+		return new Label("", new LabelStyle(genericTextBoxMap.get(Helper.TEXTBOX_SIZE
+				.get(index)), Color.WHITE)).getStyle().font.getBounds(Helper.TEXTBOX_TEXT
+				.get(index));
 	}
 
 	public void cleanScreen() {
@@ -105,9 +111,11 @@ public class Renderer {
 			drawLevelScore(controller, controller.getTimeBonus());
 			break;
 		case DEAD:
-			drawTextBox(0);
+			//TODO death animation
+			drawGameOver();
 			break;
 		case FINISHED:
+			drawGameFinished();
 			break;
 		case GAMESTART:
 			break;
@@ -116,7 +124,6 @@ public class Renderer {
 		}
 		batch.end();
 	}
-
 
 	public void drawMisc(Ship ship, GameController controller) {
 		batch.begin();
@@ -154,7 +161,7 @@ public class Renderer {
 		drawTextBox(levelFinishedBounds.height * 3.5f);
 		genericTextBoxMap.get(Helper.TEXTBOX_SIZE.get(Helper.TEXTBOX_INDEX_LEVEL)).draw(
 				batch,
-				Helper.TEXTBOX_TEXT.get(Helper.TEXTBOX_INDEX_LEVEL) + gamecontroller.getLevel(), //TODO correct level display
+				Helper.TEXTBOX_TEXT.get(Helper.TEXTBOX_INDEX_LEVEL) + gamecontroller.getTextBoxLevel(),
 				border + (Sizes.DEFAULT_WORLD_WIDTH ) / 2 * ppux - levelFinishedBounds.width / 2,
 				(Sizes.DEFAULT_WORLD_HEIGHT - (Sizes.TEXTBOX_OFFSET + Sizes.TEXTBOX_HEIGHT)) * ppuy);
 		
@@ -169,12 +176,29 @@ public class Renderer {
 				Helper.TEXTBOX_TEXT.get(Helper.TEXTBOX_INDEX_BONUS) + score,
 				border + (Sizes.DEFAULT_WORLD_WIDTH ) / 2 * ppux - levelFinishedBounds.width / 2,
 				(Sizes.DEFAULT_WORLD_HEIGHT - (Sizes.TEXTBOX_OFFSET + Sizes.TEXTBOX_HEIGHT + Helper.BREAK_SIZE)) * ppuy - levelFinishedBounds.height * 2);
-		//TODO bounds for tab and others
 		genericTextBoxMap.get(Helper.TEXTBOX_SIZE.get(Helper.TEXTBOX_INDEX_TAP)).draw(
 				batch,
 				Helper.TEXTBOX_TEXT.get(Helper.TEXTBOX_INDEX_TAP),
-				border + (Sizes.DEFAULT_WORLD_WIDTH ) / 2 * ppux - levelFinishedBounds.width / 2,
+				border + (Sizes.DEFAULT_WORLD_WIDTH ) / 2 * ppux - tapBounds.width / 2,
 				(Sizes.DEFAULT_WORLD_HEIGHT - (Sizes.TEXTBOX_OFFSET + Sizes.TEXTBOX_HEIGHT + Helper.BREAK_SIZE)) * ppuy - levelFinishedBounds.height * 3);
+	}
+
+	private void drawGameFinished() {
+		drawTextBox(gameFinishedBounds.height);
+		genericTextBoxMap.get(Helper.TEXTBOX_SIZE.get(Helper.TEXTBOX_INDEX_GRATULATION)).draw(
+				batch,
+				Helper.TEXTBOX_TEXT.get(Helper.TEXTBOX_INDEX_GRATULATION),
+				border + (Sizes.DEFAULT_WORLD_WIDTH ) / 2 * ppux - gameFinishedBounds.width / 2,
+				(Sizes.DEFAULT_WORLD_HEIGHT - (Sizes.TEXTBOX_OFFSET + Sizes.TEXTBOX_HEIGHT)) * ppuy);
+	}
+
+	private void drawGameOver() {
+		drawTextBox(gameOverBounds.height);
+		genericTextBoxMap.get(Helper.TEXTBOX_SIZE.get(Helper.TEXTBOX_INDEX_GAME_OVER)).draw(
+				batch,
+				Helper.TEXTBOX_TEXT.get(Helper.TEXTBOX_INDEX_GAME_OVER),
+				border + (Sizes.DEFAULT_WORLD_WIDTH ) / 2 * ppux - gameOverBounds.width / 2,
+				(Sizes.DEFAULT_WORLD_HEIGHT - (Sizes.TEXTBOX_OFFSET + Sizes.TEXTBOX_HEIGHT)) * ppuy);
 	}
 	
 	private float textboxX;

@@ -26,13 +26,15 @@ public class GesturePad extends GestureAdapter {
 			}
 		}
 		else if(velocityX > pauseVelocity || velocityX < -pauseVelocity){
+			screen.releaseButtons();
 			GameScreen.updatePhase(GamePhase.PAUSE);
+			return true;
 		}
 		return false;
 	}
 	
 	public void resize(final float ppux){
-		pauseVelocity = ppux * Sizes.DEFAULT_WORLD_WIDTH / 4;
+		pauseVelocity = ppux * Sizes.DEFAULT_WORLD_WIDTH / 2;
 		shotVelocity = ppux * Sizes.DEFAULT_WORLD_HEIGHT / 2;
 	}
 

@@ -81,6 +81,8 @@ public class Gamepad extends GestureDetector{
 			break;
 		case DEAD:
 		case FINISHED:
+			if(isKeyPressed())
+			gameController.gameOver();
 			//TODO open highscore
 			break;
 		case LEVEL_SCORE:
@@ -146,7 +148,10 @@ public class Gamepad extends GestureDetector{
 
 	@Override
 	public boolean touchDown (int x, int y, int pointer, int button) {
-		super.touchDown(x, y, pointer, button);
+		if(super.touchDown(x, y, pointer, button)){
+			return true;
+		}
+			
 		if(x <= width / 2){
 			leftPressed();
 			if(pointer == 0)
@@ -158,6 +163,13 @@ public class Gamepad extends GestureDetector{
 		}
 		return false;
 	}
+	
+	public void releaseButtons(){
+		leftReleased();
+		rightReleased();
+		upReleased();
+	}
+
 
 	public void resize(float width, float height){this.width = width;}
 	@Override

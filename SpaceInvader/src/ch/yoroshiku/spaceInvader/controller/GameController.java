@@ -1,7 +1,5 @@
 package ch.yoroshiku.spaceInvader.controller;
 
-import com.badlogic.gdx.Game;
-
 import ch.yoroshiku.spaceInvader.manager.EnemyManager;
 import ch.yoroshiku.spaceInvader.manager.PowerUpManager;
 import ch.yoroshiku.spaceInvader.manager.ShotManager;
@@ -63,19 +61,13 @@ public class GameController
 		case LEVEL_LOAD:
 			shotManager.cleanUpAllShots();
 			nextLvl(enemyManager, powerUpManager);
-			GameScreen.updatePhase(GamePhase.LEVEL_SCORE);
 			break;
 		case PAUSE:
 		case LEVEL_SCORE:
 		case LEVEL_WAIT:
 			break;
 		case DEAD:
-			// TODO //check for gameover and display "you're dead"
-			break;
 		case FINISHED:
-			//TODO // check for highscore and display "congrats"
-			break;
-		default:
 			break;
 		}
 	}
@@ -88,9 +80,9 @@ public class GameController
 		enemySetCreator.loadEnemiesOfNextLvl();
 		// lvlStartPoints = points;
 		if (enemyManager.getEnemies() == null) {
-			// TODO game finsihed
 			GameScreen.updatePhase(GamePhase.FINISHED);
 		} else {
+			GameScreen.updatePhase(GamePhase.LEVEL_SCORE);
 			if (enemySetCreator.getPlainLvl() % 10 == 0) {
 				powerUpManager.createHealthPowerUp();
 			}
@@ -116,6 +108,9 @@ public class GameController
 	
 	public int getLevel(){
 		return enemySetCreator.getPlainLvl();
+	}
+	public int getTextBoxLevel(){
+		return enemySetCreator.getPlainLvl() - 1;
 	}
 
 	public int getTimeNeeded() {

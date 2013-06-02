@@ -2,27 +2,26 @@ package ch.yoroshiku.spaceInvader;
 
 
 import ch.yoroshiku.spaceInvader.screen.GameScreen;
+import ch.yoroshiku.spaceInvader.screen.MenuScreen;
 
 import com.badlogic.gdx.Game;
 
 public class SpaceInvader extends Game {
 
     private GameScreen gameScreen;
+    private MenuScreen menuScreen;
 
 
     @Override
     public void create() {
-        //loader screens
-    	try {
-			initScreens();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    	setScreen(gameScreen);
-    }
+		// loader screens
+		initScreens();
+		setScreen(menuScreen);
+	}
     
-    public void initScreens() throws Exception {
-        createNewGame();
+    public void initScreens() {
+        menuScreen = new MenuScreen(this);
+//        createNewGame();
     }
 
     public void gameOver() {
@@ -31,12 +30,21 @@ public class SpaceInvader extends Game {
     }
 
 
-    public void createNewGame() throws Exception {
-        gameScreen = new GameScreen(this);
+    public void createNewGame() {
+        try {
+			gameScreen = new GameScreen(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public GameScreen getGameScreen() {
         return gameScreen;
     }
+
+	public void gameFinished(int points) {
+		// TODO highscore shizzle
+		setScreen(menuScreen);
+	}
 
 }
